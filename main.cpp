@@ -19,11 +19,12 @@ int main() {
 	Mario mario;
 	Point p;
 	p.setBoard(board);
+	//mario.getPointP().pBoard = p.pBoard;
 	mario.p.pBoard = p.pBoard;
 	while (true)
 	{
 		mario.draw();
-		//mario.drawPreviousLetter(mario.previous_char);
+
 		if (_kbhit())
 		{
 			char key = _getch();
@@ -31,7 +32,7 @@ int main() {
 				break;
 			mario.keyPressed(key);
 		}
-		Sleep(200);
+		Sleep(250);
 		mario.erase();
 		mario.move();
 		

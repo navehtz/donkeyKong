@@ -20,10 +20,10 @@ public:
 		cout << ch;
 		pBoard->updateBoard(x, y, ch);
 	}
-	void erase(char previous_char) {   //changeeeeeeeeeeeeeee
+	void erase(char previous_char) {   
 		gotoxy(x, y);
 		cout << previous_char;
-		pBoard->updateBoard(x, y, ch);
+		pBoard->updateBoard(x, y, previous_char);
 	}
 	void setBoard(Board& board) {
 		pBoard = &board;
