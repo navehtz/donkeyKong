@@ -19,8 +19,9 @@ int main() {
 	Mario mario;
 	Point p;
 	p.setBoard(board);
-	//mario.getPointP().pBoard = p.pBoard;
-	mario.p.pBoard = p.pBoard;
+
+	//mario.p.pBoard = p.pBoard;
+	mario.setPointP(p.get_pBoard());
 	while (true)
 	{
 		mario.draw();
