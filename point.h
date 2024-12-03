@@ -8,13 +8,11 @@ using namespace std;
 
 class Point {
 	int x, y;
-	char ch, previous_char;
-	Board* pBoard = nullptr;
+	char ch, previous_char = ' ';
 
 public:
-	Point() {}
-	Point(int _x, int _y, char _ch, char _previous_char, Board* _pBoard):
-		x(_x), y(_y), ch(_ch), previous_char(_previous_char), pBoard(_pBoard) {}
+	Point(int _x, int _y, char _ch):
+		x(_x), y(_y), ch(_ch) {}
 
 	int getX() const { return x; }
 	int getY() const { return y; }
@@ -24,22 +22,13 @@ public:
 	char getPreviousChar() const { return previous_char; }
 	void setPreviousChar(char _ch) { previous_char = _ch; }
 
-	Board* get_pBoard() { return pBoard; }
-	void set_pBoard(Board* _pBoard) { pBoard = _pBoard; }
-
 	void draw(char ch) const {
 		gotoxy(x, y);
 		cout << ch;
-		pBoard->updateBoard(x, y, ch);
 	}
-	void erase(char _previous_char) {   
+	void erase() {   
 		gotoxy(x, y);
 		cout << previous_char;
-		pBoard->updateBoard(x, y, previous_char);
 	}
-	void setBoard(Board& board) {
-		pBoard = &board;
-	}
-	char getCharPosition(int _x, int _y) { return pBoard->getCharPosition(_x, _y); }
 };
 

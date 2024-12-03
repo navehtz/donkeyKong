@@ -6,8 +6,8 @@ class Board {
 	const char* originalBoard[MAX_Y] = {
 		// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		  "                                                                                ", // 0
-		  "                                     $                                          ", // 1
-		  "                        ===============================                         ", // 2
+		  "     LIFE: 3                         $                                          ", // 1
+		  "                        ==============================                          ", // 2
 		  "                        H            &               H                          ", // 3
 		  "                        H      =============         H                          ", // 4
 		  "                        H                            H                          ", // 5
@@ -28,14 +28,14 @@ class Board {
 		  "          H                                                H                    ", // 20
 		  "          H                                                H                    ", // 21
 		  "          H                H              H                H                    ", // 22
-		  "          H    =           H              H                H                    ", // 23
+		  "          H                H              H                H                    ", // 23
 		  "================================================================================"  // 24
 	};
 public:
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
 	void reset();
 	void print() const;
-	char getCharPosition(int x, int y) const { return currentBoard[y][x]; }
+	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }
 	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }
 };
 
