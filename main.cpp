@@ -17,11 +17,8 @@ int main() {
 	board.reset();
 	board.print();
 	Mario mario;
-	Point p;
-	p.setBoard(board);
 
-	//mario.p.pBoard = p.pBoard;
-	mario.setPointP(p.get_pBoard());
+	mario.setBoard(board);
 	while (true)
 	{
 		mario.draw();
@@ -33,7 +30,7 @@ int main() {
 				break;
 			mario.keyPressed(key);
 		}
-		Sleep(250);
+		Sleep(150);
 		mario.erase();
 		mario.move();
 		

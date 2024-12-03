@@ -14,51 +14,116 @@ void Mario::keyPressed(char key) {
 void Mario::move()
 {
 	int _x = p.getX(), _y = p.getY();
+
 	static bool first_move = true;
-	char current_char = getCharPosition(_x, _y);
-	char two_chars_below = getCharPosition(_x, _y + 2);
-	
-	bool res_is_on_floor, res_is_on_ladder;
-	res_is_on_floor = isOnFloor();
-	res_is_on_ladder = isOnLadder();
+	static bool is_climbing = false;
 
-	//static int count_falling = 0;
-	bool in_jump = false;
+	ch_covered = getCharFromBoard(_x, _y);
+	ch_below = getCharFromBoard(_x, _y + DOWN);
+	two_chars_below = getCharFromBoard(_x, _y + 2);
+	ch_above = getCharFromBoard(_x, _y + UP);
+	ch_left = getCharFromBoard(_x + LEFT, _y);
+	ch_right = getCharFromBoard(_x + RIGHT, _y);
 
+	bool res_is_on_ladder = isOnLadder();
+	bool res_is_on_floor = isBlock(ch_below);
+	bool res_is_below_roof = isBlock(ch_above);
+	bool res_is_wall_on_left = isBlock(ch_left);
+	bool res_is_wall_on_right = isBlock(ch_right);
+	bool res_is_two_chars_below_floor = isBlock(two_chars_below);
 
-	if (isJumping() && !res_is_on_ladder && current_char != 'H')
-	{
-		/*if (res_is_on_floor)
-			in_jump = true;
-		else*/
-		jump();
+	if (res_is_below_roof && !res_is_on_ladder) {
+		if (dir.y == UP) { dir.y = DOWN; }
 	}
-	else if (res_is_on_floor && res_is_on_ladder)
+
+	if (res_is_wall_on_left) {
+		if (dir.x == LEFT) { dir.x = STAY; }
+	}
+
+	if (res_is_wall_on_right) {
+		if (dir.x == RIGHT) { dir.x = STAY; }
+	}
+
+
+	if (res_is_on_floor && res_is_on_ladder)
 	{
-		previous_dir = dir;
-		if (dir.y == UP && current_char != 'H')	//The user try to go up and mario is on top of the ladder
+		if (dir.y == UP && ch_covered != 'H')	//The user try to go up and mario is on top of the ladder
+		{
+			if (is_climbing == true)			//when mario reached the top of the ladder while climbing
+			{
+				dir.y = STAY;
+				is_climbing = false;
+			}
+			else								//when mario try to jump on the floor (not while climbing)
+			{
+				jump();
+				jump_height += 1;
+			}
+		}
+		else if (dir.y == DOWN && ch_covered == 'H')	//The user try to go down and mario is on the floor
 			dir.y = STAY;
-		else if (dir.y == DOWN && current_char == 'H')	//The user try to go up and mario is on top of the ladder
-			dir.y = STAY;
+
+
+		else if (dir.y == DOWN && ch_covered != ' ')	//The user try to go down and mario is on the floor
+		{
+			dir.y = DOWN;
+			is_climbing = false;
+		}			
 	}
 	else if (res_is_on_floor)
 	{
+		is_climbing = false;		//when only on the floor, mario isn't climbing
 		if (dir.y == DOWN)
 			dir.y = STAY;
+		else if (dir.y == UP)
+		{
+			jump();
+			jump_height += 1;
+		}
+
+		if (jump_height <= -5) //insert into help_function - and to use in the condition above
+		{
+			jump_height = 0;
+			life();
+			//life go down, and the game start from beginning maybe
+		}
+		else if (jump_height < 0 && dir.y != DOWN)
+			jump_height = 0;
 	}
 	else if (res_is_on_ladder)
 	{
-		if (current_char == ' ' && dir.y == UP)
+		is_climbing = true;						//when only on a ladder, mario is climbing
+
+		if (ch_covered == ' ' && dir.y == UP)	//stop climbing on half ladder (without jumping)
 		{
 			dir.y = STAY;
 		}
-	}
-	else
-	{
-		dir.x = STAY;
-		dir.y = DOWN;
-	}
 
+		else if (ch_covered == 'H')
+		{
+			dir.x = STAY;
+			if (isJumping()) 
+				jump_height = 0; 
+			else 
+				jump_height -= 1;
+		}
+	}
+	else if(!isJumping())  
+	{
+		if (jump_height > 0)
+			fall(previous_dir.x);
+		else
+		{
+			fall(STAY);
+		}
+		jump_height -= 1;
+
+	}
+	else if (ch_covered != 'H')
+	{
+		jump();
+		jump_height += 1;
+	}
 
 	int newX = p.getX() + dir.x;
 	int newY = p.getY() + dir.y;
@@ -72,30 +137,23 @@ void Mario::move()
 	p.setY(newY);
 
 	if (first_move)	{ first_move = false; }
-	else {	p.setPreviousChar(getCharPosition(p.getX(), p.getY())); }
+	else {	p.setPreviousChar(getCharFromBoard(p.getX(), p.getY())); }
 	//else {	previous_char = getCharPosition(_x, _y);	}
 
+	previous_dir.x = dir.x;
 }
 
-bool Mario::isOnFloor()
+bool Mario::isBlock(char ch)
 {
-	int _x = p.getX(), _y = p.getY();
-	char ch_below = getCharPosition(_x, _y + 1);
-	if (ch_below == '=' || ch_below == '>' || ch_below == '<')
+	if (ch == '=' || ch == '>' || ch == '<')
 		return true;
 	else
 		return false;
 
 }
 
-
 bool Mario::isOnLadder()
 {
-	int _x = p.getX(), _y = p.getY();
-	char ch_covered = getCharPosition(_x, _y);  
-	char ch_below = getCharPosition(_x, _y + 1);
-	char two_chars_below = getCharPosition(_x, _y + 2);
-
 	if (ch_covered == 'H' || ch_below == 'H' || two_chars_below == 'H')
 		return true;
 	else
@@ -104,29 +162,31 @@ bool Mario::isOnLadder()
 
 bool Mario::isJumping()
 {
-	return (dir.x == STAY && dir.y == UP);
+	if (jump_height < 2 && dir.y == UP)
+		return true;
+	else
+		return false;
 }
 
-void Mario::jump()	//relevent only for the first half of the jump
+void Mario::jump()
 {
-	static int pace = 0;
-	
-	switch (pace)
-	{
-	case(0):
-		pace += 1;
-		dir.y = UP;
-		dir.x = previous_dir.x;
-		break;
-	case(1):
-		pace += 1;
-		dir.y = UP;
-		dir.x = previous_dir.x;
-		break;
-	case(2):
-		dir.y = DOWN;
-		dir.x = previous_dir.x;
-		pace = 0;
-		break;
-	}
+	dir.x = previous_dir.x;
+	dir.y = UP;
+}
+
+void Mario::fall(int _dir_x)
+{
+	//dir.x = previous_dir.x;
+	dir.x = _dir_x;
+	dir.y = DOWN;
+}
+
+void Mario::life()
+{
+	lives -= 1;
+	char ch_lives = lives + '0';
+
+	gotoxy(life_pos_x, life_pos_y);
+	cout << ch_lives;
+	pBoard->updateBoard(life_pos_x, life_pos_y, ch_lives);
 }

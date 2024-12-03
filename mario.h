@@ -1,15 +1,25 @@
 #pragma once
 
 #include "point.h"
+#include <Windows.h>	//for Sleep and colors
 #include <stdbool.h>
 
 
 class Mario
 {
 	char ch = '@';
-	char previous_char = ' ';
-	static constexpr int starting_pos_x = 20;
-	static constexpr int starting_pos_y = 23;
+
+	char ch_covered = ' ', ch_below = ' ', two_chars_below = ' ';  
+	char ch_above = ' ', ch_left = ' ', ch_right = ' ';
+
+	int jump_height = 0;
+	int lives = 3;
+
+	static constexpr int starting_pos_x = 10;
+	static constexpr int starting_pos_y = 18;
+	static constexpr int life_pos_x = 11;
+	static constexpr int life_pos_y = 1;
+
 	static constexpr int UP = -1;
 	static constexpr int LEFT = -1;
 	static constexpr int DOWN = 1;
@@ -26,26 +36,36 @@ class Mario
 	Direction dir{ 0, 0 }; // current direction: dir.x, dir.y
 	Direction previous_dir{ 0,0 };
 
-	//Point p(starting_pos_x, starting_pos_y, ch, previous_char, nullptr);
 	Point p;
+	Board* pBoard = nullptr;
+
 
 public:
-	Mario(): p(starting_pos_x, starting_pos_y, ch, previous_char, nullptr) {}
-	void draw() { p.draw(ch); }
-	void erase() { p.erase(previous_char); }
+	Mario(): p(starting_pos_x, starting_pos_y, ch) {}
+
+	void draw() {
+		p.draw(ch);
+		pBoard->updateBoard(p.getX(), p.getY(), ch);
+	}
+	void erase() {
+		p.erase();
+		pBoard->updateBoard(p.getX(), p.getY(), p.getPreviousChar());
+	}
 	void keyPressed(char key);
 
 	Point getPointP() const { return p; }
-	void setPointP(Board* _pBoard) { p.set_pBoard(_pBoard); }
+	void setBoard(Board& _board) {pBoard = &_board; }
 
-	char getCharPosition(int _x, int _y) { return p.getCharPosition(_x, _y); }
+	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); }
+
 	void move();
-	bool isOnFloor();
 	bool isOnLadder();
+	bool isBlock(char ch);
+	void drawPreviousLetter(char _ch) { p.draw(_ch); }
+	 
 	bool isJumping();
 	void jump();
-	void drawPreviousLetter(char _ch) { p.draw(_ch); }
-	
-	 
+	void fall(int _dir_x);
+	void life();
 };
 
