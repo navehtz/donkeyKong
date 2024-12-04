@@ -31,12 +31,13 @@ class Board {
 		  "          H                H              H                H                    ", // 23
 		  "=============================================================================== "  // 24
 	};
-public:
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
+public:
 	void reset();
 	void print() const;
 	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }
 	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }
+	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1] { return currentBoard; }
 };
 
 

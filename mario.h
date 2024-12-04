@@ -59,14 +59,13 @@ public:
 	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); }
 
 	void move();
-	bool isOnLadder();
-	bool isBlock(char ch);
+	bool isOnLadder() const;
+	bool isBlock(char _ch);
 	void drawPreviousLetter(char _ch) { p.draw(_ch); }
 	 
-	bool isJumping();
+	bool isJumping() const;
 	void jump();
 	void fall(int _dir_x);
-	void isNextPositionValid(bool below_roof, bool on_ladder, bool wall_on_left, bool wall_on_right);
 	void amend_next_move(bool below_roof, bool on_ladder, bool wall_on_left, bool wall_on_right);
 	void life();
 };

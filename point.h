@@ -22,9 +22,9 @@ public:
 	char getPreviousChar() const { return previous_char; }
 	void setPreviousChar(char _ch) { previous_char = _ch; }
 
-	void draw(char ch) const {
+	void draw(char _ch) const {
 		gotoxy(x, y);
-		cout << ch;
+		cout << _ch;
 	}
 	void erase() {   
 		gotoxy(x, y);

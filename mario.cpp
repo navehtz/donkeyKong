@@ -2,7 +2,7 @@
 #include "point.h"
 
 void Mario::keyPressed(char key) {
-	key = std::tolower(key);
+	key = (char)std::tolower(key);
 	for (size_t i = 0; i < numKeys; i++) {
 		if (key == keys[i]) {
 			dir = directions[i];
@@ -133,16 +133,16 @@ void Mario::move()
 	previous_dir.x = dir.x;
 }
 
-bool Mario::isBlock(char ch)
+bool Mario::isBlock(char _ch)
 {
-	if (ch == '=' || ch == '>' || ch == '<')
+	if (_ch == '=' || _ch == '>' || _ch == '<')
 		return true;
 	else
 		return false;
 
 }
 
-bool Mario::isOnLadder()
+bool Mario::isOnLadder() const
 {
 	if (ch_covered == 'H' || ch_below == 'H' || two_chars_below == 'H')
 		return true;
@@ -150,7 +150,7 @@ bool Mario::isOnLadder()
 		return false;
 }
 
-bool Mario::isJumping()
+bool Mario::isJumping() const
 {
 	if (jump_height < 2 && dir.y == UP)
 		return true;
@@ -181,7 +181,7 @@ void Mario::life()
 	pBoard->updateBoard(life_pos_x, life_pos_y, ch_lives);
 }
 
-void Mario::amend_next_move(bool below_roof, bool on_ladder, bool wall_on_left, bool wall_on_right)  //change name
+void Mario::amend_next_move(bool below_roof, bool on_ladder, bool wall_on_left, bool wall_on_right)
 {
 	if (below_roof && !on_ladder) {
 		if (dir.y == UP) { dir.y = DOWN; }
