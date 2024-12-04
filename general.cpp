@@ -22,7 +22,7 @@ void ShowConsoleCursor(bool showFlag) {
 	SetConsoleCursorInfo(out, &cursorInfo);
 }
 
-//void clrscr()
-//{
-//	system("cls");
-//}
+void clrscr()
+{
+	system("cls");
+}

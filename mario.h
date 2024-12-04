@@ -15,8 +15,8 @@ class Mario
 	int jump_height = 0;
 	int lives = 3;
 
-	static constexpr int starting_pos_x = 10;
-	static constexpr int starting_pos_y = 18;
+	static constexpr int starting_pos_x = 20;
+	static constexpr int starting_pos_y = 23;
 	static constexpr int life_pos_x = 11;
 	static constexpr int life_pos_y = 1;
 
@@ -66,6 +66,8 @@ public:
 	bool isJumping();
 	void jump();
 	void fall(int _dir_x);
+	void isNextPositionValid(bool below_roof, bool on_ladder, bool wall_on_left, bool wall_on_right);
+	void amend_next_move(bool below_roof, bool on_ladder, bool wall_on_left, bool wall_on_right);
 	void life();
 };
 

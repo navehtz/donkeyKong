@@ -8,7 +8,7 @@ using namespace std;
 
 class Point {
 	int x, y;
-	char ch, previous_char = ' ';
+	char ch = ' ', previous_char = ' ';
 
 public:
 	Point(int _x, int _y, char _ch):

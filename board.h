@@ -1,8 +1,8 @@
 #pragma once
 
 class Board {
-	static constexpr int MAX_X = 80;
-	static constexpr int MAX_Y = 25;
+	static constexpr size_t MAX_X = 80;  //changed from int to size_t
+	static constexpr size_t MAX_Y = 25;
 	const char* originalBoard[MAX_Y] = {
 		// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		  "                                                                                ", // 0
@@ -24,12 +24,12 @@ class Board {
 		  "                  H                               H            H                ", // 16
 		  "                  H                               H            H                ", // 17
 		  "                  H                               H            H                ", // 18
-		  "       =======>================                  =================	           ", // 19
-		  "          H                                                H                    ", // 20
+	      "         =======>================                  =================            ", // 19
+	      "          H                                                H                    ", // 20
 		  "          H                                                H                    ", // 21
-		  "          H                H              H                H                    ", // 22
+		  "          H       =        H              H                H                    ", // 22
 		  "          H                H              H                H                    ", // 23
-		  "================================================================================"  // 24
+		  "=============================================================================== "  // 24
 	};
 public:
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator

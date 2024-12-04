@@ -1,2 +1,21 @@
 ﻿  main.cpp
-  donkyKongGame.vcxproj -> C:\Users\tzvai\OneDrive\מסמכים\GitHub\donkeyKong\x64\Debug\donkyKongGame.exe
+C:\Users\Shaun\Documents\donkeyKong\point.h(25,17): warning C4458: declaration of 'ch' hides class member
+  (compiling source file 'main.cpp')
+  C:\Users\Shaun\Documents\donkeyKong\point.h(11,7):
+  see declaration of 'Point::ch'
+  
+C:\Users\Shaun\Documents\donkeyKong\main.cpp(29,13): warning C4244: 'initializing': conversion from 'int' to 'char', possible loss of data
+  mario.cpp
+C:\Users\Shaun\Documents\donkeyKong\point.h(25,17): warning C4458: declaration of 'ch' hides class member
+  (compiling source file 'mario.cpp')
+  C:\Users\Shaun\Documents\donkeyKong\point.h(11,7):
+  see declaration of 'Point::ch'
+  
+C:\Users\Shaun\Documents\donkeyKong\mario.cpp(5,20): warning C4244: '=': conversion from 'int' to 'char', possible loss of data
+C:\Users\Shaun\Documents\donkeyKong\mario.cpp(33,7): warning C4189: 'res_is_two_chars_below_floor': local variable is initialized but not referenced
+C:\Users\Shaun\Documents\donkeyKong\mario.cpp(136,26): warning C4458: declaration of 'ch' hides class member
+  C:\Users\Shaun\Documents\donkeyKong\mario.h(10,7):
+  see declaration of 'Mario::ch'
+  
+  Generating Code...
+  donkyKongGame.vcxproj -> C:\Users\Shaun\Documents\donkeyKong\x64\Debug\donkyKongGame.exe

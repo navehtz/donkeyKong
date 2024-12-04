@@ -7,6 +7,7 @@ using namespace std;
 #include "mario.h"
 #include "board.h"
 
+#include <Windows.h>	//for Sleep and colors
 
 // Better put this is a proper class
 constexpr int ESC = 27;

@@ -32,20 +32,10 @@ void Mario::move()
 	bool res_is_wall_on_right = isBlock(ch_right);
 	bool res_is_two_chars_below_floor = isBlock(two_chars_below);
 
-	if (res_is_below_roof && !res_is_on_ladder) {
-		if (dir.y == UP) { dir.y = DOWN; }
-	}
-
-	if (res_is_wall_on_left) {
-		if (dir.x == LEFT) { dir.x = STAY; }
-	}
-
-	if (res_is_wall_on_right) {
-		if (dir.x == RIGHT) { dir.x = STAY; }
-	}
+	amend_next_move(res_is_below_roof, res_is_on_ladder, res_is_wall_on_left, res_is_wall_on_right);
 
 
-	if (res_is_on_floor && res_is_on_ladder)
+	if (res_is_on_floor && res_is_on_ladder)  //use stract?
 	{
 		if (dir.y == UP && ch_covered != 'H')	//The user try to go up and mario is on top of the ladder
 		{
@@ -108,7 +98,7 @@ void Mario::move()
 				jump_height -= 1;
 		}
 	}
-	else if(!isJumping())  
+	else if(!isJumping())  //falling
 	{
 		if (jump_height > 0)
 			fall(previous_dir.x);
@@ -119,7 +109,7 @@ void Mario::move()
 		jump_height -= 1;
 
 	}
-	else if (ch_covered != 'H')
+	else if (ch_covered != 'H')  //jumping
 	{
 		jump();
 		jump_height += 1;
@@ -184,9 +174,24 @@ void Mario::fall(int _dir_x)
 void Mario::life()
 {
 	lives -= 1;
-	char ch_lives = lives + '0';
+	char ch_lives = (char)lives + '0';
 
 	gotoxy(life_pos_x, life_pos_y);
 	cout << ch_lives;
 	pBoard->updateBoard(life_pos_x, life_pos_y, ch_lives);
+}
+
+void Mario::amend_next_move(bool below_roof, bool on_ladder, bool wall_on_left, bool wall_on_right)  //change name
+{
+	if (below_roof && !on_ladder) {
+		if (dir.y == UP) { dir.y = DOWN; }
+	}
+
+	if (wall_on_left) {
+		if (dir.x == LEFT) { dir.x = STAY; }
+	}
+
+	if (wall_on_right) {
+		if (dir.x == RIGHT) { dir.x = STAY; }
+	}
 }
