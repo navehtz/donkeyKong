@@ -1,5 +1,5 @@
 *.db
 *.ipch
 *.vsidx
-.vs/
-x64/
+.vs\
+x64\
