@@ -8,8 +8,8 @@ void gotoxy(int x, int y)
 	HANDLE hConsoleOutput;
 	COORD dwCursorPosition;
 	cout.flush();
-	dwCursorPosition.X = x;
-	dwCursorPosition.Y = y;
+	dwCursorPosition.X = (short)x;								//changed
+	dwCursorPosition.Y = (short)y;
 	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(hConsoleOutput, dwCursorPosition);
 }
@@ -22,7 +22,7 @@ void ShowConsoleCursor(bool showFlag) {
 	SetConsoleCursorInfo(out, &cursorInfo);
 }
 
-//void clrscr()
-//{
-//	system("cls");
-//}
+void clrscr()
+{
+	system("cls");
+}
