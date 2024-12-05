@@ -27,9 +27,9 @@ class Board {
 	      "         =======>================                  =================            ", // 19
 	      "          H                                                H                    ", // 20
 		  "          H                                                H                    ", // 21
-		  "          H       =        H              H                H                    ", // 22
+		  "          H                H              H                H                    ", // 22
 		  "          H                H              H                H                    ", // 23
-		  "=============================================================================== "  // 24
+		  "================================================================================"  // 24
 	};
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
 public:
@@ -38,6 +38,8 @@ public:
 	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }
 	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }
 	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1] { return currentBoard; }
+	int get_board_width() { return MAX_X; }
+	int get_board_height() { return MAX_Y; }
 };
 
 

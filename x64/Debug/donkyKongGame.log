@@ -1,6 +1,2 @@
-﻿  main.cpp
-C:\Users\Shaun\Documents\donkeyKong\main.cpp(29,13): warning C4244: 'initializing': conversion from 'int' to 'char', possible loss of data
-  mario.cpp
-C:\Users\Shaun\Documents\donkeyKong\mario.cpp(33,7): warning C4189: 'res_is_two_chars_below_floor': local variable is initialized but not referenced
-  Generating Code...
+﻿  mario.cpp
   donkyKongGame.vcxproj -> C:\Users\Shaun\Documents\donkeyKong\x64\Debug\donkyKongGame.exe

@@ -12,10 +12,13 @@ class Mario
 	char ch_covered = ' ', ch_below = ' ', two_chars_below = ' ';  
 	char ch_above = ' ', ch_left = ' ', ch_right = ' ';
 
-	int jump_height = 0;
+	bool res_is_on_ladder = false, res_is_on_floor = false, res_is_below_roof = false;
+	bool res_is_wall_on_left = false, res_is_wall_on_right = false, res_is_two_chars_below_floor = false;
+
+	int fall_count = 0;
 	int lives = 3;
 
-	static constexpr int starting_pos_x = 20;
+	static constexpr int starting_pos_x = 25;
 	static constexpr int starting_pos_y = 23;
 	static constexpr int life_pos_x = 11;
 	static constexpr int life_pos_y = 1;
@@ -35,6 +38,14 @@ class Mario
 	static constexpr Direction directions[] = { {0, -1}, {-1, 0}, {0, 1}, {1, 0}, {0, 0} };
 	Direction dir{ 0, 0 }; // current direction: dir.x, dir.y
 	Direction previous_dir{ 0,0 };
+
+	enum class MarioState {
+		Climbing,
+		Jumping,
+		Falling,
+		Walking_or_Staying
+	};
+	MarioState state;
 
 	Point p;
 	Board* pBoard = nullptr;
@@ -63,10 +74,24 @@ public:
 	bool isBlock(char _ch);
 	void drawPreviousLetter(char _ch) { p.draw(_ch); }
 	 
-	bool isJumping() const;
-	void jump();
-	void fall(int _dir_x);
-	void amend_next_move(bool below_roof, bool on_ladder, bool wall_on_left, bool wall_on_right);
+	void amend_next_move(bool below_roof, bool on_ladder, bool wall_on_left, bool wall_on_right, bool above_floor);
 	void life();
+
+	bool isJumping();
+	void jump();
+
+	bool isFalling();
+	void fall();
+
+	bool isClimbing() ;
+	void climb();
+
+	void walk_or_stay();
+
+	void check_what_state();
+	void update_state();
+	void update_next_move();
+	void update_previous_dir() { previous_dir = dir; }
+	void update_previous_char() { p.setPreviousChar(getCharFromBoard(p.getX(), p.getY())); }
 };
 
