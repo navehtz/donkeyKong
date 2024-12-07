@@ -6,6 +6,7 @@ using namespace std;
 #include "general.h"
 #include "board.h"
 
+
 class Point {
 	int x, y;
 	char ch = ' ', previous_char = ' ';
@@ -22,7 +23,7 @@ public:
 	char getPreviousChar() const { return previous_char; }
 	void setPreviousChar(char _ch) { previous_char = _ch; }
 
-	void draw(char _ch) const {
+	void draw(char _ch) const{
 		gotoxy(x, y);
 		cout << _ch;
 	}
