@@ -1,5 +1,3 @@
-﻿  main.cpp
-C:\Users\Shaun\Documents\donkeyKong\main.cpp(29,13): warning C4244: 'initializing': conversion from 'int' to 'char', possible loss of data
-  mario.cpp
-  Generating Code...
-  donkyKongGame.vcxproj -> C:\Users\Shaun\Documents\donkeyKong\x64\Debug\donkyKongGame.exe
+﻿game.obj : error LNK2019: unresolved external symbol "public: void __cdecl Board::printScreen(char const (* const)[81])const " (?printScreen@Board@@QEBAXQEAY0FB@$$CBD@Z) referenced in function "public: void __cdecl Game::run(void)" (?run@Game@@QEAAXXZ)
+game.obj : error LNK2019: unresolved external symbol "public: void __cdecl Mario::setStartingMario(void)" (?setStartingMario@Mario@@QEAAXXZ) referenced in function "public: void __cdecl Game::startGame(void)" (?startGame@Game@@QEAAXXZ)
+C:\Users\Shaun\Documents\donkeyKong\x64\Debug\donkyKongGame.exe : fatal error LNK1120: 2 unresolved externals
