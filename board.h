@@ -1,5 +1,7 @@
 #pragma once
 
+#include "general.h"
+
 class Board {
 	static constexpr size_t MAX_X = 80;  //changed from int to size_t
 	static constexpr size_t MAX_Y = 25;
@@ -24,51 +26,102 @@ class Board {
 		  "                  H                               H            H                ", // 16
 		  "                  H                               H            H                ", // 17
 		  "                  H                               H            H                ", // 18
-	      "         =======>================                  =================            ", // 19
+	      "         =======>================               ====================            ", // 19
 	      "          H                                                H                    ", // 20
 		  "          H                                                H                    ", // 21
 		  "          H                H              H                H                    ", // 22
 		  "          H                H              H                H                    ", // 23
 		  "================================================================================"  // 24
 	};
+	char start_screen[MAX_Y][MAX_X + 1] = {
+		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
+		 "********************************************************************************", //0
+		 "*                                                                              *", //1
+		 "*                                                                              *", //2
+		 "*                                                                              *", //3
+		 "*      *****************************************************************       *", //4
+		 "*      * ____              _                     _  __                 *       *", //5 
+		 "*      *|  _ \\  ___  _ __ | | _____ _   _       | |/ /___  _ __   __ _ *       *", //6
+		 "*      *| | | |/ _ \\| '_ \\| |/ / _ \\ | | |      | ' // _ \\| '_ \\ / _` |*       *", //7
+		 "*      *| |_| | (_) | | | |   <  __/ |_| |      | . \\ (_) | | | | (_| |*       *", //8
+		 "*      *|____/ \\___/|_| |_|_|\\_\\___|\\__, |      |_|\\_\\___/|_| |_|\\__, |*       *", //9
+		 "*      *                            |___/                        |___/ *       *", //10
+		 "*      *****************************************************************       *", //11
+		 "*                                                                              *", //12
+		 "*                                                                              *", //13
+		 "*                                                                              *", //14
+		 "*          (1) Start new game                                                  *", //15
+		 "*          (8) Show instructions and keys                                      *", //16
+		 "*          (9) Exit                                                            *", //17
+		 "*                                                                              *", //18
+		 "*                                                                              *", //19
+		 "*                                                                              *", //20
+		 "*                                                                              *", //21
+		 "*                                                                              *", //22
+		 "*                                                                              *", //23
+		 "********************************************************************************"  //24
+	};
+	char instruction_screen[MAX_Y][MAX_X + 1] = {
+		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
+		 "********************************************************************************",//0
+		 "*                                                                              *",//1
+		 "*                          GAME INSTRUCTIONS AND KEYS                          *",//2
+		 "*                                                                              *",//3
+		 "* Instructions:                                                                *",//4
+		 "* - The goal is to help Mario (@) rescue Pauline ($) while avoiding barrels.   *",//5
+		 "* - Donkey Kong (&) throws barrels that move across floors (<, >, =).          *",//6
+		 "* - Use ladders (H) and jumps to avoid barrels and reach Pauline.              *",//7 
+		 "* - Mario loses a life if hit by a barrel or falls from a height of 5 lines.   *",//8 
+		 "* - Mario has 3 lives; losing all ends the game.                               *",//9 
+		 "* - Barrels explode if they fall 8 lines, damaging nearby areas.               *",//10 
+		 "* - The stage restarts after losing a life.                                    *",//11 
+		 "* - Reach Pauline to win the stage.                                            *",//12
+		 "*                                                                              *",//13 
+		 "*                                                                              *",//14 
+		 "* Keys:                                                                        *",//15 
+		 "* - A/a: Move left                     - D/d: Move right                       *",//16 
+		 "* - W/w: Jump or climb up a ladder     - X/x: Climb down a ladder              *",//17 
+		 "* - S/s: Stay in place                 - ESC: Pause, press again to resume     *",//18 
+		 "* - 9: Exit the game                                                           *",//19 
+		 "*                                                                              *",//20 
+		 "*                                                                              *",//21 
+		 "*                                            < Press 'R' to return to menu >   *",//22 
+		 "*                                                                              *",//23 
+		 "********************************************************************************" //24
+	};
+
+
+	/*
+  ____                                                    
+ / ___| __ _ _ __ ___   ___                               
+| |  _ / _` | '_ ` _ \ / _ \                              
+| |_| | (_| | | | | | |  __/                              
+ _____|\__,_|_|_|_| |_|\___|       _   _                  
+|_ _|_ __  ___| |_ _ __ _   _  ___| |_(_) ___  _ __  ___  
+ | || '_ \/ __| __| '__| | | |/ __| __| |/ _ \| '_ \/ __| 
+ | || | | \__ \ |_| |  | |_| | (__| |_| | (_) | | | \__ \ 
+|___|_| |_|___/\__|_|   \__,_|\___|\__|_|\___/|_| |_|___/ 
+	
+	*/
+
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
 public:
 	void reset();
-	void print() const;
+	void printScreen(const char screen[][MAX_X + 1]) const;
+
 	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }
 	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }
+
+	//char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1]{ return currentBoard; }
 	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1] { return currentBoard; }
+	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1]{	return start_screen; }
+	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{	return instruction_screen; }
+
 	int get_board_width() { return MAX_X; }
 	int get_board_height() { return MAX_Y; }
+
+	void startOver();
 };
 
 
 
-/*
-		// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
-		  "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ", // 0
-		  "Q                                                                              Q", // 1
-		  "Q                                                                              Q", // 2
-		  "Q                            =====================                             Q", // 3
-		  "Q                                                                              Q", // 4
-		  "Q                                                                              Q", // 5
-		  "Q                                                                              Q", // 6
-		  "Q                                                                              Q", // 7
-		  "Q                                                                              Q", // 8
-		  "Q                                                                              Q", // 9
-		  "Q                                                                              Q", // 10
-		  "Q                                                                              Q", // 11
-		  "Q                                                                              Q", // 12
-		  "Q                                                                              Q", // 13
-		  "Q                                                                              Q", // 14
-		  "Q                                                                              Q", // 15
-		  "Q                                                                              Q", // 16
-		  "Q                                                                              Q", // 17
-		  "Q                                                                              Q", // 18
-		  "Q                                                                              Q", // 19
-		  "Q                                                                              Q", // 20
-		  "Q      ==================================================================      Q", // 21
-		  "Q                                                                              Q", // 22
-		  "Q                                                                              Q", // 23
-		  "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"  // 24
-*/

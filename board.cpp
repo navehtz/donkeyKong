@@ -9,9 +9,10 @@ void Board::reset() {
 	}
 }
 
-void Board::print() const {
+void Board::printScreen(const char screen[][MAX_X + 1]) const 
+{
 	for (int i = 0; i < MAX_Y - 1; i++) {
-		std::cout << currentBoard[i] << '\n';
+		std::cout << screen[i] << '\n';
 	}
-	std::cout << currentBoard[MAX_Y - 1];
+	std::cout << screen[MAX_Y - 1];
 }

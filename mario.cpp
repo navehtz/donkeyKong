@@ -33,7 +33,7 @@ void Mario::move()
 	res_is_two_chars_below_floor = isBlock(two_chars_below);
 
 	//fixing the input from the user by the roles of the game
-	amend_next_move(res_is_below_roof, res_is_on_ladder, res_is_wall_on_left, res_is_wall_on_right, res_is_on_floor);
+	amend_next_move();
 
 
 	check_what_state();			//check what is mario state (climbing/ jumping/ falling/ walking or staying)
@@ -184,21 +184,22 @@ bool Mario::isOnLadder() const
 		return false;
 }
 
-void Mario::amend_next_move(bool below_roof, bool on_ladder, bool wall_on_left, bool wall_on_right, bool above_floor)
+
+void Mario::amend_next_move()
 {
-	if (below_roof && !on_ladder) {					//under roof - mario can't jump
+	if (res_is_below_roof && !res_is_on_ladder) {					//under roof - mario can't jump
 		if (dir.y == UP) { dir.y = STAY; } //change to downnnn 5/12 14:20
 	}
 
-	if (wall_on_left) {								//linked to a wall - mario can't pass
+	if (res_is_wall_on_left) {								//linked to a wall - mario can't pass
 		if (dir.x == LEFT) { dir.x = STAY; }
 	}
 
-	if (wall_on_right) {
+	if (res_is_wall_on_right) {
 		if (dir.x == RIGHT) { dir.x = STAY; }		//linked to a wall - mario can't pass
 	}
 
-	if (above_floor && two_chars_below != 'H') {	//above floor - mario can't go down
+	if (res_is_on_floor && two_chars_below != 'H') {	//above floor - mario can't go down
 		if (dir.y == DOWN) { dir.y = STAY; }
 	}
 }
@@ -208,9 +209,9 @@ void Mario::update_next_move()
 	int newX = p.getX() + dir.x;
 	int newY = p.getY() + dir.y;
 
-	if (newX < 0 || newX > 79)
+	if (newX < 0 || newX >= pBoard->get_board_width())	//80	
 		newX = p.getX();
-	if (newY < 0 || newY > 24)
+	if (newY < 0 || newY >= pBoard->get_board_height())	//25
 		newY = p.getY();
 
 	p.setX(newX);
@@ -226,4 +227,12 @@ void Mario::life()
 	gotoxy(life_pos_x, life_pos_y);
 	cout << ch_lives;
 	pBoard->updateBoard(life_pos_x, life_pos_y, ch_lives);
+}
+
+void Mario::setStartingMario()
+{
+	p.setX(starting_pos_x);
+	p.setY(starting_pos_y);
+
+	dir = { 0,0 };
 }

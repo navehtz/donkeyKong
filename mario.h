@@ -45,11 +45,10 @@ class Mario
 		Falling,
 		Walking_or_Staying
 	};
-	MarioState state;
+	MarioState state = MarioState::Walking_or_Staying;
 
 	Point p;
 	Board* pBoard = nullptr;
-
 
 public:
 	Mario(): p(starting_pos_x, starting_pos_y, ch) {}
@@ -74,7 +73,7 @@ public:
 	bool isBlock(char _ch);
 	void drawPreviousLetter(char _ch) { p.draw(_ch); }
 	 
-	void amend_next_move(bool below_roof, bool on_ladder, bool wall_on_left, bool wall_on_right, bool above_floor);
+	void amend_next_move();
 	void life();
 
 	bool isJumping();
@@ -93,5 +92,7 @@ public:
 	void update_next_move();
 	void update_previous_dir() { previous_dir = dir; }
 	void update_previous_char() { p.setPreviousChar(getCharFromBoard(p.getX(), p.getY())); }
+
+	void setStartingMario();
 };
 
