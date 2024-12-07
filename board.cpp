@@ -11,6 +11,8 @@ void Board::reset() {
 
 void Board::printScreen(const char screen[][MAX_X + 1]) const 
 {
+	clrscr();
+
 	for (int i = 0; i < MAX_Y - 1; i++) {
 		std::cout << screen[i] << '\n';
 	}

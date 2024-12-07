@@ -18,10 +18,13 @@ class Mario
 	int fall_count = 0;
 	int lives = 3;
 
-	static constexpr int starting_pos_x = 25;
-	static constexpr int starting_pos_y = 23;
-	static constexpr int life_pos_x = 11;
-	static constexpr int life_pos_y = 1;
+	static constexpr int STARTING_POS_X = 2;
+	static constexpr int STARTING_POS_Y = 16;
+	//static constexpr int LIFE_POS_X = 11;
+	//static constexpr int LIFE_POS_Y = 1;
+
+	static constexpr int FALL_FROM_TO_HIGH = 5;
+	static constexpr int DEAD_MARIO = 0;
 
 	static constexpr int UP = -1;
 	static constexpr int LEFT = -1;
@@ -32,13 +35,6 @@ class Mario
 	static constexpr char keys[] = { 'w', 'a', 'x', 'd', 's' };
 	static constexpr size_t numKeys = sizeof(keys) / sizeof(keys[0]);
 	
-	struct Direction {
-		int x, y;
-	};
-	static constexpr Direction directions[] = { {0, -1}, {-1, 0}, {0, 1}, {1, 0}, {0, 0} };
-	Direction dir{ 0, 0 }; // current direction: dir.x, dir.y
-	Direction previous_dir{ 0,0 };
-
 	enum class MarioState {
 		Climbing,
 		Jumping,
@@ -47,11 +43,15 @@ class Mario
 	};
 	MarioState state = MarioState::Walking_or_Staying;
 
+	struct Direction {
+		int x, y;
+	};
+
 	Point p;
 	Board* pBoard = nullptr;
 
 public:
-	Mario(): p(starting_pos_x, starting_pos_y, ch) {}
+	Mario(): p(STARTING_POS_X, STARTING_POS_Y, ch) {}
 
 	void draw() {
 		p.draw(ch);
@@ -90,9 +90,12 @@ public:
 	void check_what_state();
 	void update_state();
 	void update_next_move();
-	void update_previous_dir() { previous_dir = dir; }
+	void update_previous_dir() { p.setPreviousDir(p.getDir()); } //previous_dir = dir; }
 	void update_previous_char() { p.setPreviousChar(getCharFromBoard(p.getX(), p.getY())); }
 
 	void setStartingMario();
+
+	int getLives() { return lives; }
+	void setLives(int _lives) { lives = _lives; }
 };
 
