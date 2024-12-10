@@ -18,18 +18,23 @@ class Game {
 	static constexpr int PAUSE = 27;					//ESC key
 	static constexpr int RETURN_BACK = 114;				//The key - r
 
+	static constexpr int DEAD_MARIO = 0;
+	static constexpr int FULL_LIVES = 3;
+
 	Mario mario;
 	Board board;
 
 public:
 
 	void showInstructions();
-	void run();							//function that manage the game
+	void run();							//Function that manage the game
 
+	bool isAlive(int lives) { return lives != DEAD_MARIO; } //Returning True if mario has lives and False if lives == 0
 	void startGame();
 	bool menu();
 	void pauseGame(int key);
 };
+
 
 
 

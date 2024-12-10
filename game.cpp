@@ -41,7 +41,15 @@ void Game::startGame()
 	mario.setBoard(board);
 	board.printScreen(board.getCurrentBoard());
 
+	mario.setLives(FULL_LIVES);
 	bool playing_mario = true;
+	bool isMarioAlive = true;
+	char ch_lives = (char)mario.getLives() + '0';
+
+	//cout << board.getCharFromBoard(board.getLifePosX(), board.getLifePosY());
+	gotoxy(board.getLifePosX(), board.getLifePosY());
+	cout << ch_lives;											//printing 
+
 
 	while (playing_mario)
 	{
@@ -65,10 +73,13 @@ void Game::startGame()
 		Sleep(150);
 		mario.erase();
 		mario.move();
+
+		playing_mario = isAlive(mario.getLives());	//If mario has more than 0 lives, the game will continue
 	}
 	clrscr();
 	board.printScreen(board.getStartBoard());
 }
+
 
 void Game::pauseGame(int _key)
 {
@@ -85,6 +96,7 @@ void Game::pauseGame(int _key)
 	}
 	Sleep(50);
 }
+
 
 void Game::showInstructions()
 {

@@ -5,7 +5,7 @@ void Mario::keyPressed(char key) {
 	key = (char)std::tolower(key);
 	for (size_t i = 0; i < numKeys; i++) {
 		if (key == keys[i]) {
-			dir = directions[i];
+			p.setDir(p.getDirFromDirectionsArray(i));
 			return;
 		}
 	}
@@ -81,13 +81,13 @@ void Mario::update_state()
 bool Mario::isClimbing()
 {
 	//check if climbing up
-	if (res_is_on_ladder && dir.y == UP && ch_covered != ' ')			//mario covers the latter 'H' 
+	if (res_is_on_ladder && p.getDir().y == UP && ch_covered != ' ')			//mario covers the latter 'H' 
 		return true;
 
 	//check if climbing down
-	else if (res_is_on_floor && two_chars_below == 'H' && dir.y == DOWN && previous_dir.y != DOWN)		//mario stands on the floor above a ladder
+	else if (res_is_on_floor && two_chars_below == 'H' && p.getDir().y == DOWN && p.getPreviousDir().y != DOWN)		//mario stands on the floor above a ladder
 		return true;
-	else if (res_is_on_ladder && dir.y == DOWN)		//on the ladder and wants to go down
+	else if (res_is_on_ladder && p.getDir().y == DOWN)		//on the ladder and wants to go down
 		return true;
 	else
 		return false;
@@ -95,11 +95,11 @@ bool Mario::isClimbing()
 
 void Mario::climb()
 {
-	if (!res_is_on_floor && (previous_dir.x == LEFT || previous_dir.x == RIGHT))	
+	if (!res_is_on_floor && (p.getPreviousDir().x == LEFT || p.getPreviousDir().x == RIGHT))
 	{
-		dir.x = STAY;
-		if (dir.y == UP) { dir.y = UP; }			//when mario JUMPS UP and land on a ladder
-		else if (dir.y == DOWN)	{ dir.y = STAY;	}	//when mario FALLS DOWN and land on a ladder
+		p.setDirX(STAY);
+		if (p.getDir().y == UP) { return; }			//when mario JUMPS UP and land on a ladder                  
+		else if (p.getDir().y == DOWN)	{ p.setDirY(STAY);	}	//when mario FALLS DOWN and land on a ladder
 	}
 }
 
@@ -108,10 +108,10 @@ bool Mario::isJumping()
 {
 	static int count_jump = 0;
 
-	if (res_is_on_floor && dir.y == UP) {		//on floor and press 'w'
-		if (two_chars_below == 'H' && previous_dir.y == UP)				
+	if (res_is_on_floor && p.getDir().y == UP) {		//on floor and press 'w'
+		if (two_chars_below == 'H' && p.getPreviousDir().y == UP)
 		{
-			dir.y = 0;
+			p.setDirY(STAY);
 			return false;
 		}
 		else
@@ -120,7 +120,7 @@ bool Mario::isJumping()
 			return true;
 		}
 	}
-	else if (ch_below != 'H' && dir.y == UP && count_jump == 1) {
+	else if (ch_below != 'H' && p.getDir().y == UP && count_jump == 1) {
 		count_jump += 1;
 		return true;
 	}
@@ -132,15 +132,14 @@ bool Mario::isJumping()
 
 void Mario::jump()
 {
-	dir.x = previous_dir.x;
-	dir.y = UP;
+	p.setDirX(p.getPreviousDir().x);
+	p.setDirY(UP);
 }
 
 bool Mario::isFalling()
 {
 	if (ch_below == ' ')
 	{
-		fall_count -= 1;	//לבדוק כשאני מגיע לרצפה אם המונה הגיע ל5, וגם לאפס את המשתנה כשאני מגיע לרצפה ובשאר הפונקציות
 		return true;
 	}
 	else
@@ -149,22 +148,23 @@ bool Mario::isFalling()
 
 void Mario::fall()
 {
-	if (previous_dir.y == UP || previous_dir.y == DOWN)		//if mario finish a jump, we want to save the previous x vector
-		dir.x = previous_dir.x;
+	if (p.getPreviousDir().y == UP || p.getPreviousDir().y == DOWN)		//if mario finish a jump, we want to save the previous x vector
+		p.setDirX(p.getPreviousDir().x);
 	else
-		dir.x = STAY;			//if mario fall of a cliff - x vector should be 0
+		p.setDirX(STAY);
 
-	dir.y = DOWN;
+	p.setDirY(DOWN);
 	fall_count += 1;
 }
 
 
-void Mario::walk_or_stay()
+void Mario::walk_or_stay()					//if fall from high place, mario lose life
 {
-	fall_count = 0;
-	dir.y = STAY;
-}
+	if (fall_count >= FALL_FROM_TO_HIGH) 	{ life(); }		
 
+	fall_count = 0;
+	p.setDirY(STAY);
+}
 
 
 bool Mario::isBlock(char _ch)
@@ -188,26 +188,26 @@ bool Mario::isOnLadder() const
 void Mario::amend_next_move()
 {
 	if (res_is_below_roof && !res_is_on_ladder) {					//under roof - mario can't jump
-		if (dir.y == UP) { dir.y = STAY; } //change to downnnn 5/12 14:20
+		if (p.getDir().y == UP) { p.setDirY(STAY); } //change to downnnn 5/12 14:20
 	}
 
 	if (res_is_wall_on_left) {								//linked to a wall - mario can't pass
-		if (dir.x == LEFT) { dir.x = STAY; }
+		if (p.getDir().x == LEFT) { p.setDirX(STAY); }
 	}
 
 	if (res_is_wall_on_right) {
-		if (dir.x == RIGHT) { dir.x = STAY; }		//linked to a wall - mario can't pass
+		if (p.getDir().x == RIGHT) { p.setDirX(STAY); }		//linked to a wall - mario can't pass
 	}
 
 	if (res_is_on_floor && two_chars_below != 'H') {	//above floor - mario can't go down
-		if (dir.y == DOWN) { dir.y = STAY; }
+		if (p.getDir().y == DOWN) { p.setDirY(STAY); }
 	}
 }
 
 void Mario::update_next_move()
 {
-	int newX = p.getX() + dir.x;
-	int newY = p.getY() + dir.y;
+	int newX = p.getX() + p.getDir().x;
+	int newY = p.getY() + p.getDir().y;
 
 	if (newX < 0 || newX >= pBoard->get_board_width())	//80	
 		newX = p.getX();
@@ -224,15 +224,38 @@ void Mario::life()
 	lives -= 1;
 	char ch_lives = (char)lives + '0';
 
-	gotoxy(life_pos_x, life_pos_y);
-	cout << ch_lives;
-	pBoard->updateBoard(life_pos_x, life_pos_y, ch_lives);
+	printLives();
+
+	pBoard->updateBoard(pBoard->getLifePosX(), pBoard->getLifePosY(), ch_lives);		//update mario's life on current board
+	Sleep(500);
+
+	if(lives > DEAD_MARIO) {									//check if lives > 0
+		pBoard->printScreen(pBoard->getLostLifeBoard());		//printing lost life screen
+		Sleep(2000);
+		pBoard->reset();
+		setStartingMario();
+		pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen
+		printLives();									//printing mario's lives
+		//cout << pBoard->getCharFromBoard(pBoard->getLifePosX(), pBoard->getLifePosY());
+	}
+	else {
+		pBoard->printScreen(pBoard->getLosingBoard());			//printing LOSING screen
+		Sleep(2000);
+	}
 }
 
 void Mario::setStartingMario()
 {
-	p.setX(starting_pos_x);
-	p.setY(starting_pos_y);
+	p.setX(STARTING_POS_X);
+	p.setY(STARTING_POS_Y);
 
-	dir = { 0,0 };
+	p.setDir({ STAY, STAY });
+}
+
+void Mario::printLives()
+{
+	char ch_lives = (char)lives + '0';
+
+	gotoxy(pBoard->getLifePosX(), pBoard->getLifePosY());
+	cout << ch_lives;
 }

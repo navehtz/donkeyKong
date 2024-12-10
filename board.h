@@ -5,10 +5,14 @@
 class Board {
 	static constexpr size_t MAX_X = 80;  //changed from int to size_t
 	static constexpr size_t MAX_Y = 25;
+
+	static constexpr int LIFE_POS_X = 11;
+	static constexpr int LIFE_POS_Y = 1;
+
 	const char* originalBoard[MAX_Y] = {
 		// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		  "                                                                                ", // 0
-		  "     LIFE: 3                         $                                          ", // 1
+		  "     LIFE:                           $                                          ", // 1
 		  "                        ==============================                          ", // 2
 		  "                        H            &               H                          ", // 3
 		  "                        H      =============         H                          ", // 4
@@ -89,26 +93,68 @@ class Board {
 		 "*                                                                              *",//23 
 		 "********************************************************************************" //24
 	};
+	char losing_screen[MAX_Y][MAX_X + 1] = {
+		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
+		 "********************************************************************************",//0
+		 "*                                                                              *",//1
+		 "*                                                                              *",//2
+		 "*                                                                              *",//3
+		 "*                                                                              *",//4
+		 "*                                                                              *",//5
+		 "*                                                                              *",//6
+		 "*                         YOU LOST!!                                           *",//7 
+		 "*                                                                              *",//8 
+		 "*                                                                              *",//9 
+		 "*                                                                              *",//10 
+		 "*                        YOU ARE A LOSER!!!!!!!!!!!                            *",//11 
+		 "*                                                                              *",//12
+		 "*                                                                              *",//13 
+		 "*                                                                              *",//14 
+		 "*                                                                              *",//15 
+		 "*                                                                              *",//16 
+		 "*                                                                              *",//17 
+		 "*                                                                              *",//18 
+		 "*                                                                              *",//19 
+		 "*                                                                              *",//20 
+		 "*                                                                              *",//21 
+		 "*                                                                              *",//22 
+		 "*                                                                              *",//23 
+		 "********************************************************************************" //24
+	};
 
-
-	/*
-  ____                                                    
- / ___| __ _ _ __ ___   ___                               
-| |  _ / _` | '_ ` _ \ / _ \                              
-| |_| | (_| | | | | | |  __/                              
- _____|\__,_|_|_|_| |_|\___|       _   _                  
-|_ _|_ __  ___| |_ _ __ _   _  ___| |_(_) ___  _ __  ___  
- | || '_ \/ __| __| '__| | | |/ __| __| |/ _ \| '_ \/ __| 
- | || | | \__ \ |_| |  | |_| | (__| |_| | (_) | | | \__ \ 
-|___|_| |_|___/\__|_|   \__,_|\___|\__|_|\___/|_| |_|___/ 
-	
-	*/
+	char lost_life_screen[MAX_Y][MAX_X + 1] = {
+		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
+		 "********************************************************************************",//0
+		 "*                                                                              *",//1
+		 "*                                                                              *",//2
+		 "*                                                                              *",//3
+		 "*                                                                              *",//4
+		 "*                                                                              *",//5
+		 "*                                                                              *",//6
+		 "*                                                                              *",//7 
+		 "*                                                                              *",//8 
+		 "*                                                                              *",//9 
+		 "*                                                                              *",//10 
+		 "*                             YOU LOST LIFE                                    *",//11 
+		 "*                                                                              *",//12
+		 "*                                                                              *",//13 
+		 "*                                                                              *",//14 
+		 "*                                                                              *",//15 
+		 "*                                                                              *",//16 
+		 "*                                                                              *",//17 
+		 "*                                                                              *",//18 
+		 "*                                                                              *",//19 
+		 "*                                                                              *",//20 
+		 "*                                                                              *",//21 
+		 "*                                                                              *",//22 
+		 "*                                                                              *",//23 
+		 "********************************************************************************" //24
+	};
 
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
 public:
 	void reset();
 	void printScreen(const char screen[][MAX_X + 1]) const;
-
 	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }
 	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }
 
@@ -117,8 +163,14 @@ public:
 	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1]{	return start_screen; }
 	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{	return instruction_screen; }
 
+	const char(&getLosingBoard() const)[MAX_Y][MAX_X + 1]{	return losing_screen; }
+	const char(&getLostLifeBoard() const)[MAX_Y][MAX_X + 1]{	return lost_life_screen; }
+
 	int get_board_width() { return MAX_X; }
 	int get_board_height() { return MAX_Y; }
+
+	int getLifePosX() { return LIFE_POS_X; }
+	int getLifePosY() { return LIFE_POS_Y; }
 
 	void startOver();
 };
