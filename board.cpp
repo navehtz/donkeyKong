@@ -18,3 +18,4 @@ void Board::printScreen(const char screen[][MAX_X + 1]) const
 	}
 	std::cout << screen[MAX_Y - 1];
 }
+

@@ -155,7 +155,6 @@ class Board {
 public:
 	void reset();
 	void printScreen(const char screen[][MAX_X + 1]) const;
-
 	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }
 	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }
 

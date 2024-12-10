@@ -224,8 +224,7 @@ void Mario::life()
 	lives -= 1;
 	char ch_lives = (char)lives + '0';
 
-	gotoxy(pBoard->getLifePosX(), pBoard->getLifePosY());
-	cout << ch_lives;											//printing 
+	printLives();
 
 	pBoard->updateBoard(pBoard->getLifePosX(), pBoard->getLifePosY(), ch_lives);		//update mario's life on current board
 	Sleep(500);
@@ -236,7 +235,8 @@ void Mario::life()
 		pBoard->reset();
 		setStartingMario();
 		pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen
-		cout << pBoard->getCharFromBoard(pBoard->getLifePosX(), pBoard->getLifePosY());
+		printLives();									//printing mario's lives
+		//cout << pBoard->getCharFromBoard(pBoard->getLifePosX(), pBoard->getLifePosY());
 	}
 	else {
 		pBoard->printScreen(pBoard->getLosingBoard());			//printing LOSING screen
@@ -250,4 +250,12 @@ void Mario::setStartingMario()
 	p.setY(STARTING_POS_Y);
 
 	p.setDir({ STAY, STAY });
+}
+
+void Mario::printLives()
+{
+	char ch_lives = (char)lives + '0';
+
+	gotoxy(pBoard->getLifePosX(), pBoard->getLifePosY());
+	cout << ch_lives;
 }

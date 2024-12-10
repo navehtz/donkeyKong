@@ -19,7 +19,7 @@ class Mario
 	int lives = 3;
 
 	static constexpr int STARTING_POS_X = 2;
-	static constexpr int STARTING_POS_Y = 16;
+	static constexpr int STARTING_POS_Y = 23;
 	//static constexpr int LIFE_POS_X = 11;
 	//static constexpr int LIFE_POS_Y = 1;
 
@@ -97,5 +97,8 @@ public:
 
 	int getLives() { return lives; }
 	void setLives(int _lives) { lives = _lives; }
+
+	void printLives();
+
 };
 
