@@ -15,7 +15,7 @@ void Mario::move()
 {
 	int _x = p.getX(), _y = p.getY();
 
-	static bool first_move = true;
+	static bool first_move = true;	//deleteeeeeeeeeeeeeeeeeeeeee
 	static bool is_climbing = false;
 
 	ch_covered = getCharFromBoard(_x, _y);
@@ -32,7 +32,7 @@ void Mario::move()
 	res_is_wall_on_right = isBlock(ch_right);
 	res_is_two_chars_below_floor = isBlock(two_chars_below);
 
-	//fixing the input from the user by the roles of the game
+	//fixing the input from the user by the rules of the game
 	amend_next_move();
 
 
@@ -138,12 +138,7 @@ void Mario::jump()
 
 bool Mario::isFalling()
 {
-	if (ch_below == ' ')
-	{
-		return true;
-	}
-	else
-		return false;
+	return ch_below == ' ' ? true : false;
 }
 
 void Mario::fall()
@@ -155,12 +150,13 @@ void Mario::fall()
 
 	p.setDirY(DOWN);
 	fall_count += 1;
+
 }
 
 
 void Mario::walk_or_stay()					//if fall from high place, mario lose life
 {
-	if (fall_count >= FALL_FROM_TO_HIGH) 	{ life(); }		
+	if (fall_count >= FALL_FROM_TOO_HIGH) 	{ life(); }		
 
 	fall_count = 0;
 	p.setDirY(STAY);
@@ -173,7 +169,6 @@ bool Mario::isBlock(char _ch)
 		return true;
 	else
 		return false;
-
 }
 
 bool Mario::isOnLadder() const
@@ -225,18 +220,21 @@ void Mario::life()
 	char ch_lives = (char)lives + '0';
 
 	printLives();
-
 	pBoard->updateBoard(pBoard->getLifePosX(), pBoard->getLifePosY(), ch_lives);		//update mario's life on current board
 	Sleep(500);
 
 	if(lives > DEAD_MARIO) {									//check if lives > 0
+		cout << '\a';
 		pBoard->printScreen(pBoard->getLostLifeBoard());		//printing lost life screen
 		Sleep(2000);
 		pBoard->reset();
 		setStartingMario();
+
+		setpBarrels(*pBarrels);
+		pBarrels->setStartingBarrels();							//reset barrels
+
 		pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen
 		printLives();									//printing mario's lives
-		//cout << pBoard->getCharFromBoard(pBoard->getLifePosX(), pBoard->getLifePosY());
 	}
 	else {
 		pBoard->printScreen(pBoard->getLosingBoard());			//printing LOSING screen

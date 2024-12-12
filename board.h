@@ -18,19 +18,19 @@ class Board {
 		  "                        H      =============         H                          ", // 4
 		  "                        H                            H                          ", // 5
 		  "                        H                            H                          ", // 6
-		  "          <<<<<<<<<<<<<<<<<<<<<<<        >>>>>>>>>>>>>>>>>>>>                   ", // 7
+		  "          ====================<=           =>===============                    ", // 7
 		  "            H                                 H                                 ", // 8
 		  "            H                                 H                                 ", // 9
 		  "            H                                 H           H                     ", // 10
 		  "            H                                 H           H                     ", // 11
-		  "         >==================            <<<<<<<<<<<<<<<<<<<<<<<<<<<             ", // 12
+		  "         >======================        ====================<=====              ", // 12
 		  "                       H                                        H               ", // 13
 		  "                       H                                        H               ", // 14
-		  "                ============<         >===========================<             ", // 15
+		  "                ============<         >===========================              ", // 15
 		  "                  H                               H            H                ", // 16
 		  "                  H                               H            H                ", // 17
 		  "                  H                               H            H                ", // 18
-	      "         =======>================               ====================            ", // 19
+	      "         ======>================               ===================<             ", // 19
 	      "          H                                                H                    ", // 20
 		  "          H                                                H                    ", // 21
 		  "          H                H              H                H                    ", // 22
@@ -158,9 +158,8 @@ public:
 	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }
 	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }
 
-	//char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1]{ return currentBoard; }
 	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1] { return currentBoard; }
-	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1]{	return start_screen; }
+	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1] { return start_screen; }
 	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{	return instruction_screen; }
 
 	const char(&getLosingBoard() const)[MAX_Y][MAX_X + 1]{	return losing_screen; }
@@ -172,7 +171,6 @@ public:
 	int getLifePosX() { return LIFE_POS_X; }
 	int getLifePosY() { return LIFE_POS_Y; }
 
-	void startOver();
 };
 
 

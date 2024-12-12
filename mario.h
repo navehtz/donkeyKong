@@ -1,6 +1,8 @@
 #pragma once
 
 #include "point.h"
+#include "barrels.h"
+
 #include <Windows.h>	//for Sleep and colors
 #include <stdbool.h>
 
@@ -23,7 +25,7 @@ class Mario
 	//static constexpr int LIFE_POS_X = 11;
 	//static constexpr int LIFE_POS_Y = 1;
 
-	static constexpr int FALL_FROM_TO_HIGH = 5;
+	static constexpr int FALL_FROM_TOO_HIGH = 5;
 	static constexpr int DEAD_MARIO = 0;
 
 	static constexpr int UP = -1;
@@ -31,6 +33,8 @@ class Mario
 	static constexpr int DOWN = 1;
 	static constexpr int RIGHT = 1;
 	static constexpr int STAY = 0;
+	static constexpr int MAX_BARRELS = 10;
+
 
 	static constexpr char keys[] = { 'w', 'a', 'x', 'd', 's' };
 	static constexpr size_t numKeys = sizeof(keys) / sizeof(keys[0]);
@@ -49,6 +53,7 @@ class Mario
 
 	Point p;
 	Board* pBoard = nullptr;
+	Barrels* pBarrels = nullptr;
 
 public:
 	Mario(): p(STARTING_POS_X, STARTING_POS_Y, ch) {}
@@ -65,6 +70,7 @@ public:
 
 	Point getPointP() const { return p; }
 	void setBoard(Board& _board) {pBoard = &_board; }
+	void setpBarrels(Barrels& _barrels) { pBarrels = &_barrels; }
 
 	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); }
 

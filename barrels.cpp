@@ -1,22 +1,73 @@
 #include "barrels.h"
 
+void Barrels::timing()
+{
+	static int iterations = 0;
+	static bool first_run = true;
 
-void Barrels::draw() {
-	int i;
-
-	for (i = 0; i < MAX_BARRELS; i++)
+	if (iterations == TIME_TO_ROLL || first_run == true)	// if it's time to roll a barrel
 	{
-		barrels[i].draw(ch);
-		pBoard->updateBoard(barrels[i].getX(), barrels[i].getY(), ch);
+		activateBarrel();
+		iterations = 0;
+		first_run = false;
+		return;
+	}
+	iterations++;
+}
+
+void Barrels::setStartingBarrels()
+{
+	for (int i = 0; i < MAX_BARRELS; i++)
+	{
+		barrels[i].setStartingBarrel();
 	}
 }
 
-void Barrels::erase() {
-	int i;
-
-	for (i = 0; i < MAX_BARRELS; i++)
+void Barrels::activateBarrel()		
+{
+	for (int i = 0; i < MAX_BARRELS; i++)
 	{
-		barrels[i].erase();
-		pBoard->updateBoard(barrels[i].getX(), barrels[i].getY(), barrels[i].getPreviousChar());
+		if (/*num_barrels != MAX_BARRELS &&*/ !barrels[i].IsActivated())
+		{
+			barrels[i].setpBoard(*pBoard);
+			barrels[i].activate();
+			//num_barrels++;
+			return;
+		}
 	}
 }
+
+void Barrels::draw()
+{
+	for (int i = 0; i < MAX_BARRELS; i++)
+	{
+		if (barrels[i].IsActivated())
+		{
+			barrels[i].draw();
+		}
+	}
+}
+
+void Barrels::erase()
+{
+	for (int i = 0; i < MAX_BARRELS; i++)
+	{
+		if (barrels[i].IsActivated())
+		{
+			barrels[i].erase();
+		}
+	}
+}
+
+
+void Barrels::move()
+{
+	for (int i = 0; i < MAX_BARRELS; i++)
+	{
+		if (barrels[i].IsActivated())
+		{
+			barrels[i].move();
+		}
+	}
+}
+

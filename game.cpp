@@ -39,6 +39,10 @@ void Game::startGame()
 	board.reset();
 	mario.setStartingMario();
 	mario.setBoard(board);
+	mario.setpBarrels(barrels);					//to be able to reset the barrels when marrio died (mario.cpp - 233)
+	barrels.setStartingBarrels();
+
+	barrels.setpBoard(board);
 	board.printScreen(board.getCurrentBoard());
 
 	mario.setLives(FULL_LIVES);
@@ -54,6 +58,9 @@ void Game::startGame()
 	while (playing_mario)
 	{
 		mario.draw();
+		barrels.timing();
+		barrels.draw();
+
 
 		if (_kbhit())
 		{
@@ -72,7 +79,11 @@ void Game::startGame()
 		}
 		Sleep(150);
 		mario.erase();
+		barrels.erase();
+
 		mario.move();
+		barrels.move();
+
 
 		playing_mario = isAlive(mario.getLives());	//If mario has more than 0 lives, the game will continue
 	}

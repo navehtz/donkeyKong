@@ -8,6 +8,7 @@
 #include "point.h"
 #include "mario.h"
 #include "board.h"
+#include "barrels.h"
 
 using namespace std;
 
@@ -23,6 +24,7 @@ class Game {
 
 	Mario mario;
 	Board board;
+	Barrels barrels;
 
 public:
 
