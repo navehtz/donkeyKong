@@ -43,17 +43,17 @@ void Barrel::move()
 	res_is_wall_on_right = isBlock(ch_right);
 
 
-	check_what_state();			//check what is mario state (climbing/ jumping/ falling/ walking or staying)
-	update_state();				//update the moves that mario should commit by the state
+	checkWhatState();			//check what is mario state (climbing/ jumping/ falling/ walking or staying)
+	updateState();				//update the moves that mario should commit by the state
 
 	//update prameters
-	update_next_move();
-	update_previous_char();
-	update_previous_dir();
+	updateNextMove();
+	updatePreviousChar();
+	updatePreviousDir();
 }
 
 
-void Barrel::check_what_state()
+void Barrel::checkWhatState()
 {
 	if (isFalling())
 		state = BarrelState::Falling;
@@ -62,7 +62,7 @@ void Barrel::check_what_state()
 }
 
 
-void Barrel::update_state()
+void Barrel::updateState()
 {
 	switch (state)
 	{
@@ -138,7 +138,7 @@ bool Barrel::isBlock(char _ch)
 		return false;
 }
 
-void Barrel::update_next_move()
+void Barrel::updateNextMove()
 {
 	int newX = point.getX() + point.getDir().x;
 	int newY = point.getY() + point.getDir().y;

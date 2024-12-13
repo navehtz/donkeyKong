@@ -64,8 +64,8 @@ public:
 
 	void setStartingBarrel();
 
-	void check_what_state();
-	void update_state();
+	void checkWhatState();
+	void updateState();
 
 	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); }
 
@@ -77,10 +77,10 @@ public:
 	bool getIsExplode() { return is_exploded; }
 	bool isBlock(char _ch);
 
-	void update_previous_dir() { point.setPreviousDir(point.getDir()); } //previous_dir = dir; }                     //change the name without underscore
-	void update_previous_char() { point.setPreviousChar(getCharFromBoard(point.getX(), point.getY())); }
+	void updatePreviousDir() { point.setPreviousDir(point.getDir()); } //previous_dir = dir; }                     //change the name without underscore
+	void updatePreviousChar() { point.setPreviousChar(getCharFromBoard(point.getX(), point.getY())); }
 
-	void update_next_move();
+	void updateNextMove();
 
 	bool IsActivated() { return is_activated; };
 	void activate() { is_activated = true; }

@@ -79,7 +79,7 @@ public:
 	void setpBarrels(Barrels& _barrels) { pBarrels = &_barrels; }
 
 	void move();
-	void amend_next_move();
+	void amendNextMove();
 	bool isOnLadder() const;
 	bool isBlock(char _ch);
 	 

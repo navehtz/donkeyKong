@@ -41,7 +41,7 @@ void Mario::move()
 	res_is_two_chars_below_floor = isBlock(two_chars_below);
 
 	//fixing the input from the user by the rules of the game
-	amend_next_move();
+	amendNextMove();
 
 
 	checkWhatState();			//check what is mario state (climbing/ jumping/ falling/ walking or staying)
@@ -203,7 +203,7 @@ bool Mario::isOnLadder() const
 }
 
 
-void Mario::amend_next_move()
+void Mario::amendNextMove()
 {
 	if (res_is_below_roof && !res_is_on_ladder) {					//under roof - mario can't jump
 		if (p.getDir().y == UP) { p.setDirY(STAY); } //change to downnnn 5/12 14:20
