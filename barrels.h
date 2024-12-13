@@ -16,7 +16,7 @@ class Barrels
 public:
 	Barrels() {
 		for (int i = 0; i < MAX_BARRELS; i++) {
-			barrels[i] = Barrel();
+			//barrels[i] = Barrel();
 			barrels[i].setStartingBarrel();
 		}
 	}
@@ -37,6 +37,6 @@ public:
 	int getPosX(int i) { return barrels[i].getPoint().getX(); }
 	int getPosY(int i) { return barrels[i].getPoint().getY(); }
 
-	bool getIfBarrelExplode(int i) { return barrels[i].getIsExplode(); }
+	bool getIfBarrelExploded(int i) { return barrels[i].getIsExploded(); }
 };
 

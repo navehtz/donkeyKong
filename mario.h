@@ -85,7 +85,7 @@ public:
 	 
 	bool isJumping();
 	void jump();
-	bool isFalling();
+	bool isFalling() const;
 	void fall();
 	bool isClimbing() ;
 	void climb();
@@ -99,12 +99,10 @@ public:
 	void drawPreviousLetter(char _ch) { p.draw(_ch); }
 	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); }
 
-	int getLives() { return lives; }
+	int getLives() const { return lives; }
 	void setLives(int _lives) { lives = _lives; }
 	void printLives();
 	void life();
 	void startOver();
-
-	void updateIfHitByBarrel();
 };
 

@@ -55,20 +55,6 @@ void Mario::move()
 	updatePreviousDir();
 }
 
-void Mario::updateIfHitByBarrel()
-{
-	int barrelPosX, barrelPosY;
-
-	for (int i = 0; i < pBarrels->getMaxBarrels(); i++)
-	{
-		barrelPosX = pBarrels->getPosX(i);
-		barrelPosY = pBarrels->getPosY(i);
-
-		if (p.getX() == barrelPosX && p.getY() == barrelPosY)
-			life();
-	}
-}
-
 void Mario::checkWhatState()
 {
 	if (isClimbing())
@@ -159,7 +145,7 @@ void Mario::jump()
 	p.setDirY(UP);
 }
 
-bool Mario::isFalling()
+bool Mario::isFalling() const
 {
 	return ch_below == ' ' ? true : false;
 }

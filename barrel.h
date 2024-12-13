@@ -44,7 +44,6 @@ class Barrel
 		int x, y;
 	};
 
-
 public:
 	Barrel() : point(ch) {}
 	//Barrel() : point(STARTING_POS_LEFT_X, STARTING_POS_Y, ch) {}
@@ -74,7 +73,7 @@ public:
 	void fall();
 	void roll();
 	void explode();
-	bool getIsExplode() { return is_exploded; }
+	bool getIsExploded() { return is_exploded; }
 	bool isBlock(char _ch);
 
 	void updatePreviousDir() { point.setPreviousDir(point.getDir()); } //previous_dir = dir; }                     //change the name without underscore

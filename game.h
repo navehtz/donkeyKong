@@ -44,7 +44,10 @@ public:
 	void draw();
 	void erase();
 	void move();
-	void updateIfHitByBarrel();
+
+	void updateIfDiedByBarrel();
+	void hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY);
+	void explodedByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int index);
 
 };
 

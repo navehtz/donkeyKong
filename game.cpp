@@ -44,7 +44,6 @@ void Game::startGame()
 	{
 		playing_mario = isAlive(mario.getLives());	//If mario has more than 0 lives, the game will continue
 		draw();
-		mario.updateIfHitByBarrel();
 
 		if (_kbhit())
 		{
@@ -55,7 +54,8 @@ void Game::startGame()
 		erase();
 		move();
 
-		mario.updateIfHitByBarrel();
+		updateIfDiedByBarrel();
+
 	}
 	clrscr();
 	board.printScreen(board.getStartBoard());
@@ -150,23 +150,35 @@ void Game::showInstructions()
 	clrscr();
 	board.printScreen(board.getStartBoard());
 }	
-
-void Game::updateIfHitByBarrel()
+void Game::updateIfDiedByBarrel()
 {
 	int barrelPosX, barrelPosY;
 	int marioPosX, marioPosY;
+
 	for (int i = 0; i < barrels.getMaxBarrels(); i++)
 	{
 		barrelPosX = barrels.getPosX(i);
 		barrelPosY = barrels.getPosY(i);
 
+
 		marioPosX = mario.getPointX();
 		marioPosY = mario.getPointY();
-		if (marioPosX == barrelPosX && marioPosY == barrelPosY)
-			mario.life();
 
-		if(barrels.getIfBarrelExplode(i))
-			if(abs(barrelPosX - marioPosX) <= EXPLOSION_RADIUS && abs(barrelPosY - marioPosY) <= EXPLOSION_RADIUS)
-				mario.life();
+		hitByBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY);
+		explodedByBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY, i);
 	}
+}
+
+void Game::hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY)
+{
+	if (marioPosX == barrelPosX && marioPosY == barrelPosY)
+		mario.life();
+}
+	
+
+void Game::explodedByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int i)
+{	
+	if (barrels.getIfBarrelExploded(i))
+		if (abs(barrelPosX - marioPosX) <= EXPLOSION_RADIUS && abs(barrelPosY - marioPosY) <= EXPLOSION_RADIUS)
+			mario.life();	
 }
