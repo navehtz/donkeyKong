@@ -4,12 +4,7 @@ void Barrel::setStartingBarrel()
 {
 	point.setY(STARTING_POS_Y);
 
-	static std::random_device rd;  
-	static std::mt19937 gen(rd()); 
-	std::uniform_int_distribution<> dist(0, 1); 
-	int random = dist(gen); 
-
-	if (random == 0)
+	if (myRandom() == 0)
 	{
 		point.setX(STARTING_POS_LEFT_X);
 		point.setDirBeforeFalling({ LEFT, STAY });
@@ -20,6 +15,16 @@ void Barrel::setStartingBarrel()
 		point.setDirBeforeFalling({ RIGHT, STAY });
 	}
 	fall_count = 0;
+	is_exploded = false;
+}
+
+int Barrel::myRandom()
+{
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dist(0, 1);
+	int random = dist(gen);
+	return random;
 }
 
 void Barrel::move()
@@ -74,7 +79,7 @@ void Barrel::update_state()
 void Barrel::roll()
 {
 
-	switch (ch_below) 
+	switch (ch_below)
 	{
 	case('<'):
 		point.setDir({ LEFT, STAY });					//update direction
@@ -87,7 +92,7 @@ void Barrel::roll()
 	case('='):
 		point.setDir({ point.getDirBeforeFalling() });
 	}
-	
+
 	if (fall_count >= FALL_FROM_TOO_HIGH) {
 		explode();
 		return;
@@ -117,11 +122,12 @@ void Barrel::fall()
 	fall_count += 1;
 }
 
-void Barrel::explode()		
+void Barrel::explode()
 {
 	is_activated = false;
+	is_exploded = true;
+	//drawExplosion();     //TODO!!!
 	setStartingBarrel();
-	//point.setDir({ LEFT,STAY });
 }
 
 bool Barrel::isBlock(char _ch)
@@ -144,4 +150,25 @@ void Barrel::update_next_move()
 
 	point.setX(newX);
 	point.setY(newY);
+}
+
+void Barrel::drawExplosion()
+{
+	int x, y;
+
+	for (int i = 0; i < 5; i++) //change magic number
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			x = point.getX() -2 + j;
+			y = point.getY() - 2 + i;
+
+			gotoxy(point.getX() - 2 + j, point.getY() - 2 + i);
+
+			if (x > 0 && x < pBoard->get_board_width())			//80	
+				if (y > 0 && y < pBoard->get_board_height())	//25
+					std::cout << 'X';
+		}
+	}
+	//pBoard->printScreen(pBoard->getCurrentBoard());
 }

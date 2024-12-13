@@ -44,17 +44,32 @@ void Mario::move()
 	amend_next_move();
 
 
-	check_what_state();			//check what is mario state (climbing/ jumping/ falling/ walking or staying)
-	update_state();				//update the moves that mario should commit by the state
+	checkWhatState();			//check what is mario state (climbing/ jumping/ falling/ walking or staying)
+	updateState();				//update the moves that mario should commit by the state
 
+	//updateIfHitByBarrel();
 
 	//update prameters
-	update_next_move();			
-	update_previous_char();
-	update_previous_dir();
+	updateNextMove();			
+	updatePreviousChar();
+	updatePreviousDir();
 }
 
-void Mario::check_what_state()
+void Mario::updateIfHitByBarrel()
+{
+	int barrelPosX, barrelPosY;
+
+	for (int i = 0; i < pBarrels->getMaxBarrels(); i++)
+	{
+		barrelPosX = pBarrels->getPosX(i);
+		barrelPosY = pBarrels->getPosY(i);
+
+		if (p.getX() == barrelPosX && p.getY() == barrelPosY)
+			life();
+	}
+}
+
+void Mario::checkWhatState()
 {
 	if (isClimbing())
 		state = MarioState::Climbing;
@@ -66,7 +81,7 @@ void Mario::check_what_state()
 		state = MarioState::Walking_or_Staying;
 }
 
-void Mario::update_state()
+void Mario::updateState()
 {
 	switch (state)
 	{
@@ -80,7 +95,7 @@ void Mario::update_state()
 		fall();
 		break;
 	case MarioState::Walking_or_Staying:
-		walk_or_stay();
+		walkOrStay();
 		break;
 	}
 }
@@ -162,7 +177,7 @@ void Mario::fall()
 }
 
 
-void Mario::walk_or_stay()					//if fall from high place, mario lose life
+void Mario::walkOrStay()					//if fall from high place, mario lose life
 {
 	if (fall_count >= FALL_FROM_TOO_HIGH) 	{ life(); }		
 
@@ -207,7 +222,7 @@ void Mario::amend_next_move()
 	}
 }
 
-void Mario::update_next_move()
+void Mario::updateNextMove()
 {
 	int newX = p.getX() + p.getDir().x;
 	int newY = p.getY() + p.getDir().y;
@@ -259,8 +274,7 @@ void Mario::startOver()
 	pBoard->reset();
 	setStartingMario();
 
-	setpBarrels(*pBarrels);
-
+	//setpBarrels(*pBarrels);
 	pBarrels->setStartingBarrels();							//reset barrels
 
 	pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen

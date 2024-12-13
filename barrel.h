@@ -1,7 +1,9 @@
 #pragma once
 
 #include "point.h"
+#include <Windows.h>	//for Sleep and colors
 #include <random>
+
 
 class Barrel
 {
@@ -21,6 +23,7 @@ class Barrel
 	bool res_is_wall_on_left = false, res_is_wall_on_right = false, res_is_two_chars_below_floor = false;
 
 	bool is_activated = false;
+	bool is_exploded = false;
 	static constexpr int STARTING_POS_Y = 3;
 
 	static constexpr int DOWN = 1;
@@ -41,9 +44,12 @@ class Barrel
 		int x, y;
 	};
 
+
 public:
 	Barrel() : point(ch) {}
 	//Barrel() : point(STARTING_POS_LEFT_X, STARTING_POS_Y, ch) {}
+
+	Point getPoint() { return point; } //maybe const
 
 	void draw() {
 		point.draw(ch);
@@ -68,7 +74,7 @@ public:
 	void fall();
 	void roll();
 	void explode();
-
+	bool getIsExplode() { return is_exploded; }
 	bool isBlock(char _ch);
 
 	void update_previous_dir() { point.setPreviousDir(point.getDir()); } //previous_dir = dir; }                     //change the name without underscore
@@ -78,6 +84,8 @@ public:
 
 	bool IsActivated() { return is_activated; };
 	void activate() { is_activated = true; }
-		
+	
+	int myRandom();
+	void drawExplosion();
 };
 

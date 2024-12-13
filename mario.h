@@ -5,6 +5,7 @@
 
 #include <Windows.h>	//for Sleep and colors
 #include <stdbool.h>
+#include <cstdlib>
 
 
 class Mario
@@ -71,6 +72,9 @@ public:
 	}
 
 	Point getPointP() const { return p; }
+	int getPointX() const { return p.getX(); }
+	int getPointY() const { return p.getY(); }
+
 	void setBoard(Board& _board) {pBoard = &_board; }
 	void setpBarrels(Barrels& _barrels) { pBarrels = &_barrels; }
 
@@ -85,13 +89,13 @@ public:
 	void fall();
 	bool isClimbing() ;
 	void climb();
-	void walk_or_stay();
+	void walkOrStay();
 
-	void check_what_state();
-	void update_state();
-	void update_next_move();
-	void update_previous_dir() { p.setPreviousDir(p.getDir()); } //previous_dir = dir; }
-	void update_previous_char() { p.setPreviousChar(getCharFromBoard(p.getX(), p.getY())); }
+	void checkWhatState();
+	void updateState();
+	void updateNextMove();
+	void updatePreviousDir() { p.setPreviousDir(p.getDir()); } //previous_dir = dir; }
+	void updatePreviousChar() { p.setPreviousChar(getCharFromBoard(p.getX(), p.getY())); }
 	void drawPreviousLetter(char _ch) { p.draw(_ch); }
 	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); }
 
@@ -101,5 +105,6 @@ public:
 	void life();
 	void startOver();
 
+	void updateIfHitByBarrel();
 };
 

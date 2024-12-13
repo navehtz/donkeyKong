@@ -32,6 +32,11 @@ public:
 	void erase();
 	void move();
 	void setStartingBarrels();
+	int getMaxBarrels() { return MAX_BARRELS; }
 
+	int getPosX(int i) { return barrels[i].getPoint().getX(); }
+	int getPosY(int i) { return barrels[i].getPoint().getY(); }
+
+	bool getIfBarrelExplode(int i) { return barrels[i].getIsExplode(); }
 };
 
