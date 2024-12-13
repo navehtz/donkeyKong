@@ -3,6 +3,8 @@
 
 void Mario::setStartingMario()
 {
+	won_level = false;
+
 	p.setX(STARTING_POS_X);
 	p.setY(STARTING_POS_Y);
 
@@ -43,6 +45,11 @@ void Mario::move()
 	//fixing the input from the user by the rules of the game
 	amendNextMove();
 
+	//if (ch_left == '$' || ch_right == '$')
+	//{
+	//	won_level = true;
+	//	return;
+	//}
 
 	checkWhatState();			//check what is mario state (climbing/ jumping/ falling/ walking or staying)
 	updateState();				//update the moves that mario should commit by the state
@@ -165,7 +172,9 @@ void Mario::fall()
 
 void Mario::walkOrStay()					//if fall from high place, mario lose life
 {
-	if (fall_count >= FALL_FROM_TOO_HIGH) 	{ life(); }		
+	if (fall_count >= FALL_FROM_TOO_HIGH) {
+		life();
+	}		
 
 	fall_count = 0;
 	p.setDirY(STAY);
@@ -206,6 +215,9 @@ void Mario::amendNextMove()
 	if (res_is_on_floor && two_chars_below != 'H') {	//above floor - mario can't go down
 		if (p.getDir().y == DOWN) { p.setDirY(STAY); }
 	}
+
+	if (ch_below == '$')
+		won_level = true;
 }
 
 void Mario::updateNextMove()
@@ -217,6 +229,12 @@ void Mario::updateNextMove()
 		newX = p.getX();
 	if (newY < 0 || newY >= pBoard->get_board_height())	//25
 		newY = p.getY();
+
+	if (pBoard->getCharFromBoard(newX, newY) == '$')
+	{
+		won_level = true;
+		return;
+	}
 
 	p.setX(newX);
 	p.setY(newY);
@@ -241,7 +259,6 @@ void Mario::life()
 }
 
 
-
 void Mario::printLives()
 {
 	char ch_lives = (char)lives + '0';
@@ -256,7 +273,7 @@ void Mario::startOver()
 {
 	cout << '\a';											//to make sound
 	pBoard->printScreen(pBoard->getLostLifeBoard());		//printing lost life screen
-	Sleep(2000);
+	Sleep(4000);
 	pBoard->reset();
 	setStartingMario();
 

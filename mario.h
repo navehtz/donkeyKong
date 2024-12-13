@@ -18,11 +18,12 @@ class Mario
 	bool res_is_on_ladder = false, res_is_on_floor = false, res_is_below_roof = false;
 	bool res_is_wall_on_left = false, res_is_wall_on_right = false, res_is_two_chars_below_floor = false;
 
+	bool won_level = false;
 	int fall_count = 0;
 	int lives = 3;
 
-	static constexpr int STARTING_POS_X = 2;
-	static constexpr int STARTING_POS_Y = 23;
+	static constexpr int STARTING_POS_X = 40;
+	static constexpr int STARTING_POS_Y = 1;
 	//static constexpr int LIFE_POS_X = 11;
 	//static constexpr int LIFE_POS_Y = 1;
 
@@ -101,6 +102,7 @@ public:
 
 	int getLives() const { return lives; }
 	void setLives(int _lives) { lives = _lives; }
+	bool getIfWon() const { return won_level; }
 	void printLives();
 	void life();
 	void startOver();

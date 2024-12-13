@@ -43,8 +43,10 @@ void Game::startGame()
 	while (playing_mario)
 	{
 		playing_mario = isAlive(mario.getLives());	//If mario has more than 0 lives, the game will continue
-		draw();
+		if (wonTheLevel())
+			break;
 
+		draw();
 		if (_kbhit())
 		{
 			updateActionByKeys();
@@ -181,4 +183,16 @@ void Game::explodedByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int m
 	if (barrels.getIfBarrelExploded(i))
 		if (abs(barrelPosX - marioPosX) <= EXPLOSION_RADIUS && abs(barrelPosY - marioPosY) <= EXPLOSION_RADIUS)
 			mario.life();	
+}
+
+bool Game::wonTheLevel()
+{
+	if (mario.getIfWon())
+	{
+		board.printScreen(board.getWinningBoard());			//printing LOSING screen
+		Sleep(2000);
+		return true;
+	}
+	else
+		return false;
 }
