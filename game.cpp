@@ -43,6 +43,7 @@ void Game::startGame()
 	while (playing_mario)
 	{
 		playing_mario = isAlive(mario.getLives());	//If mario has more than 0 lives, the game will continue
+		barrels.bringBackExplodedBarrels();
 		draw();
 
 		if (_kbhit())
@@ -79,6 +80,9 @@ void Game::setStartingGame()
 	gotoxy(board.getLifePosX(), board.getLifePosY());
 	cout << ch_lives;											//printing 
 }
+
+
+
 
 void Game::updateActionByKeys()
 {
@@ -178,7 +182,8 @@ void Game::hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioP
 
 void Game::explodedByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int i)
 {	
-	if (barrels.getIfBarrelExploded(i))
-		if (abs(barrelPosX - marioPosX) <= EXPLOSION_RADIUS && abs(barrelPosY - marioPosY) <= EXPLOSION_RADIUS)
+	bool is_exploded = barrels.getIfBarrelExploded(i);
+	if (is_exploded)
+		if (abs(barrelPosX - marioPosX + 1) <= EXPLOSION_RADIUS && abs(barrelPosY - marioPosY + 1) <= EXPLOSION_RADIUS)  // +1 because move is before draw
 			mario.life();	
 }

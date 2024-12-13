@@ -15,7 +15,7 @@ void Barrel::setStartingBarrel()
 		point.setDirBeforeFalling({ RIGHT, STAY });
 	}
 	fall_count = 0;
-	//is_exploded = false;
+	is_exploded = false;
 }
 
 int Barrel::myRandom()
@@ -127,7 +127,7 @@ void Barrel::explode()
 	is_exploded = true;
 	//drawExplosion();     //TODO!!!
 
-	setStartingBarrel();
+	//setStartingBarrel();
 }
 
 bool Barrel::isBlock(char _ch)

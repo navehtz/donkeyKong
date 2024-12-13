@@ -34,9 +34,11 @@ public:
 	void setStartingBarrels();
 	int getMaxBarrels() { return MAX_BARRELS; }
 
-	int getPosX(int i) { return barrels[i].getPoint().getX(); }
-	int getPosY(int i) { return barrels[i].getPoint().getY(); }
+	int getPosX(int i) { int posX = barrels[i].getPoint().getX(); return posX; }
+	int getPosY(int i) { int posY = barrels[i].getPoint().getY(); return posY; }
 
-	bool getIfBarrelExploded(int i) { return barrels[i].getIsExploded(); }
+	bool getIfBarrelExploded(int i) { bool is_barrel_exploded = barrels[i].getIsExploded(); return is_barrel_exploded; }
+	void bringBackExplodedBarrels();
+
 };
 
