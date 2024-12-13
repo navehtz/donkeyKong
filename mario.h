@@ -23,7 +23,7 @@ class Mario
 	int lives = 3;
 
 	static constexpr int STARTING_POS_X = 40;
-	static constexpr int STARTING_POS_Y = 1;
+	static constexpr int STARTING_POS_Y = 23;
 	//static constexpr int LIFE_POS_X = 11;
 	//static constexpr int LIFE_POS_Y = 1;
 
@@ -106,5 +106,6 @@ public:
 	void printLives();
 	void life();
 	void startOver();
+	void flashingMario();
 };
 

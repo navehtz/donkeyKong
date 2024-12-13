@@ -270,16 +270,43 @@ void Mario::printLives()
 
 //when mario died but still has more than 0 lives - we want to rest the the board, mario and the barrels to the start position
 void Mario::startOver()
-{
-	cout << '\a';											//to make sound
-	pBoard->printScreen(pBoard->getLostLifeBoard());		//printing lost life screen
-	Sleep(4000);
+{									
+	flashingMario();
+
 	pBoard->reset();
 	setStartingMario();
-
-	//setpBarrels(*pBarrels);
 	pBarrels->setStartingBarrels();							//reset barrels
-
 	pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen
-	printLives();									//printing mario's lives
+	printLives();											//printing mario's lives
 }
+
+void Mario::flashingMario()
+{
+	pBarrels->draw();
+
+	draw();
+	Sleep(200);
+	erase();
+	Sleep(200);
+	draw();
+	Sleep(200);
+	erase();
+	Sleep(200);
+	draw();
+	Sleep(200);
+}
+
+//void Mario::startOver()
+//{
+//	cout << '\a';											//to make sound
+//	pBoard->printScreen(pBoard->getLostLifeBoard());		//printing lost life screen
+//	Sleep(4000);
+//	pBoard->reset();
+//	setStartingMario();
+//
+//	//setpBarrels(*pBarrels);
+//	pBarrels->setStartingBarrels();							//reset barrels
+//
+//	pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen
+//	printLives();									//printing mario's lives
+//}

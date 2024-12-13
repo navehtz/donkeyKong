@@ -42,7 +42,6 @@ void Game::startGame()
 
 	while (playing_mario)
 	{
-		playing_mario = isAlive(mario.getLives());	//If mario has more than 0 lives, the game will continue
 		if (wonTheLevel())
 			break;
 		barrels.bringBackExplodedBarrels();
@@ -58,6 +57,7 @@ void Game::startGame()
 
 		updateIfDiedByBarrel();
 
+		playing_mario = isAlive(mario.getLives());	//If mario has more than 0 lives, the game will continue
 	}
 	clrscr();
 	board.printScreen(board.getStartBoard());
