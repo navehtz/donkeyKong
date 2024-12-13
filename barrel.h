@@ -74,6 +74,7 @@ public:
 	void roll();
 	void explode();
 	bool getIsExploded() { return is_exploded; }
+	void setIsExploded(bool _is_exploded) { is_exploded = _is_exploded; }
 	bool isBlock(char _ch);
 
 	void updatePreviousDir() { point.setPreviousDir(point.getDir()); } //previous_dir = dir; }                     //change the name without underscore

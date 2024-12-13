@@ -71,3 +71,13 @@ void Barrels::move()
 	}
 }
 
+void Barrels::bringBackExplodedBarrels()
+{
+	for (int i = 0; i < MAX_BARRELS; i++)
+	{
+		if (barrels[i].getIsExploded())
+		{
+			barrels[i].setStartingBarrel();
+		}
+	}
+}
