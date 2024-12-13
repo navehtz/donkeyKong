@@ -96,6 +96,12 @@ void Barrel::roll()
 		explode();
 		return;
 	}
+	
+	if (point.getX() < 1 || point.getX() >= pBoard->get_board_width() - 1) {	//80	
+		explode();
+		erase();
+	}
+		
 
 	if (res_is_wall_on_left) {										//linked to a wall - barrel can't pass
 		if (point.getDir().x == LEFT) { point.setDirX(STAY); }
