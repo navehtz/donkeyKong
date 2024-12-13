@@ -7,7 +7,7 @@ void Barrels::timing()
 
 	if (iterations == TIME_TO_ROLL || first_run == true)	// if it's time to roll a barrel
 	{
-		activateBarrel();
+		activateBarrels();
 		iterations = 0;
 		first_run = false;
 		return;
@@ -23,7 +23,7 @@ void Barrels::setStartingBarrels()
 	}
 }
 
-void Barrels::activateBarrel()		
+void Barrels::activateBarrels()		
 {
 	for (int i = 0; i < MAX_BARRELS; i++)
 	{

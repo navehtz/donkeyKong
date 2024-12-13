@@ -1,6 +1,14 @@
 #include "mario.h"
 #include "point.h"
 
+void Mario::setStartingMario()
+{
+	p.setX(STARTING_POS_X);
+	p.setY(STARTING_POS_Y);
+
+	p.setDir({ STAY, STAY });
+}
+
 void Mario::keyPressed(char key) {
 	key = (char)std::tolower(key);
 	for (size_t i = 0; i < numKeys; i++) {
@@ -221,20 +229,9 @@ void Mario::life()
 
 	printLives();
 	pBoard->updateBoard(pBoard->getLifePosX(), pBoard->getLifePosY(), ch_lives);		//update mario's life on current board
-	Sleep(500);
 
 	if(lives > DEAD_MARIO) {									//check if lives > 0
-		cout << '\a';
-		pBoard->printScreen(pBoard->getLostLifeBoard());		//printing lost life screen
-		Sleep(2000);
-		pBoard->reset();
-		setStartingMario();
-
-		setpBarrels(*pBarrels);
-		pBarrels->setStartingBarrels();							//reset barrels
-
-		pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen
-		printLives();									//printing mario's lives
+		startOver();
 	}
 	else {
 		pBoard->printScreen(pBoard->getLosingBoard());			//printing LOSING screen
@@ -242,13 +239,7 @@ void Mario::life()
 	}
 }
 
-void Mario::setStartingMario()
-{
-	p.setX(STARTING_POS_X);
-	p.setY(STARTING_POS_Y);
 
-	p.setDir({ STAY, STAY });
-}
 
 void Mario::printLives()
 {
@@ -256,4 +247,22 @@ void Mario::printLives()
 
 	gotoxy(pBoard->getLifePosX(), pBoard->getLifePosY());
 	cout << ch_lives;
+}
+
+
+//when mario died but still has more than 0 lives - we want to rest the the board, mario and the barrels to the start position
+void Mario::startOver()
+{
+	cout << '\a';											//to make sound
+	pBoard->printScreen(pBoard->getLostLifeBoard());		//printing lost life screen
+	Sleep(2000);
+	pBoard->reset();
+	setStartingMario();
+
+	setpBarrels(*pBarrels);
+
+	pBarrels->setStartingBarrels();							//reset barrels
+
+	pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen
+	printLives();									//printing mario's lives
 }

@@ -58,6 +58,9 @@ class Mario
 public:
 	Mario(): p(STARTING_POS_X, STARTING_POS_Y, ch) {}
 
+	void setStartingMario();
+	void keyPressed(char key);
+
 	void draw() {
 		p.draw(ch);
 		pBoard->updateBoard(p.getX(), p.getY(), ch);
@@ -66,31 +69,22 @@ public:
 		p.erase();
 		pBoard->updateBoard(p.getX(), p.getY(), p.getPreviousChar());
 	}
-	void keyPressed(char key);
 
 	Point getPointP() const { return p; }
 	void setBoard(Board& _board) {pBoard = &_board; }
 	void setpBarrels(Barrels& _barrels) { pBarrels = &_barrels; }
 
-	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); }
-
 	void move();
+	void amend_next_move();
 	bool isOnLadder() const;
 	bool isBlock(char _ch);
-	void drawPreviousLetter(char _ch) { p.draw(_ch); }
 	 
-	void amend_next_move();
-	void life();
-
 	bool isJumping();
 	void jump();
-
 	bool isFalling();
 	void fall();
-
 	bool isClimbing() ;
 	void climb();
-
 	void walk_or_stay();
 
 	void check_what_state();
@@ -98,13 +92,14 @@ public:
 	void update_next_move();
 	void update_previous_dir() { p.setPreviousDir(p.getDir()); } //previous_dir = dir; }
 	void update_previous_char() { p.setPreviousChar(getCharFromBoard(p.getX(), p.getY())); }
-
-	void setStartingMario();
+	void drawPreviousLetter(char _ch) { p.draw(_ch); }
+	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); }
 
 	int getLives() { return lives; }
 	void setLives(int _lives) { lives = _lives; }
-
 	void printLives();
+	void life();
+	void startOver();
 
 };
 

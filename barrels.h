@@ -21,8 +21,8 @@ public:
 		}
 	}
 
-	void activateBarrel();
-
+	void activateBarrels();
+	//void deActivateBarrel();
 	void setpBoard(Board& _board) { pBoard = &_board; }
 
 	const Barrel* getBarrels() { return barrels; }
