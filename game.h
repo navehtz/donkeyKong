@@ -21,9 +21,9 @@ class Game {
 
 	static constexpr int DEAD_MARIO = 0;
 	static constexpr int FULL_LIVES = 3;
+	static constexpr int EXPLOSION_RADIUS = 2;
 
 	bool playing_mario = true;
-	static constexpr int EXPLOSION_RADIUS = 2;
 
 	Mario mario;
 	Board board;

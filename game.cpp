@@ -172,6 +172,9 @@ void Game::updateIfDiedByBarrel()
 		hitByBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY);
 		explodedByBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY, i);
 	}
+	
+	if (mario.getLives() == DEAD_MARIO)
+		playing_mario = false;
 }
 
 void Game::hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY)

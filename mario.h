@@ -22,21 +22,16 @@ class Mario
 	int fall_count = 0;
 	int lives = 3;
 
-	static constexpr int STARTING_POS_X = 40;
-	static constexpr int STARTING_POS_Y = 23;
-	//static constexpr int LIFE_POS_X = 11;
-	//static constexpr int LIFE_POS_Y = 1;
-
+	static constexpr int STARTING_POS_X = 35;
+	static constexpr int STARTING_POS_Y = 1;
 	static constexpr int FALL_FROM_TOO_HIGH = 5;
 	static constexpr int DEAD_MARIO = 0;
-
 	static constexpr int UP = -1;
 	static constexpr int LEFT = -1;
 	static constexpr int DOWN = 1;
 	static constexpr int RIGHT = 1;
 	static constexpr int STAY = 0;
 	static constexpr int MAX_BARRELS = 10;
-
 
 	static constexpr char keys[] = { 'w', 'a', 'x', 'd', 's' };
 	static constexpr size_t numKeys = sizeof(keys) / sizeof(keys[0]);
