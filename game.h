@@ -36,7 +36,7 @@ public:
 
 	void setStartingGame();
 	void updateActionByKeys();
-	bool isAlive(int lives) { return lives != DEAD_MARIO; } //Returning True if mario has lives and False if lives == 0
+	bool isAlive(int lives) { return lives > DEAD_MARIO; } //Returning True if mario has lives and False if lives == 0
 	void startGame();
 	bool menu();
 	void pauseGame(int key);

@@ -9,6 +9,8 @@ void Mario::setStartingMario()
 	p.setY(STARTING_POS_Y);
 
 	p.setDir({ STAY, STAY });
+
+	p.setPreviousChar(' ');
 }
 
 void Mario::keyPressed(char key) {
@@ -249,10 +251,10 @@ void Mario::life()
 	printLives();
 	pBoard->updateBoard(pBoard->getLifePosX(), pBoard->getLifePosY(), ch_lives);		//update mario's life on current board
 
-	if(lives > DEAD_MARIO) {									//check if lives > 0
+	if (lives > DEAD_MARIO) {									//check if lives > 0
 		startOver();
 	}
-	else {
+	else if (lives == DEAD_MARIO) {
 		pBoard->printScreen(pBoard->getLosingBoard());			//printing LOSING screen
 		Sleep(2000);
 	}
@@ -295,18 +297,3 @@ void Mario::flashingMario()
 	draw();
 	Sleep(200);
 }
-
-//void Mario::startOver()
-//{
-//	cout << '\a';											//to make sound
-//	pBoard->printScreen(pBoard->getLostLifeBoard());		//printing lost life screen
-//	Sleep(4000);
-//	pBoard->reset();
-//	setStartingMario();
-//
-//	//setpBarrels(*pBarrels);
-//	pBarrels->setStartingBarrels();							//reset barrels
-//
-//	pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen
-//	printLives();									//printing mario's lives
-//}
