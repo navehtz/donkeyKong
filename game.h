@@ -18,12 +18,12 @@ class Game {
 	static constexpr int EXIT_GAME = 57;				//The key - 9
 	static constexpr int PAUSE = 27;					//ESC key
 	static constexpr int RETURN_BACK = 114;				//The key - r
-
 	static constexpr int DEAD_MARIO = 0;
 	static constexpr int FULL_LIVES = 3;
 	static constexpr int EXPLOSION_RADIUS = 2;
 
-	bool playing_mario = true;
+	bool playing_mario = true;							// True = while mario has more than 0 lives
+	bool exit_game = false;								// False = while EXIT_GAME haven't been pressed
 
 	Mario mario;
 	Board board;
@@ -31,24 +31,24 @@ class Game {
 
 public:
 
-	void showInstructions();
-	void run();							//Function that manage the game
+	void showInstructions();									// Displays the game instructions screen to the player
+	void run();													// Manages the overall flow of the game
 
-	void setStartingGame();
-	void updateActionByKeys();
-	bool isAlive(int lives) { return lives > DEAD_MARIO; } //Returning True if mario has lives and False if lives == 0
-	void startGame();
-	bool menu();
-	void pauseGame(int key);
+	void setStartingGame();										// Initializes the game to its starting state
+	void updateActionByKeys();									// Updates Mario's actions based on key presses from the user
+	bool isAlive(int lives) { return lives > DEAD_MARIO; }		// Returns true if Mario is alive (has more lives than DEAD_MARIO), otherwise false
+	void startGame();											// Starts the game loop and handles gameplay logic
+	bool menu();												// Displays the game menu and handles user input to start or quit the game
+	void pauseGame();									// Pauses the game when a specific key is pressed (PAUSE)
 
-	void draw();
-	void erase();
-	void move();
+	void draw();												// Draws Mario and barrels on the screen
+	void erase();												// Erases Mario's and barrels previous position from the screen
+	void move();												// Moves Mario and barrels to a new position based on user input or game logic
 
-	void updateIfDiedByBarrel();
-	void hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY);
-	void explodedByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int index);
-	bool wonTheLevel();
+	void updateIfDiedByBarrel();																			// Checks if Mario died from a barrel (hit or explosion)
+	void hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY);							// Handles the logic when Mario is hit by a barrel
+	void diedFromExplodedBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int index);	// Handles the logic when Mario dies due to an exploded barrel
+	bool wonTheLevel();																						// Checks if Mario successfully completed the level
 };
 
 

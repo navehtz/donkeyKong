@@ -3,10 +3,10 @@
 #include "general.h"
 
 class Board {
-	static constexpr size_t MAX_X = 80;  //changed from int to size_t
-	static constexpr size_t MAX_Y = 25;
+	static constexpr size_t MAX_X = 80;		// Board width
+	static constexpr size_t MAX_Y = 25;		// Board Height
 
-	static constexpr int LIFE_POS_X = 11;
+	static constexpr int LIFE_POS_X = 11;	// Position in the board that hold the number lives of mario
 	static constexpr int LIFE_POS_Y = 1;
 
 	const char* originalBoard[MAX_Y] = {
@@ -155,24 +155,20 @@ class Board {
 
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
 public:
-	void reset();
-	void printScreen(const char screen[][MAX_X + 1]) const;
-	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }
-	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }
+	void reset();																				// This function resets the board to its original state
+	void printScreen(const char screen[][MAX_X + 1]) const;										// This function prints the input board to the screen
+	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }					// This function retrieves a specific character from the board at position (x, y)
+	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }				// This function updates the board by replacing the character at position (x, y) with a new character
 
-	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1] { return currentBoard; }
-	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1] { return start_screen; }
-	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{	return instruction_screen; }
-	const char(&getLosingBoard() const)[MAX_Y][MAX_X + 1]{	return losing_screen; }
-	const char(&getWinningBoard() const)[MAX_Y][MAX_X + 1]{	return winning_screen; }
+	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1] { return currentBoard; }				// Returns a const reference to the current board's array
+	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1] { return start_screen; }				// Returns a const reference to the initial state of the board (start screen)
+	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{	return instruction_screen; }	// Returns a const reference to the board with instructions (instruction screen)
+	const char(&getLosingBoard() const)[MAX_Y][MAX_X + 1]{	return losing_screen; }				// Returns a const reference to the board shown when the player loses (losing screen)
+	const char(&getWinningBoard() const)[MAX_Y][MAX_X + 1]{	return winning_screen; }			// Returns a const reference to the board shown when the player wins (winning screen)
 
-	int get_board_width() { return MAX_X; }
-	int get_board_height() { return MAX_Y; }
+	int get_board_width() { return MAX_X; }			// Returns the width of the board
+	int get_board_height() { return MAX_Y; }		// Returns the height of the board
 
-	int getLifePosX() { return LIFE_POS_X; }
-	int getLifePosY() { return LIFE_POS_Y; }
-
+	int getLifePosX() { return LIFE_POS_X; }		// Returns the X position in the board that hold the number lives of mario
+	int getLifePosY() { return LIFE_POS_Y; }		// Returns the Y position in the board that hold the number lives of mario
 };
-
-
-

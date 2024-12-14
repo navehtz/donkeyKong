@@ -78,6 +78,19 @@ void Barrel::updateState()
 
 void Barrel::roll()
 {
+	manageDirection();
+	
+	if (explosionCases())
+		return;
+
+	blockedByWall();
+
+	fall_count = 0;
+	point.setDirY(STAY);
+}
+
+void Barrel::manageDirection()
+{
 	switch (ch_below)
 	{
 	case('<'):
@@ -91,18 +104,24 @@ void Barrel::roll()
 	case('='):
 		point.setDir({ point.getDirBeforeFalling() });
 	}
+}
 
+bool Barrel::explosionCases()
+{
 	if (fall_count >= FALL_FROM_TOO_HIGH) {
 		explode();
-		return;
+		return true;
 	}
-	
+
 	if (point.getX() < 1 || point.getX() >= pBoard->get_board_width() - 1) {	//80	
 		explode();
 		erase();
+		return true;
 	}
-		
+}
 
+void Barrel::blockedByWall()
+{
 	if (res_is_wall_on_left) {										//linked to a wall - barrel can't pass
 		if (point.getDir().x == LEFT) { point.setDirX(STAY); }
 	}
@@ -110,9 +129,6 @@ void Barrel::roll()
 	if (res_is_wall_on_right) {
 		if (point.getDir().x == RIGHT) { point.setDirX(STAY); }		//linked to a wall - barrel can't pass
 	}
-
-	fall_count = 0;
-	point.setDirY(STAY);
 }
 
 bool Barrel::isFalling()
@@ -131,12 +147,9 @@ void Barrel::explode()
 {
 	is_activated = false;
 	is_exploded = true;
-	//drawExplosion();     //TODO!!!
-
-	//setStartingBarrel();
 }
 
-bool Barrel::isBlock(char _ch)
+bool Barrel::isBlock(char _ch) const
 {
 	if (_ch == '=' || _ch == '>' || _ch == '<' || _ch == 'O')
 		return true;
@@ -158,7 +171,7 @@ void Barrel::updateNextMove()
 	point.setY(newY);
 }
 
-void Barrel::drawExplosion()
+/*void Barrel::drawExplosion()
 {
 	int x, y;
 
@@ -177,4 +190,4 @@ void Barrel::drawExplosion()
 		}
 	}
 	//pBoard->printScreen(pBoard->getCurrentBoard());
-}
+}*/

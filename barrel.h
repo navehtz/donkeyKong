@@ -1,14 +1,26 @@
 #pragma once
 
-#include "point.h"
 #include <Windows.h>	//for Sleep and colors
 #include <random>
+#include "point.h"
 
 
 class Barrel
 {
+	// Constants
 	static constexpr int STARTING_POS_LEFT_X = 36;
 	static constexpr int STARTING_POS_RIGHT_X = 38;
+	static constexpr int STARTING_POS_Y = 3;
+
+	static constexpr int DOWN = 1;
+	static constexpr int RIGHT = 1;
+	static constexpr int LEFT = -1;
+	static constexpr int STAY = 0;
+
+	static constexpr int FALL_FROM_TOO_HIGH = 8;
+	static constexpr int EXPLODED_BARREL = 0;
+
+	// Members
 	char ch = 'O';
 
 	int fall_count = 0;
@@ -24,68 +36,60 @@ class Barrel
 
 	bool is_activated = false;
 	bool is_exploded = false;
-	static constexpr int STARTING_POS_Y = 3;
 
-	static constexpr int DOWN = 1;
-	static constexpr int RIGHT = 1;
-	static constexpr int LEFT = -1;
-	static constexpr int STAY = 0;
-
-	static constexpr int FALL_FROM_TOO_HIGH = 8;
-	static constexpr int EXPLODED_BARREL = 0;
-
+	// States of barrel
 	enum class BarrelState {
 		Falling,
 		Rolling
 	};
 	BarrelState state = BarrelState::Rolling;
 
+	// Defining struct for barrel's direction
 	struct Direction {
 		int x, y;
 	};
 
 public:
-	Barrel() : point(ch) {}
-	//Barrel() : point(STARTING_POS_LEFT_X, STARTING_POS_Y, ch) {}
+	Barrel() : point(ch) {}													// Constructor of barrel with point
 
-	Point getPoint() { return point; } //maybe const
+	void setStartingBarrel();												// Initialize barrel
+	bool getIsExploded() { return is_exploded; }							// Get the member 'is_exploded'
+	void setIsExploded(bool _is_exploded) { is_exploded = _is_exploded; }	// Set the member 'is_exploded'
+	void setpBoard(Board& _board) { pBoard = &_board; }						// Set pBoard to the board
+	Point getPoint() const { return point; }								// Get the member 'point'
 
-	void draw() {
-		point.draw(ch);
-		pBoard->updateBoard(point.getX(), point.getY(), ch);
+	void draw() {															// Draw the barrel on the screen
+		point.draw(ch);														// Erase the barrel from the screen
+		pBoard->updateBoard(point.getX(), point.getY(), ch);				// Update the board with the current barrel
 	}
 	void erase() {
 		point.erase();
-		pBoard->updateBoard(point.getX(), point.getY(), point.getPreviousChar());
+		pBoard->updateBoard(point.getX(), point.getY(), point.getPreviousChar());						// Update the board without the current barrel
 	}
 
-	void setpBoard(Board& _board) { pBoard = &_board; }	
+	void checkWhatState();										// Check in which state the barrel is
+	void updateState();											// Update the barrel's state
 
-	void setStartingBarrel();
+	char getCharFromBoard(int _x, int _y) const { return pBoard->getCharFromBoard(_x, _y); }			// Get the char in the (x,y) position on board
 
-	void checkWhatState();
-	void updateState();
+	void move();												// Handle the barrel's movement
+	bool isFalling();											// Check if the barrel is falling 
+	void fall();												// Handle the barrel's falling
+	void roll();												// Handle the barrel's rolling
+	void manageDirection();										// Manage the direction of the barrel while on the floor
+	bool explosionCases();										// Handle the cases which the barrel explodes in (falling 8 chars or at wall)
+	void explode();												// Function to update the barrel's 'is_activated' and 'is_exploded' members
+	void blockedByWall();										// Function to stop the barrels's movement if it reaches a wall
+	bool isBlock(char _ch) const;								// The function returns true if the parameter is a floor/ceiling/wall and false otherwise
 
-	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); }
+	void updatePreviousDir() { point.setPreviousDir(point.getDir()); }									// Function to update the barrel's previous direction like the current (similar to previous_dir = dir)              
+	void updatePreviousChar() { point.setPreviousChar(getCharFromBoard(point.getX(), point.getY())); }	// Function for keeping the char the barrel is on so it can be printes in the next loop
+	void updateNextMove();										// Updating the movement of the barrel for the next loop according to the position and the direction
 
-	void move();
-	bool isFalling();
-	void fall();
-	void roll();
-	void explode();
-	bool getIsExploded() { return is_exploded; }
-	void setIsExploded(bool _is_exploded) { is_exploded = _is_exploded; }
-	bool isBlock(char _ch);
-
-	void updatePreviousDir() { point.setPreviousDir(point.getDir()); } //previous_dir = dir; }                     //change the name without underscore
-	void updatePreviousChar() { point.setPreviousChar(getCharFromBoard(point.getX(), point.getY())); }
-
-	void updateNextMove();
-
-	bool IsActivated() { return is_activated; };
-	void activate() { is_activated = true; }
+	bool IsActivated() { return is_activated; };				// The function returns true if the barrel is activated(rolling/falling etc.)and false otherwise
+	void activate() { is_activated = true; }					// Function to activate the barrel
 	
-	int myRandom();
-	void drawExplosion();
+	int myRandom();												// Function to raffle a number ( 1 or 0 )
+	//void drawExplosion();
 };
 
