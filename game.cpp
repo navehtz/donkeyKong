@@ -35,39 +35,88 @@ bool Game::menu()
 
 void Game::startGame()
 {
+	setStartingGame();
+	playing_mario = true;
+	bool isMarioAlive = true;
+	char ch_lives = (char)mario.getLives() + '0';
+
+	while (playing_mario)
+	{
+		if (wonTheLevel())
+			break;
+		barrels.bringBackExplodedBarrels();
+		draw();
+		if (_kbhit())
+		{
+			updateActionByKeys();
+		}
+		Sleep(150);
+		
+		erase();
+		move();
+
+		updateIfDiedByBarrel();
+
+		playing_mario = isAlive(mario.getLives());	//If mario has more than 0 lives, the game will continue
+	}
+	clrscr();
+	board.printScreen(board.getStartBoard());
+}
+
+void Game::setStartingGame()
+{
 	clrscr();
 	board.reset();
 	mario.setStartingMario();
 	mario.setBoard(board);
+	mario.setpBarrels(barrels);
+	barrels.setStartingBarrels();
+
+	barrels.setpBoard(board);
 	board.printScreen(board.getCurrentBoard());
 
-	bool playing_mario = true;
+	mario.setLives(FULL_LIVES);
+	
+	char ch_lives = (char)mario.getLives() + '0';
+	gotoxy(board.getLifePosX(), board.getLifePosY());
+	cout << ch_lives;											//printing 
+}
 
-	while (playing_mario)
+
+
+
+void Game::updateActionByKeys()
+{
+	int key = _getch();
+	if (key == EXIT_GAME)
 	{
-		mario.draw();
-
-		if (_kbhit())
-		{
-			int key = _getch();
-			if (key == EXIT_GAME)
-			{
-
-				playing_mario = false;
-				break;
-			}
-			else if (key == PAUSE)
-			{
-				pauseGame(key);
-			}
-			else { mario.keyPressed((char)key); }
-		}
-		Sleep(150);
-		mario.erase();
-		mario.move();
+		playing_mario = false;
+		return;
 	}
-	clrscr();
-	board.printScreen(board.getStartBoard());
+	else if (key == PAUSE)
+	{
+		pauseGame(key);
+	}
+	else { mario.keyPressed((char)key); }
+}
+
+void Game::draw()
+{
+	mario.draw();
+	barrels.timing();
+	barrels.draw();
+}
+
+void Game::erase()
+{
+	mario.erase();
+	barrels.erase();
+}
+
+void Game::move()
+{
+	mario.move();
+	barrels.move();
 }
 
 void Game::pauseGame(int _key)
@@ -85,6 +134,7 @@ void Game::pauseGame(int _key)
 	}
 	Sleep(50);
 }
+
 
 void Game::showInstructions()
 {
@@ -105,3 +155,51 @@ void Game::showInstructions()
 	clrscr();
 	board.printScreen(board.getStartBoard());
 }	
+void Game::updateIfDiedByBarrel()
+{
+	int barrelPosX, barrelPosY;
+	int marioPosX, marioPosY;
+
+	for (int i = 0; i < barrels.getMaxBarrels(); i++)
+	{
+		barrelPosX = barrels.getPosX(i);
+		barrelPosY = barrels.getPosY(i);
+
+
+		marioPosX = mario.getPointX();
+		marioPosY = mario.getPointY();
+
+		hitByBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY);
+		explodedByBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY, i);
+	}
+	
+	if (mario.getLives() == DEAD_MARIO)
+		playing_mario = false;
+}
+
+void Game::hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY)
+{
+	if (marioPosX == barrelPosX && marioPosY == barrelPosY)
+		mario.life();
+}
+	
+
+void Game::explodedByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int i)
+{	
+	bool is_exploded = barrels.getIfBarrelExploded(i);
+	if (is_exploded)
+		if (abs(barrelPosX - marioPosX + 1) <= EXPLOSION_RADIUS && abs(barrelPosY - marioPosY + 1) <= EXPLOSION_RADIUS)  // +1 because move is before draw
+			mario.life();	
+}
+
+bool Game::wonTheLevel()
+{
+	if (mario.getIfWon())
+	{
+		board.printScreen(board.getWinningBoard());			//printing LOSING screen
+		Sleep(2000);
+		return true;
+	}
+	else
+		return false;
+}

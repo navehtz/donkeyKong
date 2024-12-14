@@ -8,6 +8,7 @@
 #include "point.h"
 #include "mario.h"
 #include "board.h"
+#include "barrels.h"
 
 using namespace std;
 
@@ -18,18 +19,38 @@ class Game {
 	static constexpr int PAUSE = 27;					//ESC key
 	static constexpr int RETURN_BACK = 114;				//The key - r
 
+	static constexpr int DEAD_MARIO = 0;
+	static constexpr int FULL_LIVES = 3;
+	static constexpr int EXPLOSION_RADIUS = 2;
+
+	bool playing_mario = true;
+
 	Mario mario;
 	Board board;
+	Barrels barrels;
 
 public:
 
 	void showInstructions();
-	void run();							//function that manage the game
+	void run();							//Function that manage the game
 
+	void setStartingGame();
+	void updateActionByKeys();
+	bool isAlive(int lives) { return lives > DEAD_MARIO; } //Returning True if mario has lives and False if lives == 0
 	void startGame();
 	bool menu();
 	void pauseGame(int key);
+
+	void draw();
+	void erase();
+	void move();
+
+	void updateIfDiedByBarrel();
+	void hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY);
+	void explodedByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int index);
+	bool wonTheLevel();
 };
+
 
 
 
