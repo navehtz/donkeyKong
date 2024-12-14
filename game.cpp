@@ -11,7 +11,9 @@ void Game::run()
 	bool in_game = true;
 
 	while (in_game)									// Main game loop: keeps running while the game is active
-		in_game = menu();							
+		in_game = menu();
+
+	clrscr();
 }
 
 // Displays the game menu and handles user input to start or quit the game

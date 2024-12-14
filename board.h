@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Windows.h>	//for Sleep and colors
+
 #include "general.h"
 
 class Board {
