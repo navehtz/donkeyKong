@@ -23,7 +23,7 @@ class Game {
 	static constexpr int EXPLOSION_RADIUS = 2;
 
 	bool playing_mario = true;							// True = while mario has more than 0 lives
-	bool exit_game = false;								// False = while EXIT_GAME haven't been pressed
+	bool exit_game = false;								// False = while EXIT_GAME hasn't been pressed
 
 	Mario mario;
 	Board board;
@@ -39,7 +39,7 @@ public:
 	bool isAlive(int lives) { return lives > DEAD_MARIO; }		// Returns true if Mario is alive (has more lives than DEAD_MARIO), otherwise false
 	void startGame();											// Starts the game loop and handles gameplay logic
 	bool menu();												// Displays the game menu and handles user input to start or quit the game
-	void pauseGame();									// Pauses the game when a specific key is pressed (PAUSE)
+	void pauseGame();											// Pauses the game when a specific key is pressed (PAUSE)
 
 	void draw();												// Draws Mario and barrels on the screen
 	void erase();												// Erases Mario's and barrels previous position from the screen

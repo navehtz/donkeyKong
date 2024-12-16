@@ -5,8 +5,7 @@
 class Barrels
 {
 	static constexpr int MAX_BARRELS = 10;
-	//int num_barrels = 0;
-	static constexpr int TIME_TO_ROLL = 7;		//every X iterations to activate a barrel
+	static constexpr int TIME_TO_ROLL = 7;		// Every 7 iterations to activate a barrel
 
 	Barrel barrels[MAX_BARRELS];
 
@@ -14,31 +13,31 @@ class Barrels
 
 
 public:
-	Barrels() {
+	Barrels() {														// ctor of Barrels. initialize all the barrels in the array
 		for (int i = 0; i < MAX_BARRELS; i++) {
-			//barrels[i] = Barrel();
 			barrels[i].setStartingBarrel();
 		}
 	}
 
-	void activateBarrels();
-	//void deActivateBarrel();
-	void setpBoard(Board& _board) { pBoard = &_board; }
+	int getPosX(int i) { int posX = barrels[i].getPoint().getX(); return posX; }		// Get the X position of the i barrel in the array
+	int getPosY(int i) { int posY = barrels[i].getPoint().getY(); return posY; }		// Get the Y position of the i barrel in the array
+	
+	const Barrel* getBarrels() { return barrels; }					// Get the member 'barrels'
+	int getMaxBarrels() { return MAX_BARRELS; }						// Get the member 'MAX_BARRELS'
+	void setpBoard(Board& _board) { pBoard = &_board; }				// Set pBoard to the board
 
-	const Barrel* getBarrels() { return barrels; }
 
-	void timing();
-	void draw();
-	void erase();
-	void move();
-	void setStartingBarrels();
-	int getMaxBarrels() { return MAX_BARRELS; }
+	void timing();													// Handle the entry of the barrels into the board
+	void setStartingBarrels();										// Inititialize all barrels
+	void activateBarrels();											// Activating the first barrel that isn't activated
+	void draw();													// Draw all the activated barrels
+	void erase();													// Erase all the activated barrels
+	void move();													// Move all the activated barrels
 
-	int getPosX(int i) { int posX = barrels[i].getPoint().getX(); return posX; }
-	int getPosY(int i) { int posY = barrels[i].getPoint().getY(); return posY; }
-
-	bool getIfBarrelExploded(int i) { bool is_barrel_exploded = barrels[i].getIsExploded(); return is_barrel_exploded; }
-	void bringBackExplodedBarrels();
-
+	bool getIfBarrelExploded(int i) {								// Check if a barrel has exploded
+		bool is_barrel_exploded = barrels[i].getIsExploded();
+		return is_barrel_exploded;
+	}
+	void bringBackExplodedBarrels();								// Initialize all the exploded barrels
 };
 

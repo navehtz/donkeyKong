@@ -5,6 +5,7 @@
 // Manages the overall flow of the game
 void Game::run()
 {
+	system("mode con cols=80 lines=25");			// Set the console size to be 80X25
 	ShowConsoleCursor(false);						// Hides the console cursor to improve visual appearance during the game
 
 	board.printScreen(board.getStartBoard());		// Displays the starting board on the screen
@@ -30,6 +31,8 @@ bool Game::menu()
 			showInstructions();
 			break;
 		case(EXIT_GAME):							// User pressed the key to exit the game
+			board.printScreen(board.getGoodByeBoard());
+			Sleep(1000);
 			return false;							// Exit the menu loop and terminate the game
 		}
 	}
@@ -42,8 +45,7 @@ void Game::startGame()
 	setStartingGame();								// Initializes the game state and Mario's starting position and attributes
 	playing_mario = true;							// Indicates that the Mario gameplay loop is active
 	exit_game = false;								// Indicates that the Mario gameplay loop is active
-	bool isMarioAlive = true;						// Tracks whether Mario is alive (initially true)
-	char ch_lives = (char)mario.getLives() + '0';	// Converts Mario's initial number of lives to a character for display
+
 
 	while (playing_mario && !exit_game)				// Main game loop: continues as long as Mario is playing and has lives
 	{
@@ -52,12 +54,12 @@ void Game::startGame()
 
 		barrels.bringBackExplodedBarrels();			// Reset the state of barrels that have exploded
 		draw();										// Draws the current state of the game (Mario, barrels)
+		updateIfDiedByBarrel();						// Checks if Mario collided with a barrel and updates his state if he has died
 
 		if (_kbhit())
 		{
 			updateActionByKeys();
 		}
-
 		Sleep(150);
 		erase();
 		move();
@@ -190,26 +192,25 @@ void Game::updateIfDiedByBarrel()
 		playing_mario = false;
 }
 
-/*
-Handles the logic when Mario is hit by a barrel
-Parameters:  - barrelPosX, barrelPosY = Position of the barrel
-			 - marioPosX, marioPosY   = Position of Mario	  */
+
+// Handles the logic when Mario is hit by a barrel
 void Game::hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY)
 {
-	if (marioPosX == barrelPosX && marioPosY == barrelPosY)
+	if (marioPosX == barrelPosX && marioPosY == barrelPosY)											// When mario and the barrel at the same place
+		mario.life();
+	else if(marioPosX - 1 == barrelPosX && marioPosX == barrelPosX + 1 && marioPosY == barrelPosY)	// When Mario and the barrel move toward each other, we need to check their previous positions
+		mario.life();
+	else if(marioPosX + 1 == barrelPosX && marioPosX == barrelPosX - 1 && marioPosY == barrelPosY)	// When Mario and the barrel move toward each other, we need to check their previous positions
 		mario.life();
 }
 
-/*
-Handles the logic when Mario dies due to an exploded barrel
-Parameters:  - barrelPosX, barrelPosY = The position of the exploding barrel on the screen
-             - marioPosX, marioPosY   = Mario's position at the time of the explosion
-             - index                  = An additional parameter to identify the specific barrel in the array of barrels */
+
+// Handles the logic when Mario dies due to an exploded barrel
 void Game::diedFromExplodedBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int i)
 {	
-	bool is_exploded = barrels.getIfBarrelExploded(i);			// Check if the specified barrel (index `i`) has exploded
+	bool is_exploded = barrels.getIfBarrelExploded(i);			// Check if the specified i barrel has exploded
 	if (is_exploded)
-		if (abs(barrelPosX - marioPosX + 1) <= EXPLOSION_RADIUS && abs(barrelPosY - marioPosY + 1) <= EXPLOSION_RADIUS)  // +1 because move is before draw
+		if (abs(barrelPosX - marioPosX + 1) <= EXPLOSION_RADIUS && abs(barrelPosY - marioPosY + 1) <= EXPLOSION_RADIUS)  // +1 because its movement updated before draw
 			mario.life();	
 }
 

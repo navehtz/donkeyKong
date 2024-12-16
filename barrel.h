@@ -29,7 +29,7 @@ class Barrel
 	Board* pBoard = nullptr;
 
 	char ch_covered = ' ', ch_below = ' ', two_chars_below = ' ';
-	char ch_above = ' ', ch_left = ' ', ch_right = ' ';
+	char ch_left = ' ', ch_right = ' ';
 
 	bool res_is_on_ladder = false, res_is_on_floor = false, res_is_below_roof = false;
 	bool res_is_wall_on_left = false, res_is_wall_on_right = false, res_is_two_chars_below_floor = false;
@@ -50,7 +50,7 @@ class Barrel
 	};
 
 public:
-	Barrel() : point(ch) {}													// Constructor of barrel with point
+	Barrel() : point(ch) {}													// Ctor of barrel with point
 
 	void setStartingBarrel();												// Initialize barrel
 	bool getIsExploded() { return is_exploded; }							// Get the member 'is_exploded'
@@ -73,7 +73,7 @@ public:
 	char getCharFromBoard(int _x, int _y) const { return pBoard->getCharFromBoard(_x, _y); }			// Get the char in the (x,y) position on board
 
 	void move();												// Handle the barrel's movement
-	bool isFalling();											// Check if the barrel is falling 
+	bool isFalling() const;										// Check if the barrel is falling 
 	void fall();												// Handle the barrel's falling
 	void roll();												// Handle the barrel's rolling
 	void manageDirection();										// Manage the direction of the barrel while on the floor

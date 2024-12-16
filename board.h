@@ -20,19 +20,19 @@ class Board {
 		  "                        H      =============         H                          ", // 4
 		  "                        H                            H                          ", // 5
 		  "                        H                            H                          ", // 6
-		  "          ==================== =           =>===============                    ", // 7
+		  "          ======================           =>===============                    ", // 7
 		  "            H                                 H                                 ", // 8
 		  "            H                                 H                                 ", // 9
 		  "            H                                 H           H                     ", // 10
 		  "            H                                 H           H                     ", // 11
-		  "         >==================== =        ====================<=====              ", // 12
+		  "         >==================            ====================<=====              ", // 12
 		  "                       H                                        H               ", // 13
 		  "                       H                                        H               ", // 14
 		  "                ============<         >===========================              ", // 15
 		  "                  H                               H            H                ", // 16
 		  "                  H                               H            H                ", // 17
 		  "                  H                               H            H                ", // 18
-	      "         ======>============== =               ===================<             ", // 19
+	      "         =======================               ===================<             ", // 19
 	      "          H                                                H                    ", // 20
 		  "          H                                                H                    ", // 21
 		  "          H                H              H                H                    ", // 22
@@ -154,6 +154,36 @@ class Board {
 		 "********************************************************************************" //24
 	};
 
+	
+	char goodBye_screen[MAX_Y][MAX_X + 1] = {
+		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
+		 "********************************************************************************",//0
+		 "*                                                                              *",//1
+		 "*                                                                              *",//2
+		 "*                                                                              *",//3
+		 "*                                                                              *",//4
+		 "*                                                                              *",//5
+		 "*                                                                              *",//6
+		 "*                                                                              *",//7
+		 "*                                                                              *",//8
+		 "*             **************************************************               *",//9
+		 "*             *  ____                 _   ____               _ *               *",//10
+		 "*             * / ___| ___   ___   __| | | __ ) _   _  ___  | |*               *",//11
+		 "*             *| |  _ / _ \\ / _ \\ / _` | |  _ \\| | | |/ _ \\ | |*               *",//12
+		 "*             *| |_| | (_) | (_) | (_| | | |_) | |_| |  __/ |_|*               *",//13
+		 "*             * \\____|\\___/ \\___/ \\__,_| |____/ \\__, |\\___| (_)*               *",//14
+		 "*             *                                 |___/          *               *",//15
+		 "*             **************************************************               *",//16         
+		 "*                                                                              *",//17
+		 "*                                                                              *",//18 
+		 "*                                                                              *",//19 
+		 "*                                                                              *",//20 
+		 "*                                                                              *",//21 
+		 "*                                                                              *",//22 
+		 "*                                                                              *",//23 
+		 "********************************************************************************" //24
+	};
+
 
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
 public:
@@ -167,6 +197,7 @@ public:
 	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{	return instruction_screen; }	// Returns a const reference to the board with instructions (instruction screen)
 	const char(&getLosingBoard() const)[MAX_Y][MAX_X + 1]{	return losing_screen; }				// Returns a const reference to the board shown when the player loses (losing screen)
 	const char(&getWinningBoard() const)[MAX_Y][MAX_X + 1]{	return winning_screen; }			// Returns a const reference to the board shown when the player wins (winning screen)
+	const char(&getGoodByeBoard() const)[MAX_Y][MAX_X + 1]{	return goodBye_screen; }			// Returns a const reference to the board shown when the player wins (goodBye screen)
 
 	int get_board_width() { return MAX_X; }			// Returns the width of the board
 	int get_board_height() { return MAX_Y; }		// Returns the height of the board
