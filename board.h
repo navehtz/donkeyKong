@@ -1,12 +1,14 @@
 #pragma once
 
+#include <Windows.h>	//for Sleep and colors
+
 #include "general.h"
 
 class Board {
-	static constexpr size_t MAX_X = 80;  //changed from int to size_t
-	static constexpr size_t MAX_Y = 25;
+	static constexpr size_t MAX_X = 80;		// Board width
+	static constexpr size_t MAX_Y = 25;		// Board Height
 
-	static constexpr int LIFE_POS_X = 11;
+	static constexpr int LIFE_POS_X = 11;	// Position in the board that hold the number lives of mario
 	static constexpr int LIFE_POS_Y = 1;
 
 	const char* originalBoard[MAX_Y] = {
@@ -18,19 +20,19 @@ class Board {
 		  "                        H      =============         H                          ", // 4
 		  "                        H                            H                          ", // 5
 		  "                        H                            H                          ", // 6
-		  "          ==================== =           =>===============                    ", // 7
+		  "          ======================           =>===============                    ", // 7
 		  "            H                                 H                                 ", // 8
 		  "            H                                 H                                 ", // 9
 		  "            H                                 H           H                     ", // 10
 		  "            H                                 H           H                     ", // 11
-		  "         >==================== =        ====================<=====              ", // 12
+		  "         >==================            ====================<=====              ", // 12
 		  "                       H                                        H               ", // 13
 		  "                       H                                        H               ", // 14
 		  "                ============<         >===========================              ", // 15
 		  "                  H                               H            H                ", // 16
 		  "                  H                               H            H                ", // 17
 		  "                  H                               H            H                ", // 18
-	      "         ======>============== =               ===================<             ", // 19
+	      "         =======================               ===================<             ", // 19
 	      "          H                                                H                    ", // 20
 		  "          H                                                H                    ", // 21
 		  "          H                H              H                H                    ", // 22
@@ -152,27 +154,54 @@ class Board {
 		 "********************************************************************************" //24
 	};
 
+	
+	char goodBye_screen[MAX_Y][MAX_X + 1] = {
+		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
+		 "********************************************************************************",//0
+		 "*                                                                              *",//1
+		 "*                                                                              *",//2
+		 "*                                                                              *",//3
+		 "*                                                                              *",//4
+		 "*                                                                              *",//5
+		 "*                                                                              *",//6
+		 "*                                                                              *",//7
+		 "*                                                                              *",//8
+		 "*             **************************************************               *",//9
+		 "*             *  ____                 _   ____               _ *               *",//10
+		 "*             * / ___| ___   ___   __| | | __ ) _   _  ___  | |*               *",//11
+		 "*             *| |  _ / _ \\ / _ \\ / _` | |  _ \\| | | |/ _ \\ | |*               *",//12
+		 "*             *| |_| | (_) | (_) | (_| | | |_) | |_| |  __/ |_|*               *",//13
+		 "*             * \\____|\\___/ \\___/ \\__,_| |____/ \\__, |\\___| (_)*               *",//14
+		 "*             *                                 |___/          *               *",//15
+		 "*             **************************************************               *",//16         
+		 "*                                                                              *",//17
+		 "*                                                                              *",//18 
+		 "*                                                                              *",//19 
+		 "*                                                                              *",//20 
+		 "*                                                                              *",//21 
+		 "*                                                                              *",//22 
+		 "*                                                                              *",//23 
+		 "********************************************************************************" //24
+	};
+
 
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
 public:
-	void reset();
-	void printScreen(const char screen[][MAX_X + 1]) const;
-	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }
-	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }
+	void reset();																				// This function resets the board to its original state
+	void printScreen(const char screen[][MAX_X + 1]) const;										// This function prints the input board to the screen
+	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }					// This function retrieves a specific character from the board at position (x, y)
+	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }				// This function updates the board by replacing the character at position (x, y) with a new character
 
-	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1] { return currentBoard; }
-	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1] { return start_screen; }
-	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{	return instruction_screen; }
-	const char(&getLosingBoard() const)[MAX_Y][MAX_X + 1]{	return losing_screen; }
-	const char(&getWinningBoard() const)[MAX_Y][MAX_X + 1]{	return winning_screen; }
+	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1] { return currentBoard; }				// Returns a const reference to the current board's array
+	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1] { return start_screen; }				// Returns a const reference to the initial state of the board (start screen)
+	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{	return instruction_screen; }	// Returns a const reference to the board with instructions (instruction screen)
+	const char(&getLosingBoard() const)[MAX_Y][MAX_X + 1]{	return losing_screen; }				// Returns a const reference to the board shown when the player loses (losing screen)
+	const char(&getWinningBoard() const)[MAX_Y][MAX_X + 1]{	return winning_screen; }			// Returns a const reference to the board shown when the player wins (winning screen)
+	const char(&getGoodByeBoard() const)[MAX_Y][MAX_X + 1]{	return goodBye_screen; }			// Returns a const reference to the board shown when the player wins (goodBye screen)
 
-	int get_board_width() { return MAX_X; }
-	int get_board_height() { return MAX_Y; }
+	int get_board_width() { return MAX_X; }			// Returns the width of the board
+	int get_board_height() { return MAX_Y; }		// Returns the height of the board
 
-	int getLifePosX() { return LIFE_POS_X; }
-	int getLifePosY() { return LIFE_POS_Y; }
-
+	int getLifePosX() { return LIFE_POS_X; }		// Returns the X position in the board that hold the number lives of mario
+	int getLifePosY() { return LIFE_POS_Y; }		// Returns the Y position in the board that hold the number lives of mario
 };
-
-
-

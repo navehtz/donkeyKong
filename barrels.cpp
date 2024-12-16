@@ -1,11 +1,12 @@
 #include "barrels.h"
 
+// Handle the entry of the barrels into the board
 void Barrels::timing()
 {
 	static int iterations = 0;
 	static bool first_run = true;
 
-	if (iterations == TIME_TO_ROLL || first_run == true)	// if it's time to roll a barrel
+	if (iterations == TIME_TO_ROLL || first_run == true)	// If it's time to roll a barrel
 	{
 		activateBarrels();
 		iterations = 0;
@@ -15,6 +16,7 @@ void Barrels::timing()
 	iterations++;
 }
 
+// Inititialize all barrels
 void Barrels::setStartingBarrels()
 {
 	for (int i = 0; i < MAX_BARRELS; i++)
@@ -23,20 +25,21 @@ void Barrels::setStartingBarrels()
 	}
 }
 
+// Activating the first barrel that isn't activated
 void Barrels::activateBarrels()		
 {
 	for (int i = 0; i < MAX_BARRELS; i++)
 	{
-		if (/*num_barrels != MAX_BARRELS &&*/ !barrels[i].IsActivated())
+		if (!barrels[i].IsActivated())
 		{
 			barrels[i].setpBoard(*pBoard);
 			barrels[i].activate();
-			//num_barrels++;
-			return;
+			return;											// For activating only the first barrel that isn't activated
 		}
 	}
 }
 
+// Draw all the activated barrels
 void Barrels::draw()
 {
 	for (int i = 0; i < MAX_BARRELS; i++)
@@ -48,6 +51,7 @@ void Barrels::draw()
 	}
 }
 
+// Erase all the activated barrels
 void Barrels::erase()
 {
 	for (int i = 0; i < MAX_BARRELS; i++)
@@ -59,7 +63,7 @@ void Barrels::erase()
 	}
 }
 
-
+// Move all the activated barrels
 void Barrels::move()
 {
 	for (int i = 0; i < MAX_BARRELS; i++)
@@ -71,6 +75,7 @@ void Barrels::move()
 	}
 }
 
+// Initialize all the exploded barrels
 void Barrels::bringBackExplodedBarrels()
 {
 	for (int i = 0; i < MAX_BARRELS; i++)
