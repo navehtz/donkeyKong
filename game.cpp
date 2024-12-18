@@ -204,7 +204,7 @@ void Game::hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioP
 		mario.life();
 	else if(marioPosX - 1 == barrelPosX && marioPosX == barrelPosX + 1 && marioPosY == barrelPosY && barrelDirX == LEFT)	// When Mario and the barrel move toward each other, we need to check their previous positions
 		mario.life();
-	else if(marioPosX + 1 == barrelPosX && marioPosX == barrelPosX - 1 && marioPosY == barrelPosY && barrelDirX != RIGHT)	// When Mario and the barrel move toward each other, we need to check their previous positions
+	else if(marioPosX + 1 == barrelPosX && marioPosX == barrelPosX - 1 && marioPosY == barrelPosY && barrelDirX == RIGHT)	// When Mario and the barrel move toward each other, we need to check their previous positions
 		mario.life();
 }
 
