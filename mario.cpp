@@ -12,6 +12,8 @@ void Mario::setStartingMario()
 	p.setDir({ STAY, STAY });								// Set stating direction for Mario
 
 	p.setPreviousChar(' ');									// Reset the previous char prameter
+
+	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));// Flush the input from the user
 }
 
 // Processes a key press to determine Mario's movement direction.
