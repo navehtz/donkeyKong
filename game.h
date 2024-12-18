@@ -21,6 +21,8 @@ class Game {
 	static constexpr int DEAD_MARIO = 0;
 	static constexpr int FULL_LIVES = 3;
 	static constexpr int EXPLOSION_RADIUS = 2;
+	static constexpr int LEFT = -1;
+	static constexpr int RIGHT = 1;
 
 	bool playing_mario = true;							// True = while mario has more than 0 lives
 	bool exit_game = false;								// False = while EXIT_GAME hasn't been pressed
@@ -46,7 +48,7 @@ public:
 	void move();												// Moves Mario and barrels to a new position based on user input or game logic
 
 	void updateIfDiedByBarrel();																			// Checks if Mario died from a barrel (hit or explosion)
-	void hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY);							// Handles the logic when Mario is hit by a barrel
+	void hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int marioDirX);							// Handles the logic when Mario is hit by a barrel
 	void diedFromExplodedBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int index);	// Handles the logic when Mario dies due to an exploded barrel
 	bool wonTheLevel();																						// Checks if Mario successfully completed the level
 };

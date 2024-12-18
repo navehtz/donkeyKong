@@ -30,6 +30,22 @@ void Mario::move()
 {
 	static bool is_climbing = false;
 
+	updateCharParameters();		// Update all the char data members around mario
+	amendNextMove();			// Neutralizing illegal movements (jumping under the ceiling, going through a wall, etc.)
+
+	checkWhatState();			// Check what is mario state (climbing/ jumping/ falling/ walking or staying)
+	updateState();				// Update the moves that mario should commit by the state
+
+
+	//update prameters
+	updateNextMove();			// activate next move
+	updatePreviousChar();
+	updatePreviousDir();
+}
+
+// Update all the char data members around mario
+void Mario::updateCharParameters()
+{
 	int _x = p.getX(), _y = p.getY();
 
 	ch_covered = getCharFromBoard(_x, _y);
@@ -45,17 +61,6 @@ void Mario::move()
 	res_is_wall_on_left = isBlock(ch_left);
 	res_is_wall_on_right = isBlock(ch_right);
 	res_is_two_chars_below_floor = isBlock(two_chars_below);
-
-	amendNextMove();			// Neutralizing illegal movements (jumping under the ceiling, going through a wall, etc.)
-
-	checkWhatState();			// Check what is mario state (climbing/ jumping/ falling/ walking or staying)
-	updateState();				// Update the moves that mario should commit by the state
-
-
-	//update prameters
-	updateNextMove();			// activate next move
-	updatePreviousChar();
-	updatePreviousDir();
 }
 
 // Check in which state the Marrio is
@@ -176,9 +181,11 @@ void Mario::fall()
 // Handle the Mario's walking and standing
 void Mario::walkOrStay()					
 {
-	if (fall_count >= FALL_FROM_TOO_HIGH) {								// If fall from high places, mario lose life
+	if (fall_count >= FALL_FROM_TOO_HIGH)								// If fall from high places, mario lose life
 		life();
-	}		
+
+	if (ch_left == GORRILA || ch_right == GORRILA)
+		life();
 
 	fall_count = 0;														// Reset count_jump counter
 	p.setDirY(STAY);

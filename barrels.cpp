@@ -86,3 +86,15 @@ void Barrels::bringBackExplodedBarrels()
 		}
 	}
 }
+
+void Barrels::updateBarrelsCharParameters()
+{
+	for (int i = 0; i < MAX_BARRELS; i++)
+	{
+		if (barrels[i].IsActivated())
+		{
+			barrels[i].updateCharParameters();
+		}
+	}
+}
+

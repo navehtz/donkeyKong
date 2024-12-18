@@ -2,6 +2,9 @@
 
 #include <iostream>
 using namespace std;
+#include <locale>
+#include <codecvt>
+#include <string>
 
 #include "general.h"
 #include "board.h"

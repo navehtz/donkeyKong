@@ -2,7 +2,7 @@
 
 // Initialize barrel
 void Barrel::setStartingBarrel()
-{
+{	
 	point.setY(STARTING_POS_Y);									// Same y-axis starting position for both cases
 
 	if (myRandom() == 0)										// Start from the left side
@@ -17,6 +17,8 @@ void Barrel::setStartingBarrel()
 	}
 	fall_count = 0;
 	is_exploded = false;
+
+	point.setPreviousChar(' ');
 }
 
 // Function to raffle a number ( 1 or 0 )
@@ -28,12 +30,25 @@ int Barrel::myRandom()
 	return dist(gen);
 }
 
+
 // Handle the barrel's movement
 void Barrel::move()
 {
+	updateCharParameters();									// Update all the char data members around mario
+	checkWhatState();										// Check what is the barrel's state (falling/ walking or staying)
+	updateState();											// Update the moves that the barrel should do by the state
+
+	//update prameters
+	updateNextMove();
+	updatePreviousChar();
+	updatePreviousDir();
+}
+
+// Update all the char data members around mario
+void Barrel::updateCharParameters()
+{
 	int _x = point.getX(), _y = point.getY();
 
-	// Chars around the barrel
 	ch_covered = getCharFromBoard(_x, _y);
 	ch_below = getCharFromBoard(_x, _y + DOWN);
 	two_chars_below = getCharFromBoard(_x, _y + 2);
@@ -43,15 +58,6 @@ void Barrel::move()
 	res_is_on_floor = isBlock(ch_below);
 	res_is_wall_on_left = isBlock(ch_left);
 	res_is_wall_on_right = isBlock(ch_right);
-
-
-	checkWhatState();										// Check what is the barrel's state (falling/ walking or staying)
-	updateState();											// Update the moves that the barrel should do by the state
-
-	//update prameters
-	updateNextMove();
-	updatePreviousChar();
-	updatePreviousDir();
 }
 
 // Check in which state the barrel is
@@ -121,6 +127,7 @@ bool Barrel::explosionCases()
 		explode();
 		return true;
 	}
+
 	else
 		return false;
 }
@@ -161,7 +168,7 @@ void Barrel::explode()
 // The function returns true if the parameter is a floor/ceiling/wall and false otherwise
 bool Barrel::isBlock(char _ch) const
 {
-	if (_ch == '=' || _ch == '>' || _ch == '<' || _ch == 'O')
+	if (_ch == '=' || _ch == '>' || _ch == '<')
 		return true;
 	else
 		return false;
@@ -181,24 +188,3 @@ void Barrel::updateNextMove()
 	point.setX(newX);
 	point.setY(newY);
 }
-
-/*void Barrel::drawExplosion()
-{
-	int x, y;
-
-	for (int i = 0; i < 5; i++) //change magic number
-	{
-		for (int j = 0; j < 5; j++)
-		{
-			x = point.getX() -2 + j;
-			y = point.getY() - 2 + i;
-
-			gotoxy(point.getX() - 2 + j, point.getY() - 2 + i);
-
-			if (x > 0 && x < pBoard->get_board_width())			//80	
-				if (y > 0 && y < pBoard->get_board_height())	//25
-					std::cout << 'X';
-		}
-	}
-	//pBoard->printScreen(pBoard->getCurrentBoard());
-}*/

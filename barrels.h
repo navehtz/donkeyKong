@@ -39,5 +39,9 @@ public:
 		return is_barrel_exploded;
 	}
 	void bringBackExplodedBarrels();								// Initialize all the exploded barrels
+
+	void updateBarrelsCharParameters();
+	int getBarrelDirX(int i) { return barrels[i].getDirX(); }
+
 };
 

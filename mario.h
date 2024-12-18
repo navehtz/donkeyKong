@@ -24,8 +24,8 @@ class Mario
 	int fall_count = 0;
 	int lives = 3;
 
-	static constexpr int STARTING_POS_X = 23;
-	static constexpr int STARTING_POS_Y = 21;
+	static constexpr int STARTING_POS_X = 28;
+	static constexpr int STARTING_POS_Y = 6;
 	static constexpr int FALL_FROM_TOO_HIGH = 5;
 	static constexpr int DEAD_MARIO = 0;
 	static constexpr int UP = -1;
@@ -33,6 +33,7 @@ class Mario
 	static constexpr int DOWN = 1;
 	static constexpr int RIGHT = 1;
 	static constexpr int STAY = 0;
+	static constexpr char GORRILA = '&';
 	//static constexpr int MAX_BARRELS = 10;
 
 	static constexpr char keys[] = { 'w', 'a', 'x', 'd', 's' };
@@ -78,6 +79,7 @@ public:
 	void setBoard(Board& _board) {pBoard = &_board; }						// Set the game board pointer
 	void setpBarrels(Barrels& _barrels) { pBarrels = &_barrels; }			// Set the barrels object pointer
 
+	void updateCharParameters();											// Update all the char data members around mario
 	void move();															// Handle the Marrio's movement
 	void amendNextMove();													// Neutralizing illegal movements (jumping under the ceiling, going through a wall, etc.)
 	bool isOnLadder() const;												// Check if Mario is on a ladder
