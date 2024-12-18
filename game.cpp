@@ -104,7 +104,7 @@ void Game::updateActionByKeys()
 	{
 		pauseGame();
 	}
-	else { mario.keyPressed(key); }	// For all other keys, pass the key to Mario's keyPressed handler
+	else { mario.keyPressed((char)key); }	// For all other keys, pass the key to Mario's keyPressed handler
 }
 
 // Draws Mario and barrels on the screen
