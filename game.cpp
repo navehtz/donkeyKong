@@ -60,8 +60,7 @@ void Game::startGame()
 		{
 			updateActionByKeys();
 		}
-		Sleep(150);
-		updateCharParameters();
+		Sleep(300);
 		barrels.updateBarrelsCharParameters();
 		erase();
 		move();
@@ -175,7 +174,7 @@ void Game::updateIfDiedByBarrel()
 	// Variables to store the positions of the barrels and Mario
 	int barrelPosX, barrelPosY;
 	int marioPosX, marioPosY;
-	int marioDirX;
+	int barrelDirX;
 
 	for (int i = 0; i < barrels.getMaxBarrels(); i++)
 	{
@@ -187,9 +186,9 @@ void Game::updateIfDiedByBarrel()
 		marioPosX = mario.getPointX();
 		marioPosY = mario.getPointY();
 
-		marioDirX = mario.getDirX();
+		barrelDirX = barrels.getBarrelDirX(i);
 
-		hitByBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY, marioDirX);					// Check if Mario is hit directly by the barrel
+		hitByBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY, barrelDirX);					// Check if Mario is hit directly by the barrel
 		diedFromExplodedBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY, i);	// Check if Mario died due to an exploding barrel
 	}
 	
@@ -199,13 +198,13 @@ void Game::updateIfDiedByBarrel()
 
 
 // Handles the logic when Mario is hit by a barrel
-void Game::hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int marioDirX)
+void Game::hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int barrelDirX)
 {
 	if (marioPosX == barrelPosX && marioPosY == barrelPosY)											// When mario and the barrel at the same place
 		mario.life();
-	else if(marioPosX - 1 == barrelPosX && marioPosX == barrelPosX + 1 && marioPosY == barrelPosY && marioDirX != 1)	// When Mario and the barrel move toward each other, we need to check their previous positions
+	else if(marioPosX - 1 == barrelPosX && marioPosX == barrelPosX + 1 && marioPosY == barrelPosY && barrelDirX == LEFT)	// When Mario and the barrel move toward each other, we need to check their previous positions
 		mario.life();
-	else if(marioPosX + 1 == barrelPosX && marioPosX == barrelPosX - 1 && marioPosY == barrelPosY && marioDirX != -1)	// When Mario and the barrel move toward each other, we need to check their previous positions
+	else if(marioPosX + 1 == barrelPosX && marioPosX == barrelPosX - 1 && marioPosY == barrelPosY && barrelDirX != RIGHT)	// When Mario and the barrel move toward each other, we need to check their previous positions
 		mario.life();
 }
 

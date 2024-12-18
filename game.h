@@ -21,6 +21,8 @@ class Game {
 	static constexpr int DEAD_MARIO = 0;
 	static constexpr int FULL_LIVES = 3;
 	static constexpr int EXPLOSION_RADIUS = 2;
+	static constexpr int LEFT = -1;
+	static constexpr int RIGHT = 1;
 
 	bool playing_mario = true;							// True = while mario has more than 0 lives
 	bool exit_game = false;								// False = while EXIT_GAME hasn't been pressed
@@ -42,10 +44,6 @@ public:
 	void pauseGame();											// Pauses the game when a specific key is pressed (PAUSE)
 
 	void draw();												// Draws Mario and barrels on the screen
-	void updateCharParameters() {
-		barrels.updateBarrelsCharParameters();
-		mario.updateCharParameters();
-	}
 	void erase();												// Erases Mario's and barrels previous position from the screen
 	void move();												// Moves Mario and barrels to a new position based on user input or game logic
 

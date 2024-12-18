@@ -25,6 +25,24 @@ void Mario::keyPressed(char key) {
 	}
 }
 
+// Handle the barrel's movement
+void Mario::move()
+{
+	static bool is_climbing = false;
+
+	updateCharParameters();		// Update all the char data members around mario
+	amendNextMove();			// Neutralizing illegal movements (jumping under the ceiling, going through a wall, etc.)
+
+	checkWhatState();			// Check what is mario state (climbing/ jumping/ falling/ walking or staying)
+	updateState();				// Update the moves that mario should commit by the state
+
+
+	//update prameters
+	updateNextMove();			// activate next move
+	updatePreviousChar();
+	updatePreviousDir();
+}
+
 // Update all the char data members around mario
 void Mario::updateCharParameters()
 {
@@ -43,23 +61,6 @@ void Mario::updateCharParameters()
 	res_is_wall_on_left = isBlock(ch_left);
 	res_is_wall_on_right = isBlock(ch_right);
 	res_is_two_chars_below_floor = isBlock(two_chars_below);
-}
-
-// Handle the barrel's movement
-void Mario::move()
-{
-	static bool is_climbing = false;
-
-	amendNextMove();			// Neutralizing illegal movements (jumping under the ceiling, going through a wall, etc.)
-
-	checkWhatState();			// Check what is mario state (climbing/ jumping/ falling/ walking or staying)
-	updateState();				// Update the moves that mario should commit by the state
-
-
-	//update prameters
-	updateNextMove();			// activate next move
-	updatePreviousChar();
-	updatePreviousDir();
 }
 
 // Check in which state the Marrio is

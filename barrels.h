@@ -5,7 +5,7 @@
 class Barrels
 {
 	static constexpr int MAX_BARRELS = 10;
-	static constexpr int TIME_TO_ROLL = 8;		// Every 7 iterations to activate a barrel
+	static constexpr int TIME_TO_ROLL = 7;		// Every 7 iterations to activate a barrel
 
 	Barrel barrels[MAX_BARRELS];
 
@@ -41,5 +41,7 @@ public:
 	void bringBackExplodedBarrels();								// Initialize all the exploded barrels
 
 	void updateBarrelsCharParameters();
+	int getBarrelDirX(int i) { return barrels[i].getDirX(); }
+
 };
 

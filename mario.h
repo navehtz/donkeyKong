@@ -102,7 +102,6 @@ public:
 	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); }			// Get the char in the (x,y) position on board
 
 	int getLives() const { return lives; }														// Get Mario's lives
-	int getDirX() const { return p.getX(); }														// Get Mario's lives
 	void setLives(int _lives) { lives = _lives; }												// Set Mario's lives
 	bool getIfWon() const { return won_level; }													// Check if Mario finish the level (reached Pauline)
 	void printLives();																			// Print Mario's lives on screen

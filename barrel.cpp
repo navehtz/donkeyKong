@@ -30,6 +30,20 @@ int Barrel::myRandom()
 	return dist(gen);
 }
 
+
+// Handle the barrel's movement
+void Barrel::move()
+{
+	updateCharParameters();									// Update all the char data members around mario
+	checkWhatState();										// Check what is the barrel's state (falling/ walking or staying)
+	updateState();											// Update the moves that the barrel should do by the state
+
+	//update prameters
+	updateNextMove();
+	updatePreviousChar();
+	updatePreviousDir();
+}
+
 // Update all the char data members around mario
 void Barrel::updateCharParameters()
 {
@@ -44,18 +58,6 @@ void Barrel::updateCharParameters()
 	res_is_on_floor = isBlock(ch_below);
 	res_is_wall_on_left = isBlock(ch_left);
 	res_is_wall_on_right = isBlock(ch_right);
-}
-
-// Handle the barrel's movement
-void Barrel::move()
-{
-	checkWhatState();										// Check what is the barrel's state (falling/ walking or staying)
-	updateState();											// Update the moves that the barrel should do by the state
-
-	//update prameters
-	updateNextMove();
-	updatePreviousChar();
-	updatePreviousDir();
 }
 
 // Check in which state the barrel is
