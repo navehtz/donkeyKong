@@ -1,4 +1,5 @@
 #include "game.h"
+#include "gameConfig.h"
 #include "general.h"
 #include <Windows.h>
 
@@ -24,28 +25,31 @@ bool Game::menu()
 	{
 		int key = _getch();							// Reads the key that was pressed
 		switch (key) {
+		case(START_NEW_GAME_WITH_FEATURES):		// User pressed the key to start a new game
+			startGame(true);
+			break;
 		case(START_NEW_GAME):						// User pressed the key to start a new game
-			startGame();
+			startGame(false);
 			break;
 		case(INSTRUCTIONS_AND_KEYS):				// User pressed the key to view instructions
 			showInstructions();
 			break;
 		case(EXIT_GAME):							// User pressed the key to exit the game
 			board.printScreen(board.getGoodByeBoard());
-			Sleep(1000);
+			Sleep(SCREEN_EXIT);
 			return false;							// Exit the menu loop and terminate the game
 		}
 	}
 	return true;
 }
 
-// Starts the game loop and handles gameplay logic
-void Game::startGame()
+// Starts the game loop and handles gameplay logic 
+void Game::startGame(bool _color_on)
 {
+	colors_on = _color_on;
 	setStartingGame();								// Initializes the game state and Mario's starting position and attributes
 	playing_mario = true;							// Indicates that the Mario gameplay loop is active
 	exit_game = false;								// Indicates that the Mario gameplay loop is active
-
 
 	while (playing_mario && !exit_game)				// Main game loop: continues as long as Mario is playing and has lives
 	{
@@ -60,7 +64,7 @@ void Game::startGame()
 		{
 			updateActionByKeys();
 		}
-		Sleep(150);
+		Sleep(SCREEN_TIME);
 		erase();
 		move();
 		updateIfDiedByBarrel();						// Checks if Mario collided with a barrel and updates his state if he has died
@@ -79,11 +83,11 @@ void Game::setStartingGame()
 	mario.setBoard(board);								// Links Mario to the game board, so he can interact with it
 	mario.setpBarrels(barrels);							// Links Mario to the barrels, allowing interactions between them
 	mario.setLives(FULL_LIVES);
-
 	barrels.setStartingBarrels();						// Initializes the barrels to their starting positions and states
 	barrels.setpBoard(board);							// Links the barrels to the game board, enabling their interaction with it
 
-	board.printScreen(board.getCurrentBoard());
+	//board.printScreen(board.getCurrentBoard());
+	board.printScreen(board.getCurrentBoard(), colors_on);
 	
 	char ch_lives = (char)mario.getLives() + '0';		// Converts Mario's life count to a character for display
 	gotoxy(board.getLifePosX(), board.getLifePosY());	// Moves the cursor to the position where Mario's lives are displayed
@@ -143,7 +147,7 @@ void Game::pauseGame()
 				pause_on = false;
 		}
 	}
-	Sleep(50);
+	Sleep(SCREEN_PAUSE_GAME);
 }
 
 // Displays the game instructions screen to the player
@@ -219,8 +223,11 @@ bool Game::wonTheLevel()
 {
 	if (mario.getIfWon())
 	{
-		board.printScreen(board.getWinningBoard());	
-		Sleep(2000);
+		if(colors_on)
+			board.printScreenWithColors(board.getWinningBoard(), GREEN);
+		else
+			board.printScreen(board.getWinningBoard());	
+		Sleep(SCREEN_WIN);
 		return true;
 	}
 	else

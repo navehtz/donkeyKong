@@ -16,7 +16,7 @@ class Board {
 		  "                                                                                ", // 0
 		  "     LIFE:                           $                                          ", // 1
 		  "                        ==============================                          ", // 2
-		  "                        H            &               H                          ", // 3
+		  "                        H          H & H             H                          ", // 3
 		  "                        H      =============         H                          ", // 4
 		  "                        H                            H                          ", // 5
 		  "                        H                            H                          ", // 6
@@ -56,10 +56,10 @@ class Board {
 		 "*                                                                              *", //12
 		 "*                                                                              *", //13
 		 "*                                                                              *", //14
-		 "*          (1) Start new game                                                  *", //15
-		 "*          (8) Show instructions and keys                                      *", //16
-		 "*          (9) Exit                                                            *", //17
-		 "*                                                                              *", //18
+		 "*          (1) Start new game (with features)                                  *", //15
+		 "*          (2) Play basic game (without features)                              *", //16
+		 "*          (8) Show instructions and keys                                      *", //17
+		 "*          (9) Exit                                                            *", //18
 		 "*                                                                              *", //19
 		 "*                                                                              *", //20
 		 "*                                                                              *", //21
@@ -189,6 +189,8 @@ class Board {
 public:
 	void reset();																				// This function resets the board to its original state
 	void printScreen(const char screen[][MAX_X + 1]) const;										// This function prints the input board to the screen
+	void printScreen(const char screen[][MAX_X + 1], bool _colors) const;						// This function prints the input board to the screen
+	void printScreenWithColors(const char screen[][MAX_X + 1], WORD color) const;							// This function prints the input board to the screen
 	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }					// This function retrieves a specific character from the board at position (x, y)
 	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }				// This function updates the board by replacing the character at position (x, y) with a new character
 

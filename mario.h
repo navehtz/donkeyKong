@@ -2,6 +2,7 @@
 
 #include "point.h"
 #include "barrels.h"
+#include "general.h"
 
 #include <Windows.h>	//for Sleep and colors
 #include <stdbool.h>
@@ -24,8 +25,8 @@ class Mario
 	int fall_count = 0;
 	int lives = 3;
 
-	static constexpr int STARTING_POS_X = 23;
-	static constexpr int STARTING_POS_Y = 21;
+	static constexpr int STARTING_POS_X = 30;
+	static constexpr int STARTING_POS_Y = 6;
 	static constexpr int FALL_FROM_TOO_HIGH = 5;
 	static constexpr int DEAD_MARIO = 0;
 	static constexpr int UP = -1;
@@ -33,7 +34,6 @@ class Mario
 	static constexpr int DOWN = 1;
 	static constexpr int RIGHT = 1;
 	static constexpr int STAY = 0;
-	//static constexpr int MAX_BARRELS = 10;
 
 	static constexpr char keys[] = { 'w', 'a', 'x', 'd', 's' };
 	static constexpr size_t numKeys = sizeof(keys) / sizeof(keys[0]);
@@ -106,5 +106,6 @@ public:
 	void life();																				// Handle Mario's lives (when hit or fall)
 	void startOver();																			// Reset the game after mario died but still has more than 0 lives
 	void flashingMario();																		// Printing Mario after he died (by flashing the char)
+
 };
 

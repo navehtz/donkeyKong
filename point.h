@@ -54,10 +54,7 @@ public:
 		gotoxy(x, y);
 		cout << _ch;
 	}
-	void erase() const {															// Erase the character by redrawing the previous character
-		gotoxy(x, y);
-		cout << previous_char;
-	}
+	void erase() const; 															// Erase the character by redrawing the previous character
 
 	Direction getDir() const { return dir; }										// Get the current movement direction (x,y)
 	void setDir(Direction _dir) { dir = _dir; }										// Set the current movement direction (x,y)
@@ -70,5 +67,6 @@ public:
 	void setDirBeforeFalling(Direction _dir_before_falling) { dir_before_falling = _dir_before_falling; } // Set the direction before falling
 
 	Direction getDirFromDirectionsArray(int i) { return directions[i]; }			// Get the current the direction 
+
 };
 

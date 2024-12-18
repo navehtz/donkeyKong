@@ -37,6 +37,7 @@ class Barrel
 	bool is_activated = false;
 	bool is_exploded = false;
 
+
 	// States of barrel
 	enum class BarrelState {
 		Falling,
@@ -53,7 +54,7 @@ public:
 	Barrel() : point(ch) {}													// Ctor of barrel with point
 
 	void setStartingBarrel();												// Initialize barrel
-	bool getIsExploded() { return is_exploded; }							// Get the member 'is_exploded'
+	bool getIsExploded() const { return is_exploded; }							// Get the member 'is_exploded'
 	void setIsExploded(bool _is_exploded) { is_exploded = _is_exploded; }	// Set the member 'is_exploded'
 	void setpBoard(Board& _board) { pBoard = &_board; }						// Set pBoard to the board
 	Point getPoint() const { return point; }								// Get the member 'point'
@@ -86,10 +87,9 @@ public:
 	void updatePreviousChar() { point.setPreviousChar(getCharFromBoard(point.getX(), point.getY())); }	// Function for keeping the char the barrel is on so it can be printes in the next loop
 	void updateNextMove();										// Updating the movement of the barrel for the next loop according to the position and the direction
 
-	bool IsActivated() { return is_activated; };				// The function returns true if the barrel is activated(rolling/falling etc.)and false otherwise
+	bool IsActivated() const { return is_activated; };				// The function returns true if the barrel is activated(rolling/falling etc.)and false otherwise
 	void activate() { is_activated = true; }					// Function to activate the barrel
 	
 	int myRandom();												// Function to raffle a number ( 1 or 0 )
-	//void drawExplosion();
 };
 

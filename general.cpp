@@ -1,8 +1,5 @@
-#include <windows.h> // for gotoxy
-#include <process.h> // for system
-#include <iostream>
 
-using namespace std;
+#include "general.h"
 
 // Moves the console cursor to a specific position (x, y) on the screen.       (From the lab)
 void gotoxy(int x, int y)
@@ -29,4 +26,10 @@ void ShowConsoleCursor(bool showFlag) {
 void clrscr()
 {
 	system("cls");
+}
+
+// To set the color of the chars											(From Chat GPT)
+void setConsoleColor(WORD color /*defult color*/) {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, color);
 }

@@ -17,6 +17,7 @@ void Barrel::setStartingBarrel()
 	}
 	fall_count = 0;
 	is_exploded = false;
+
 }
 
 // Function to raffle a number ( 1 or 0 )
@@ -96,15 +97,15 @@ void Barrel::manageDirection()
 {
 	switch (ch_below)
 	{
-	case('<'):
+	case(FLOOR_LEFT):
 		point.setDir({ LEFT, STAY });					// Update direction to left
 		point.setDirBeforeFalling(point.getDir());		// Update direction before (maybe) falling
 		break;
-	case('>'):
+	case(FLOOR_RIGHT):
 		point.setDir({ RIGHT, STAY });					// Update direction to right
 		point.setDirBeforeFalling(point.getDir());		// Update direction before (maybe) falling
 		break;
-	case('='):
+	case(FLOOR):
 		point.setDir({ point.getDirBeforeFalling() });	// Keep moving the direction as before
 	}
 }
@@ -161,7 +162,7 @@ void Barrel::explode()
 // The function returns true if the parameter is a floor/ceiling/wall and false otherwise
 bool Barrel::isBlock(char _ch) const
 {
-	if (_ch == '=' || _ch == '>' || _ch == '<' || _ch == 'O')
+	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT)
 		return true;
 	else
 		return false;
@@ -181,24 +182,3 @@ void Barrel::updateNextMove()
 	point.setX(newX);
 	point.setY(newY);
 }
-
-/*void Barrel::drawExplosion()
-{
-	int x, y;
-
-	for (int i = 0; i < 5; i++) //change magic number
-	{
-		for (int j = 0; j < 5; j++)
-		{
-			x = point.getX() -2 + j;
-			y = point.getY() - 2 + i;
-
-			gotoxy(point.getX() - 2 + j, point.getY() - 2 + i);
-
-			if (x > 0 && x < pBoard->get_board_width())			//80	
-				if (y > 0 && y < pBoard->get_board_height())	//25
-					std::cout << 'X';
-		}
-	}
-	//pBoard->printScreen(pBoard->getCurrentBoard());
-}*/

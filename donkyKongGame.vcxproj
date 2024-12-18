@@ -135,12 +135,14 @@
     <ClCompile Include="general.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mario.cpp" />
+    <ClCompile Include="point.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="barrel.h" />
     <ClInclude Include="barrels.h" />
     <ClInclude Include="board.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="gameConfig.h" />
     <ClInclude Include="general.h" />
     <ClInclude Include="mario.h" />
     <ClInclude Include="point.h" />
