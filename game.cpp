@@ -174,7 +174,7 @@ void Game::updateIfDiedByBarrel()
 	// Variables to store the positions of the barrels and Mario
 	int barrelPosX, barrelPosY;
 	int marioPosX, marioPosY;
-	int barrelDirX;
+
 
 	for (int i = 0; i < barrels.getMaxBarrels(); i++)
 	{
@@ -185,8 +185,6 @@ void Game::updateIfDiedByBarrel()
 		// Get Mario's current position
 		marioPosX = mario.getPointX();
 		marioPosY = mario.getPointY();
-
-		barrelDirX = barrels.getBarrelDirX(i);
 
 		hitByBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY, barrelDirX);		// Check if Mario is hit directly by the barrel
 		diedFromExplodedBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY, i);	// Check if Mario died due to an exploding barrel

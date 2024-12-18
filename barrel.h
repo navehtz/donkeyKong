@@ -59,7 +59,6 @@ public:
 	void setIsExploded(bool _is_exploded) { is_exploded = _is_exploded; }	// Set the member 'is_exploded'
 	void setpBoard(Board& _board) { pBoard = &_board; }						// Set pBoard to the board
 	Point getPoint() const { return point; }								// Get the member 'point'
-	int getDirX() const { return point.getX(); }													// Get Mario's lives
 
 	void draw() {															// Draw the barrel on the screen
 		point.draw(ch);														// Erase the barrel from the screen
