@@ -49,6 +49,8 @@ class Barrel
 		int x, y;
 	};
 
+	friend class Barrels;
+
 public:
 	Barrel() : point(ch) {}													// Ctor of barrel with point
 
@@ -72,6 +74,7 @@ public:
 
 	char getCharFromBoard(int _x, int _y) const { return pBoard->getCharFromBoard(_x, _y); }			// Get the char in the (x,y) position on board
 
+	void updateCharParameters();								// Update all the char data members around mario
 	void move();												// Handle the barrel's movement
 	bool isFalling() const;										// Check if the barrel is falling 
 	void fall();												// Handle the barrel's falling
@@ -90,6 +93,8 @@ public:
 	void activate() { is_activated = true; }					// Function to activate the barrel
 	
 	int myRandom();												// Function to raffle a number ( 1 or 0 )
-	//void drawExplosion();
+
+
 };
+
 

@@ -42,11 +42,15 @@ public:
 	void pauseGame();											// Pauses the game when a specific key is pressed (PAUSE)
 
 	void draw();												// Draws Mario and barrels on the screen
+	void updateCharParameters() {
+		barrels.updateBarrelsCharParameters();
+		mario.updateCharParameters();
+	}
 	void erase();												// Erases Mario's and barrels previous position from the screen
 	void move();												// Moves Mario and barrels to a new position based on user input or game logic
 
 	void updateIfDiedByBarrel();																			// Checks if Mario died from a barrel (hit or explosion)
-	void hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY);							// Handles the logic when Mario is hit by a barrel
+	void hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int marioDirX);							// Handles the logic when Mario is hit by a barrel
 	void diedFromExplodedBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int index);	// Handles the logic when Mario dies due to an exploded barrel
 	bool wonTheLevel();																						// Checks if Mario successfully completed the level
 };
