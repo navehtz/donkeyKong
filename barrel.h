@@ -28,8 +28,8 @@ class Barrel
 
 	Board* pBoard = nullptr;
 
-	char ch_covered = ' ', ch_below = ' ', two_chars_below = ' ';
-	char ch_left = ' ', ch_right = ' ';
+	char ch_covered = SPACE, ch_below = SPACE, two_chars_below = SPACE;
+	char ch_left = SPACE, ch_right = SPACE;
 
 	bool res_is_on_ladder = false, res_is_on_floor = false, res_is_below_roof = false;
 	bool res_is_wall_on_left = false, res_is_wall_on_right = false, res_is_two_chars_below_floor = false;

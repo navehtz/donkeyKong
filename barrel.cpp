@@ -18,7 +18,7 @@ void Barrel::setStartingBarrel()
 	fall_count = 0;
 	is_exploded = false;
 
-	point.setPreviousChar(' ');
+	point.setPreviousChar(SPACE);
 }
 
 // Function to raffle a number ( 1 or 0 )
@@ -102,15 +102,15 @@ void Barrel::manageDirection()
 {
 	switch (ch_below)
 	{
-	case('<'):
+	case(FLOOR_LEFT):
 		point.setDir({ LEFT, STAY });					// Update direction to left
 		point.setDirBeforeFalling(point.getDir());		// Update direction before (maybe) falling
 		break;
-	case('>'):
+	case(FLOOR_RIGHT):
 		point.setDir({ RIGHT, STAY });					// Update direction to right
 		point.setDirBeforeFalling(point.getDir());		// Update direction before (maybe) falling
 		break;
-	case('='):
+	case(FLOOR):
 		point.setDir({ point.getDirBeforeFalling() });	// Keep moving the direction as before
 	}
 }
@@ -147,7 +147,7 @@ void Barrel::blockedByWall()
 // Check if the barrel is falling 
 bool Barrel::isFalling() const
 {
-	return ch_below == ' ' ? true : false;
+	return ch_below == SPACE ? true : false;
 }
 
 // Handle the barrel's falling
@@ -168,7 +168,7 @@ void Barrel::explode()
 // The function returns true if the parameter is a floor/ceiling/wall and false otherwise
 bool Barrel::isBlock(char _ch) const
 {
-	if (_ch == '=' || _ch == '>' || _ch == '<')
+	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT)
 		return true;
 	else
 		return false;

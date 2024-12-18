@@ -33,8 +33,7 @@ class Mario
 	static constexpr int DOWN = 1;
 	static constexpr int RIGHT = 1;
 	static constexpr int STAY = 0;
-	static constexpr char GORRILA = '&';
-	//static constexpr int MAX_BARRELS = 10;
+
 
 	static constexpr char keys[] = { 'w', 'a', 'x', 'd', 's' };
 	static constexpr size_t numKeys = sizeof(keys) / sizeof(keys[0]);

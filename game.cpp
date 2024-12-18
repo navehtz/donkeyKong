@@ -32,7 +32,7 @@ bool Game::menu()
 			break;
 		case(EXIT_GAME):							// User pressed the key to exit the game
 			board.printScreen(board.getGoodByeBoard());
-			Sleep(1000);
+			Sleep(SCREEN_EXIT);
 			return false;							// Exit the menu loop and terminate the game
 		}
 	}
@@ -60,7 +60,7 @@ void Game::startGame()
 		{
 			updateActionByKeys();
 		}
-		Sleep(300);
+		Sleep(SCREEN_TIME);
 		barrels.updateBarrelsCharParameters();
 		erase();
 		move();
@@ -144,7 +144,7 @@ void Game::pauseGame()
 				pause_on = false;
 		}
 	}
-	Sleep(50);
+	Sleep(SCREEN_PAUSE_GAME);
 }
 
 // Displays the game instructions screen to the player
@@ -188,7 +188,7 @@ void Game::updateIfDiedByBarrel()
 
 		barrelDirX = barrels.getBarrelDirX(i);
 
-		hitByBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY, barrelDirX);					// Check if Mario is hit directly by the barrel
+		hitByBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY, barrelDirX);		// Check if Mario is hit directly by the barrel
 		diedFromExplodedBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY, i);	// Check if Mario died due to an exploding barrel
 	}
 	
@@ -224,7 +224,7 @@ bool Game::wonTheLevel()
 	if (mario.getIfWon())
 	{
 		board.printScreen(board.getWinningBoard());	
-		Sleep(2000);
+		Sleep(SCREEN_WIN);
 		return true;
 	}
 	else

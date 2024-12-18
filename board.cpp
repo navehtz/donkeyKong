@@ -17,7 +17,7 @@ void Board::printScreen(const char screen[][MAX_X + 1]) const
 
 	for (int i = 0; i < MAX_Y - 1; i++) {
 		std::cout << screen[i] << '\n';
-		Sleep(10);
+		Sleep(SCREEN_APPEARANCE);
 	}
 	std::cout << screen[MAX_Y - 1];									// Print the last row without a newline to avoid an extra blank line
 }

@@ -100,11 +100,11 @@ void Mario::updateState()
 bool Mario::isClimbing()
 {
 	// Check if climbing up
-	if (res_is_on_ladder && p.getDir().y == UP && ch_covered != ' ')												// Mario covers the latter 'H' 
+	if (res_is_on_ladder && p.getDir().y == UP && ch_covered != SPACE)												// Mario covers the latter 'H' 
 		return true;
 
 	// Check if climbing down
-	else if (res_is_on_floor && two_chars_below == 'H' && p.getDir().y == DOWN && p.getPreviousDir().y != DOWN)		// Mario stands on the floor above a ladder
+	else if (res_is_on_floor && two_chars_below == LADDER && p.getDir().y == DOWN && p.getPreviousDir().y != DOWN)		// Mario stands on the floor above a ladder
 		return true;
 	else if (res_is_on_ladder && p.getDir().y == DOWN)																// On the ladder and wants to go down
 		return true;
@@ -129,7 +129,7 @@ bool Mario::isJumping()
 	static int count_jump = 0;
 
 	if (res_is_on_floor && p.getDir().y == UP) {									// When Mario is on the floor and and the user pressed 'w'
-		if (two_chars_below == 'H' && p.getPreviousDir().y == UP)					// When Mario finished to climb the ledder and stands on the floorr
+		if (two_chars_below == LADDER && p.getPreviousDir().y == UP)					// When Mario finished to climb the ledder and stands on the floorr
 		{
 			p.setDirY(STAY);
 			return false;
@@ -141,7 +141,7 @@ bool Mario::isJumping()
 			return true;
 		}
 	}
-	else if (ch_below != 'H' && p.getDir().y == UP && count_jump == 1) {			// When Mario did 1/2 parts of the jump 
+	else if (ch_below != LADDER && p.getDir().y == UP && count_jump == 1) {			// When Mario did 1/2 parts of the jump 
 		count_jump += 1;
 		return true;
 	}
@@ -162,7 +162,7 @@ void Mario::jump()
 // Check if the Mario is falling
 bool Mario::isFalling() const
 {
-	return ch_below == ' ' ? true : false;
+	return ch_below == SPACE ? true : false;
 }
 
 // Handle the Mario's falling
@@ -194,7 +194,7 @@ void Mario::walkOrStay()
 // The function returns true if the parameter is a floor/ceiling/wall and false otherwise
 bool Mario::isBlock(char _ch)
 {
-	if (_ch == '=' || _ch == '>' || _ch == '<')
+	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT)
 		return true;
 	else
 		return false;
@@ -203,7 +203,7 @@ bool Mario::isBlock(char _ch)
 // Check if Mario is on a ladder
 bool Mario::isOnLadder() const
 {
-	if (ch_covered == 'H' || ch_below == 'H')	// Returns true only if mario is on the letter 'H' or above it
+	if (ch_covered == LADDER || ch_below == LADDER)	// Returns true only if mario is on the letter 'H' or above it
 		return true;
 	else
 		return false;
@@ -224,7 +224,7 @@ void Mario::amendNextMove()
 		if (p.getDir().x == RIGHT) { p.setDirX(STAY); }				// Linked to a wall - mario can't pass
 	}
 
-	if (res_is_on_floor && two_chars_below != 'H') {				// Above floor - mario can't go down
+	if (res_is_on_floor && two_chars_below != LADDER) {				// Above floor - mario can't go down
 		if (p.getDir().y == DOWN) { p.setDirY(STAY); }
 	}
 }
@@ -240,7 +240,7 @@ void Mario::updateNextMove()
 	if (newY < 0 || newY >= pBoard->get_board_height())						// Update the next move by the board size
 		newY = p.getY();
 
-	if (pBoard->getCharFromBoard(newX, newY) == '$' || ch_below == '$')		// Check if mario reached pauline	
+	if (pBoard->getCharFromBoard(newX, newY) == PRINCESS || ch_below == PRINCESS)		// Check if mario reached pauline	
 	{
 		won_level = true;
 		return;
@@ -264,7 +264,7 @@ void Mario::life()
 	}
 	else if (lives == DEAD_MARIO) {														
 		pBoard->printScreen(pBoard->getLosingBoard());									// Printing LOSING screen
-		Sleep(2000);
+		Sleep(SCREEN_EXIT);
 	}
 }
 
@@ -294,14 +294,11 @@ void Mario::flashingMario()
 {
 	pBarrels->draw();
 
-	draw();
-	Sleep(200);
-	erase();
-	Sleep(200);
-	draw();
-	Sleep(200);
-	erase();
-	Sleep(200);
-	draw();
-	Sleep(200);
+	for (int i = 0; i < 3; i++) {
+		draw();
+		Sleep(SCREEN_FLASH_MARIO);
+		erase();
+		Sleep(SCREEN_FLASH_MARIO);
+	}
+
 }
