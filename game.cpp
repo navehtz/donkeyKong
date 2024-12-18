@@ -186,7 +186,7 @@ void Game::updateIfDiedByBarrel()
 		marioPosX = mario.getPointX();
 		marioPosY = mario.getPointY();
 
-		hitByBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY, barrelDirX);		// Check if Mario is hit directly by the barrel
+		hitByBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY);		// Check if Mario is hit directly by the barrel
 		diedFromExplodedBarrel(barrelPosX, barrelPosY, marioPosX, marioPosY, i);	// Check if Mario died due to an exploding barrel
 	}
 	
@@ -196,7 +196,7 @@ void Game::updateIfDiedByBarrel()
 
 
 // Handles the logic when Mario is hit by a barrel
-void Game::hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int barrelDirX)
+void Game::hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY)
 {
 	if (marioPosX == barrelPosX && marioPosY == barrelPosY)											// When mario and the barrel at the same place
 		mario.life();
