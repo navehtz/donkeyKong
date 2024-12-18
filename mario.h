@@ -24,8 +24,8 @@ class Mario
 	int fall_count = 0;
 	int lives = 3;
 
-	static constexpr int STARTING_POS_X = 28;
-	static constexpr int STARTING_POS_Y = 6;
+	static constexpr int STARTING_POS_X = 20;
+	static constexpr int STARTING_POS_Y = 23;
 	static constexpr int FALL_FROM_TOO_HIGH = 5;
 	static constexpr int DEAD_MARIO = 0;
 	static constexpr int UP = -1;
