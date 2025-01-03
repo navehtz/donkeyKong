@@ -8,7 +8,7 @@ void Game::run()
 	system("mode con cols=80 lines=25");			// Set the console size to be 80X25
 	ShowConsoleCursor(false);						// Hides the console cursor to improve visual appearance during the game
 
-	board.getFilesNames();
+	board.getAllBoardFileNames(files_names_vec);
 	board.printScreen(board.getStartBoard());		// Displays the starting board on the screen
 	bool in_game = true;
 
@@ -26,9 +26,9 @@ bool Game::menu()
 		int key = _getch();							// Reads the key that was pressed
 		switch (key) {
 		case(START_NEW_GAME):						// User pressed the key to start a new game
-			board.printScreenOptions();
+			board.printScreenOptions(files_names_vec);
 			chooseGameScreen();
-			//startGame();
+			startGame();
 			break;
 		case(INSTRUCTIONS_AND_KEYS):				// User pressed the key to view instructions
 			showInstructions();
@@ -44,31 +44,29 @@ bool Game::menu()
 
 void Game::chooseGameScreen()
 {
-	if (_kbhit())									// Checks if a key has been pressed
-	{
-		int key = _getch();							// Reads the key that was pressed
-		if(key < board.getNumOfScreens())
-		{
-			// assign pointer to the chosen board
-			startGame(board.getScreenByIndex()/*the pointer here*/);
-		}
+	bool valid_file;
 
-		else if (key == EXIT_GAME){
-			board.printScreen(board.getGoodByeBoard());
-			Sleep(SCREEN_EXIT);
-			return false;				
-			menu();
-		}
-		else if (key == EXIT_GAME)
-			menu();
-	
+	while (!_kbhit())										// Checks if a key has been pressed
+	{
+		if (_kbhit())
+		{
+			int key = _getch();									// Reads the key that was pressed
+			if (key > 0 && key <= files_names_vec.size())
+			{
+				key--;											// The array start from zero
+				valid_file = board.load(files_names_vec[key]);
+				if (!valid_file)
+					menu();
+			}
+			else if (key == EXIT_GAME)
+				menu();
 		}
 	}
 }
 
 
 // Starts the game loop and handles gameplay logic
-void Game::startGame(Board& board)
+void Game::startGame()
 {
 	setStartingGame();								// Initializes the game state and Mario's starting position and attributes
 	playing_mario = true;							// Indicates that the Mario gameplay loop is active
@@ -103,7 +101,8 @@ void Game::startGame(Board& board)
 void Game::setStartingGame()
 {
 	clrscr();
-	board.reset();
+
+	board.reset();										// Update current board
 	mario.setStartingMario();							// Initializes Mario to his starting position and state
 	mario.setBoard(board);								// Links Mario to the game board, so he can interact with it
 	mario.setpBarrels(barrels);							// Links Mario to the barrels, allowing interactions between them
@@ -116,7 +115,7 @@ void Game::setStartingGame()
 	
 	char ch_lives = (char)mario.getLives() + '0';		// Converts Mario's life count to a character for display
 	gotoxy(board.getLifePosX(), board.getLifePosY());	// Moves the cursor to the position where Mario's lives are displayed
-	cout << ch_lives;									 
+	std::cout << ch_lives;									 
 }
 
 

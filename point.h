@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-using namespace std;
 #include <locale>
 #include <codecvt>
 #include <string>
@@ -55,11 +54,11 @@ public:
 
 	void draw(char _ch) const {														// Draw the current character on the board
 		gotoxy(x, y);
-		cout << _ch;
+		std::cout << _ch;
 	}
 	void erase() const {															// Erase the character by redrawing the previous character
 		gotoxy(x, y);
-		cout << previous_char;
+		std::cout << previous_char;
 	}
 
 	Direction getDir() const { return dir; }										// Get the current movement direction (x,y)

@@ -8,7 +8,6 @@
 #include <filesystem>
 #include <fstream>
 #include <ios>
-#include <ios>
 #include <vector>
 #include <string>
 
@@ -20,41 +19,39 @@ class Board {
 	static constexpr int LIFE_POS_X = 11;	// Position in the board that hold the number lives of mario
 	static constexpr int LIFE_POS_Y = 1;
 
-	std::vector<std::string> files_names_vec;
-	std::ifstream file;
-	std::string directory = ".";
-	std::vector<std::string> readen_board;
-	
-	
 
-	const char* originalBoard[MAX_Y] = {
-		// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
-		  "                                                                                ", // 0
-		  "     LIFE:                           $                                          ", // 1
-		  "                        ==============================                          ", // 2
-		  "                        H            &               H                          ", // 3
-		  "                        H    ================        H                          ", // 4
-		  "                        H                            H                          ", // 5
-		  "                        H                            H                          ", // 6
-		  "          ======================           =================                    ", // 7
-		  "            H                                 H                                 ", // 8
-		  "            H                                 H                                 ", // 9
-		  "            H                                 H           H                     ", // 10
-		  "            H                                 H           H                     ", // 11
-		  "         >==================            ====================<=====              ", // 12
-		  "                       H                                        H               ", // 13
-		  "                       H                                        H               ", // 14
-		  "                ============<         >===========================              ", // 15
-		  "                  H                               H            H                ", // 16
-		  "                  H                               H            H                ", // 17
-		  "                  H                               H            H                ", // 18
-		  "         =======================               ===================<             ", // 19
-		  "          H                                                H                    ", // 20
-		  "          H                                                H                    ", // 21
-		  "          H                H              H                H                    ", // 22
-		  "          H                H              H                H                    ", // 23
-		  "================================================================================"  // 24
-	};
+	//std::vector<std::string> files_names_vec;
+	std::string directory = ".";
+
+
+	char originalBoard[MAX_Y][MAX_X + 1]; //= {
+	//	// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
+	//	  "                                                                                ", // 0
+	//	  "     LIFE:                           $                                          ", // 1
+	//	  "                        ==============================                          ", // 2
+	//	  "                        H            &               H                          ", // 3
+	//	  "                        H    ================        H                          ", // 4
+	//	  "                        H                            H                          ", // 5
+	//	  "                        H                            H                          ", // 6
+	//	  "          ======================           =================                    ", // 7
+	//	  "            H                                 H                                 ", // 8
+	//	  "            H                                 H                                 ", // 9
+	//	  "            H                                 H           H                     ", // 10
+	//	  "            H                                 H           H                     ", // 11
+	//	  "         >==================            ====================<=====              ", // 12
+	//	  "                       H                                        H               ", // 13
+	//	  "                       H                                        H               ", // 14
+	//	  "                ============<         >===========================              ", // 15
+	//	  "                  H                               H            H                ", // 16
+	//	  "                  H                               H            H                ", // 17
+	//	  "                  H                               H            H                ", // 18
+	//	  "         =======================               ===================<             ", // 19
+	//	  "          H                                                H                    ", // 20
+	//	  "          H                                                H                    ", // 21
+	//	  "          H                H              H                H                    ", // 22
+	//	  "          H                H              H                H                    ", // 23
+	//	  "================================================================================"  // 24
+	//};
 	char start_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************", //0
@@ -152,11 +149,11 @@ class Board {
 		 "*                                                                              *",//7
 		 "*                                                                              *",//8
 		 "*                __   __             _              _      _                   *",//9
-         "*                \\ \\ / /__  _   _   | |    ___  ___| |_   | |                  *",//10
-         "*                 \\ V / _ \\| | | |  | |   / _ \\/ __| __|  | |                  *",//11
-         "*                  | | (_) | |_| |  | |__| (_) \\__ \\ |_   |_|                  *",//12
-         "*                  |_|\\___/ \\__,_|  |_____\\___/|___/\\__|  (_)                  *",//13
-         "*                                                                              *",//14
+		 "*                \\ \\ / /__  _   _   | |    ___  ___| |_   | |                  *",//10
+		 "*                 \\ V / _ \\| | | |  | |   / _ \\/ __| __|  | |                  *",//11
+		 "*                  | | (_) | |_| |  | |__| (_) \\__ \\ |_   |_|                  *",//12
+		 "*                  |_|\\___/ \\__,_|  |_____\\___/|___/\\__|  (_)                  *",//13
+		 "*                                                                              *",//14
 		 "*                                                                              *",//15
 		 "*                                                                              *",//16
 		 "*                                                                              *",//17
@@ -182,9 +179,9 @@ class Board {
 		 "*                                                                              *",//6
 		 "*           _____                                              _____           *",//7
 		 "*           (___)                                              (___)           *",//8
-         "*           |   |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|   |           *",//9
-         "*           |   | __   __           __        __            _  |   |           *",//10
-         "*           |   | \\ \\ / /__  _   _  \\ \\      / /__  _ __   | | |   |           *",//11
+		 "*           |   |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|   |           *",//9
+		 "*           |   | __   __           __        __            _  |   |           *",//10
+		 "*           |   | \\ \\ / /__  _   _  \\ \\      / /__  _ __   | | |   |           *",//11
 		 "*           |   |  \\ V / _ \\| | | |  \\ \\ /\\ / / _ \\| '_ \\  | | |   |           *",//12
 		 "*           |   |   | | (_) | |_| |   \\ V  V / (_) | | | | |_| |   |           *",//13
 		 "*           |   |   |_|\\___/ \\__,_|    \\_/\\_/ \\___/|_| |_| (_) |   |           *",//14
@@ -198,12 +195,12 @@ class Board {
 		 "*                                                                              *",//22 
 		 "*                                                                              *",//23 
 		 "********************************************************************************" //24
-		              
+
 	};
 
 
 
-	
+
 	char goodBye_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
@@ -233,8 +230,17 @@ class Board {
 		 "********************************************************************************" //24
 	};
 
-
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
+
+	/*struct Position {
+		int x, y;
+	};
+	Position start_pos_mario{ 0,0 };
+	Position start_pos_gorilla{ 0,0 };
+	Position start_pos_pauline{ 0,0 };
+	Position start_pos_hammer{ 0,0 };
+	std::vector<Position> start_pos_ghosts_vec;*/
+
 public:
 	void reset();																				// This function resets the board to its original state
 	void printScreen(const char screen[][MAX_X + 1]) const;										// This function prints the input board to the screen
@@ -254,10 +260,8 @@ public:
 	int getLifePosX() { return LIFE_POS_X; }		// Returns the X position in the board that hold the number lives of mario
 	int getLifePosY() { return LIFE_POS_Y; }		// Returns the Y position in the board that hold the number lives of mario
 
-	void getFilesNames();
-	void printScreenOptions();
-	int getNumOfScreen() { return files_names_vec.size(); }
-	//char** getScreenByIndex(int index);
-	void loadFile();
-	void display() const;
+	void printScreenOptions(std::vector<std::string>& vec_to_fill) const;
+	void getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const;
+	bool load(const std::string& filename);
+	void handleErrors(const std::ifstream& _file);
 };
