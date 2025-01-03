@@ -1,8 +1,17 @@
 ﻿#pragma once
 
 #include <Windows.h>	//for Sleep and colors
-
 #include "general.h"
+
+#include <iostream>
+#include <algorithm>
+#include <filesystem>
+#include <fstream>
+#include <ios>
+#include <ios>
+#include <vector>
+#include <string>
+
 
 class Board {
 	static constexpr size_t MAX_X = 80;		// Board width
@@ -10,6 +19,13 @@ class Board {
 
 	static constexpr int LIFE_POS_X = 11;	// Position in the board that hold the number lives of mario
 	static constexpr int LIFE_POS_Y = 1;
+
+	std::vector<std::string> files_names_vec;
+	std::ifstream file;
+	std::string directory = ".";
+	std::vector<std::string> readen_board;
+	
+	
 
 	const char* originalBoard[MAX_Y] = {
 		// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
@@ -59,6 +75,34 @@ class Board {
 		 "*          (1) Start new game                                                  *", //15
 		 "*          (8) Show instructions and keys                                      *", //16
 		 "*          (9) Exit                                                            *", //17
+		 "*                                                                              *", //18
+		 "*                                                                              *", //19
+		 "*                                                                              *", //20
+		 "*                                                                              *", //21
+		 "*                                                                              *", //22
+		 "*                                                                              *", //23
+		 "********************************************************************************"  //24
+	};
+	char choose_boardscreens_picks[MAX_Y][MAX_X + 1] = {
+		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
+		 "********************************************************************************", //0
+		 "*                                                                              *", //1
+		 "*                                                                              *", //2
+		 "*                                                                              *", //3
+		 "*                                                                              *", //4
+		 "*                                                                              *", //5 
+		 "*                                                                              *", //6
+		 "*                                                                              *", //7
+		 "*                                                                              *", //8
+		 "*                                                                              *", //9
+		 "*                                                                              *", //10
+		 "*                                                                              *", //11
+		 "*                                                                              *", //12
+		 "*                                                                              *", //13
+		 "*                                                                              *", //14
+		 "*                                                                              *", //15
+		 "*                                                                              *", //16
+		 "*                                                                              *", //17
 		 "*                                                                              *", //18
 		 "*                                                                              *", //19
 		 "*                                                                              *", //20
@@ -209,4 +253,11 @@ public:
 
 	int getLifePosX() { return LIFE_POS_X; }		// Returns the X position in the board that hold the number lives of mario
 	int getLifePosY() { return LIFE_POS_Y; }		// Returns the Y position in the board that hold the number lives of mario
+
+	void getFilesNames();
+	void printScreenOptions();
+	int getNumOfScreen() { return files_names_vec.size(); }
+	//char** getScreenByIndex(int index);
+	void loadFile();
+	void display() const;
 };

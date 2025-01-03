@@ -39,7 +39,7 @@ public:
 	void setStartingGame();										// Initializes the game to its starting state
 	void updateActionByKeys();									// Updates Mario's actions based on key presses from the user
 	bool isAlive(int lives) { return lives > DEAD_MARIO; }		// Returns true if Mario is alive (has more lives than DEAD_MARIO), otherwise false
-	void startGame();											// Starts the game loop and handles gameplay logic
+	void startGame(char**);//change parameters !!!!				// Starts the game loop and handles gameplay logic
 	bool menu();												// Displays the game menu and handles user input to start or quit the game
 	void pauseGame();											// Pauses the game when a specific key is pressed (PAUSE)
 
@@ -51,6 +51,9 @@ public:
 	void hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY);							// Handles the logic when Mario is hit by a barrel
 	void diedFromExplodedBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int index);	// Handles the logic when Mario dies due to an exploded barrel
 	bool wonTheLevel();																						// Checks if Mario successfully completed the level
+
+	void chooseGameScreens();
+
 };
 
 
