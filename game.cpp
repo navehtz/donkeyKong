@@ -8,6 +8,7 @@ void Game::run()
 	system("mode con cols=80 lines=25");			// Set the console size to be 80X25
 	ShowConsoleCursor(false);						// Hides the console cursor to improve visual appearance during the game
 
+	board.getFilesNames();
 	board.printScreen(board.getStartBoard());		// Displays the starting board on the screen
 	bool in_game = true;
 
@@ -25,7 +26,9 @@ bool Game::menu()
 		int key = _getch();							// Reads the key that was pressed
 		switch (key) {
 		case(START_NEW_GAME):						// User pressed the key to start a new game
-			startGame();
+			board.printScreenOptions();
+			chooseGameScreen();
+			//startGame();
 			break;
 		case(INSTRUCTIONS_AND_KEYS):				// User pressed the key to view instructions
 			showInstructions();
@@ -39,8 +42,33 @@ bool Game::menu()
 	return true;
 }
 
+void Game::chooseGameScreen()
+{
+	if (_kbhit())									// Checks if a key has been pressed
+	{
+		int key = _getch();							// Reads the key that was pressed
+		if(key < board.getNumOfScreens())
+		{
+			// assign pointer to the chosen board
+			startGame(board.getScreenByIndex()/*the pointer here*/);
+		}
+
+		else if (key == EXIT_GAME){
+			board.printScreen(board.getGoodByeBoard());
+			Sleep(SCREEN_EXIT);
+			return false;				
+			menu();
+		}
+		else if (key == EXIT_GAME)
+			menu();
+	
+		}
+	}
+}
+
+
 // Starts the game loop and handles gameplay logic
-void Game::startGame()
+void Game::startGame(Board& board)
 {
 	setStartingGame();								// Initializes the game state and Mario's starting position and attributes
 	playing_mario = true;							// Indicates that the Mario gameplay loop is active
