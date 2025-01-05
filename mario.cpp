@@ -6,8 +6,7 @@ void Mario::setStartingMario()
 {
 	won_level = false;
 
-	p.setX(STARTING_POS_X);									// Set stating position for x-axis
-	p.setY(STARTING_POS_Y);									// Set stating position for y-axis
+	p.setPosition(pBoard->getStartPosMario());									// Set stating position for x-axis
 
 	p.setDir({ STAY, STAY });								// Set stating direction for Mario
 
@@ -48,7 +47,7 @@ void Mario::move()
 // Update all the char data members around mario
 void Mario::updateCharParameters()
 {
-	int _x = p.getX(), _y = p.getY();
+	int _x = p.getPosition().x, _y = p.getPosition().y;
 
 	ch_covered = getCharFromBoard(_x, _y);
 	ch_below = getCharFromBoard(_x, _y + DOWN);
@@ -234,13 +233,13 @@ void Mario::amendNextMove()
 // Updating the movement of the barrel for the next loop according to the position and the direction
 void Mario::updateNextMove()
 {
-	int newX = p.getX() + p.getDir().x;
-	int newY = p.getY() + p.getDir().y;
+	int newX = p.getPosition().x + p.getDir().x;
+	int newY = p.getPosition().y + p.getDir().y;
 
 	if (newX < 0 || newX >= pBoard->get_board_width())						// Update the next move by the board size	
-		newX = p.getX();
+		newX = p.getPosition().x;
 	if (newY < 0 || newY >= pBoard->get_board_height())						// Update the next move by the board size
-		newY = p.getY();
+		newY = p.getPosition().y;
 
 	if (pBoard->getCharFromBoard(newX, newY) == PRINCESS || ch_below == PRINCESS)		// Check if mario reached pauline	
 	{
@@ -248,8 +247,7 @@ void Mario::updateNextMove()
 		return;
 	}
 
-	p.setX(newX);
-	p.setY(newY);
+	p.setPosition(newX, newY);
 }
 
 // Handle Mario's lives (when hit or fall)
@@ -259,7 +257,7 @@ void Mario::life()
 	char ch_lives = (char)lives + '0';
 
 	printLives();																		// Print Mario's lives on screen
-	pBoard->updateBoard(pBoard->getLifePosX(), pBoard->getLifePosY(), ch_lives);		// Update mario's life on current board
+	//pBoard->updateBoard(pBoard->getLifePosX(), pBoard->getLifePosY(), ch_lives);		// Update mario's life on current board
 
 	if (lives > DEAD_MARIO) {															// Check if lives > 0
 		startOver();																	// Function that reset the game after mario died but still has more than 0 lives

@@ -24,8 +24,8 @@ class Mario
 	int fall_count = 0;
 	int lives = 3;
 
-	static constexpr int STARTING_POS_X = 20;
-	static constexpr int STARTING_POS_Y = 23;
+	//static constexpr int STARTING_POS_X = 20;
+	//static constexpr int STARTING_POS_Y = 23;
 	static constexpr int FALL_FROM_TOO_HIGH = 5;
 	static constexpr int DEAD_MARIO = 0;
 	static constexpr int UP = -1;
@@ -57,23 +57,25 @@ class Mario
 	Barrels* pBarrels = nullptr;
 
 public:
-	Mario(): p(STARTING_POS_X, STARTING_POS_Y, ch) {}						// Constructor initializing Mario's starting position
+	Mario(): p(ch) {}						// Constructor initializing Mario's starting position
+	//Mario(): p(STARTING_POS_X, STARTING_POS_Y, ch) {}						// Constructor initializing Mario's starting position
 
 	void setStartingMario();												// Set Mario to his starting position
 	void keyPressed(char key);												// Handle key press input
 
 	void draw() {															// Draw Mario on the screen and update the board
 		p.draw(ch);
-		pBoard->updateBoard(p.getX(), p.getY(), ch);
+		pBoard->updateBoard(p.getPosition(), ch);
 	}
 	void erase() {															// Erase Mario's current position from the screen and update the board
 		p.erase();
-		pBoard->updateBoard(p.getX(), p.getY(), p.getPreviousChar());
+		pBoard->updateBoard(p.getPosition(), p.getPreviousChar());
 	}
 
 	Point getPointP() const { return p; }									// Get Mario position
-	int getPointX() const { return p.getX(); }								// Get Mario position by x-axis
-	int getPointY() const { return p.getY(); }								// Get Mario position by y-axis
+	Position getPosition() const { return p.getPosition(); }								// Get Mario position by x-axis
+	//int getPointX() const { return p.getX(); }								// Get Mario position by x-axis
+	//int getPointY() const { return p.getY(); }								// Get Mario position by y-axis
 
 	void setBoard(Board& _board) {pBoard = &_board; }						// Set the game board pointer
 	void setpBarrels(Barrels& _barrels) { pBarrels = &_barrels; }			// Set the barrels object pointer
@@ -96,7 +98,7 @@ public:
 	void updateState();																			// Update Mario's state
 	void updateNextMove();																		// Update Mario's next move
 	void updatePreviousDir() { p.setPreviousDir(p.getDir()); }									// Function to update the Mario's previous direction to become the current (similar to previous_dir = dir)
-	void updatePreviousChar() { p.setPreviousChar(getCharFromBoard(p.getX(), p.getY())); }		// Function for keeping the char the barrel is on so it can be printes in the next loop
+	void updatePreviousChar() { p.setPreviousChar(getCharFromBoard(p.getPosition().x, p.getPosition().y)); }		// Function for keeping the char the barrel is on so it can be printes in the next loop
 										
 	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); }			// Get the char in the (x,y) position on board
 

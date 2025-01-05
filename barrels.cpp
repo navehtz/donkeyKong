@@ -21,7 +21,7 @@ void Barrels::setStartingBarrels()
 {
 	for (int i = 0; i < MAX_BARRELS; i++)
 	{
-		barrels[i].setStartingBarrel();
+		barrels[i].setStartingBarrel(pBoard);
 	}
 }
 
@@ -82,7 +82,7 @@ void Barrels::bringBackExplodedBarrels()
 	{
 		if (barrels[i].getIsExploded())
 		{
-			barrels[i].setStartingBarrel();
+			barrels[i].setStartingBarrel(pBoard);
 		}
 	}
 }

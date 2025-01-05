@@ -54,25 +54,26 @@ class Barrel
 public:
 	Barrel() : point(ch) {}													// Ctor of barrel with point
 
-	void setStartingBarrel();												// Initialize barrel
+	void setStartingBarrel(Board* _pBoard);												// Initialize barrel
 	bool getIsExploded() { return is_exploded; }							// Get the member 'is_exploded'
 	void setIsExploded(bool _is_exploded) { is_exploded = _is_exploded; }	// Set the member 'is_exploded'
 	void setpBoard(Board& _board) { pBoard = &_board; }						// Set pBoard to the board
 	Point getPoint() const { return point; }								// Get the member 'point'
-	int getDirX() const { return point.getX(); }													// Get Mario's lives
+	int getDirX() const { return point.getPosition().x; }													// Get Mario's lives
 
 	void draw() {															// Draw the barrel on the screen
 		point.draw(ch);														// Erase the barrel from the screen
-		pBoard->updateBoard(point.getX(), point.getY(), ch);				// Update the board with the current barrel
+		pBoard->updateBoard(point.getPosition(), ch);				// Update the board with the current barrel
 	}
 	void erase() {
 		point.erase();
-		pBoard->updateBoard(point.getX(), point.getY(), point.getPreviousChar());						// Update the board without the current barrel
+		pBoard->updateBoard(point.getPosition(), point.getPreviousChar());						// Update the board without the current barrel
 	}
 
 	void checkWhatState();										// Check in which state the barrel is
 	void updateState();											// Update the barrel's state
 
+	char getCharFromBoard(Position _pos) const { return pBoard->getCharFromBoard(_pos); }			// Get the char in the (x,y) position on board
 	char getCharFromBoard(int _x, int _y) const { return pBoard->getCharFromBoard(_x, _y); }			// Get the char in the (x,y) position on board
 
 	void updateCharParameters();								// Update all the char data members around mario
@@ -87,7 +88,7 @@ public:
 	bool isBlock(char _ch) const;								// The function returns true if the parameter is a floor/ceiling/wall and false otherwise
 
 	void updatePreviousDir() { point.setPreviousDir(point.getDir()); }									// Function to update the barrel's previous direction like the current (similar to previous_dir = dir)              
-	void updatePreviousChar() { point.setPreviousChar(getCharFromBoard(point.getX(), point.getY())); }	// Function for keeping the char the barrel is on so it can be printes in the next loop
+	void updatePreviousChar() { point.setPreviousChar(getCharFromBoard(point.getPosition())); }	// Function for keeping the char the barrel is on so it can be printes in the next loop
 	void updateNextMove();										// Updating the movement of the barrel for the next loop according to the position and the direction
 
 	bool IsActivated() { return is_activated; };				// The function returns true if the barrel is activated(rolling/falling etc.)and false otherwise

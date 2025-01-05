@@ -46,12 +46,12 @@ void Game::chooseGameScreen()
 {
 	bool valid_file;
 
-	while (!_kbhit())										// Checks if a key has been pressed
+	while (true)										// Checks if a key has been pressed
 	{
 		if (_kbhit())
 		{
-			int key = _getch();									// Reads the key that was pressed
-			if (key > 0 && key <= files_names_vec.size())
+			int key = _getch() - '0';									// Reads the key that was pressed
+			if (!files_names_vec.empty() && key > 0 && key <= files_names_vec.size())
 			{
 				key--;											// The array start from zero
 				valid_file = board.load(files_names_vec[key]);
@@ -60,8 +60,11 @@ void Game::chooseGameScreen()
 			}
 			else if (key == EXIT_GAME)
 				menu();
+
+			break;
 		}
 	}
+
 }
 
 
@@ -103,13 +106,13 @@ void Game::setStartingGame()
 	clrscr();
 
 	board.reset();										// Update current board
-	mario.setStartingMario();							// Initializes Mario to his starting position and state
 	mario.setBoard(board);								// Links Mario to the game board, so he can interact with it
+	mario.setStartingMario();							// Initializes Mario to his starting position and state
 	mario.setpBarrels(barrels);							// Links Mario to the barrels, allowing interactions between them
 	mario.setLives(FULL_LIVES);
 
-	barrels.setStartingBarrels();						// Initializes the barrels to their starting positions and states
 	barrels.setpBoard(board);							// Links the barrels to the game board, enabling their interaction with it
+	barrels.setStartingBarrels();						// Initializes the barrels to their starting positions and states
 
 	board.printScreen(board.getCurrentBoard());
 	
@@ -210,8 +213,8 @@ void Game::updateIfDiedByBarrel()
 		barrelPosY = barrels.getPosY(i);
 
 		// Get Mario's current position
-		marioPosX = mario.getPointX();
-		marioPosY = mario.getPointY();
+		marioPosX = mario.getPosition().x;
+		marioPosY = mario.getPosition().y;
 
 		barrelDirX = barrels.getBarrelDirX(i);
 

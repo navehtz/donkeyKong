@@ -19,3 +19,7 @@ static constexpr char LADDER = 'H';
 static constexpr char PRINCESS = '$';
 static constexpr char GORRILA = '&';
 static constexpr char SPACE = ' ';
+
+struct Position {
+	int x, y;
+};

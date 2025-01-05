@@ -232,27 +232,27 @@ class Board {
 
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
 
-	/*struct Position {
-		int x, y;
-	};
 	Position start_pos_mario{ 0,0 };
 	Position start_pos_gorilla{ 0,0 };
 	Position start_pos_pauline{ 0,0 };
 	Position start_pos_hammer{ 0,0 };
-	std::vector<Position> start_pos_ghosts_vec;*/
+	Position pos_L{ 0,0 };
+	std::vector<Position> start_pos_ghosts_vec;
 
 public:
 	void reset();																				// This function resets the board to its original state
 	void printScreen(const char screen[][MAX_X + 1]) const;										// This function prints the input board to the screen
+	char getCharFromBoard(Position _pos) const { return currentBoard[_pos.y][_pos.x]; }					// This function retrieves a specific character from the board at position (x, y)
 	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }					// This function retrieves a specific character from the board at position (x, y)
-	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }				// This function updates the board by replacing the character at position (x, y) with a new character
+	//void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }				// This function updates the board by replacing the character at position (x, y) with a new character
+	void updateBoard(Position pos, char newChar) { currentBoard[pos.y][pos.x] = newChar; }				// This function updates the board by replacing the character at position (x, y) with a new character
 
-	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1] { return currentBoard; }				// Returns a const reference to the current board's array
-	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1] { return start_screen; }				// Returns a const reference to the initial state of the board (start screen)
-	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{	return instruction_screen; }	// Returns a const reference to the board with instructions (instruction screen)
-	const char(&getLosingBoard() const)[MAX_Y][MAX_X + 1]{	return losing_screen; }				// Returns a const reference to the board shown when the player loses (losing screen)
-	const char(&getWinningBoard() const)[MAX_Y][MAX_X + 1]{	return winning_screen; }			// Returns a const reference to the board shown when the player wins (winning screen)
-	const char(&getGoodByeBoard() const)[MAX_Y][MAX_X + 1]{	return goodBye_screen; }			// Returns a const reference to the board shown when the player wins (goodBye screen)
+	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1]{ return currentBoard; }				// Returns a const reference to the current board's array
+	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1]{ return start_screen; }				// Returns a const reference to the initial state of the board (start screen)
+	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{ return instruction_screen; }	// Returns a const reference to the board with instructions (instruction screen)
+	const char(&getLosingBoard() const)[MAX_Y][MAX_X + 1]{ return losing_screen; }				// Returns a const reference to the board shown when the player loses (losing screen)
+	const char(&getWinningBoard() const)[MAX_Y][MAX_X + 1]{ return winning_screen; }			// Returns a const reference to the board shown when the player wins (winning screen)
+	const char(&getGoodByeBoard() const)[MAX_Y][MAX_X + 1]{ return goodBye_screen; }			// Returns a const reference to the board shown when the player wins (goodBye screen)
 
 	int get_board_width() { return MAX_X; }			// Returns the width of the board
 	int get_board_height() { return MAX_Y; }		// Returns the height of the board
@@ -264,4 +264,12 @@ public:
 	void getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const;
 	bool load(const std::string& filename);
 	void handleErrors(const std::ifstream& _file);
+
+	Position getStartPosMario() const { return start_pos_mario; }
+	Position getStartPosGorilla() const { return start_pos_gorilla; }
+	Position getStartPosPauline() const { return start_pos_pauline; }
+	Position getStartPosHammer() const { return start_pos_hammer; }
+	Position getStartPosL() const { return pos_L; }
+	Position getStartPosOfGhost(int i) const { return start_pos_ghosts_vec[i]; }
+
 };

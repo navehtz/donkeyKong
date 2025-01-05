@@ -74,20 +74,28 @@ bool Board::load(const std::string& filename) {
             curr_col = 0;
             continue;
         }
-        if (curr_col < MAX_X) {                             // COMPELETE : L, maybe mario , donkeyKong !!!!!!!!!!!!!!!!!!
-           // handle special chars
-           
-            if (c == '@') {
-
+        if (curr_col < MAX_X) {                           
+            switch (c)
+            {
+            case '@':
+                start_pos_mario = { curr_col, curr_row };
+                break;
+            case '&':
+                start_pos_gorilla = { curr_col, curr_row };
+                break;
+            case '$':
+                start_pos_pauline = { curr_col, curr_row };
+                break;
+            case 'p':
+                start_pos_hammer = { curr_col, curr_row };
+                break;
+            case 'x':
+                start_pos_ghosts_vec.push_back({ curr_col, curr_row });
+                break;
+            case 'L':
+                pos_L = { curr_col, curr_row };
+                break;
             }
-
-
-           //if (c == 'L') {
-           //     startPos = { curr_col, curr_row };
-           // }
-           // else if (c == 'x' || c == 'X') {
-           //     endPos = { curr_col, curr_row };
-           // }
             originalBoard[curr_row][curr_col++] = c;
         }
     }
