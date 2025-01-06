@@ -21,6 +21,7 @@ class Mario
 	bool res_is_wall_on_left = false, res_is_wall_on_right = false, res_is_two_chars_below_floor = false;
 
 	bool won_level = false;
+	bool just_died = false;
 	int fall_count = 0;
 	int lives = 3;
 
@@ -57,9 +58,8 @@ class Mario
 	Barrels* pBarrels = nullptr;
 
 public:
-	Mario(): p(ch) {}						// Constructor initializing Mario's starting position
-	//Mario(): p(STARTING_POS_X, STARTING_POS_Y, ch) {}						// Constructor initializing Mario's starting position
-
+	Mario(): p(ch) {}														// Constructor initializing Mario's starting position
+	
 	void setStartingMario();												// Set Mario to his starting position
 	void keyPressed(char key);												// Handle key press input
 

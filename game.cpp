@@ -24,11 +24,12 @@ bool Game::menu()
 	if (_kbhit())									// Checks if a key has been pressed
 	{
 		int key = _getch();							// Reads the key that was pressed
+		int screen_index;
 		switch (key) {
 		case(START_NEW_GAME):						// User pressed the key to start a new game
 			board.printScreenOptions(files_names_vec);
-			chooseGameScreen();
-			startGame();
+			screen_index = chooseGameScreen();
+			startGame(screen_index);
 			break;
 		case(INSTRUCTIONS_AND_KEYS):				// User pressed the key to view instructions
 			showInstructions();
@@ -42,10 +43,8 @@ bool Game::menu()
 	return true;
 }
 
-void Game::chooseGameScreen()
+int Game::chooseGameScreen()
 {
-	bool valid_file;
-
 	while (true)										// Checks if a key has been pressed
 	{
 		if (_kbhit())
@@ -54,9 +53,7 @@ void Game::chooseGameScreen()
 			if (!files_names_vec.empty() && key > 0 && key <= files_names_vec.size())
 			{
 				key--;											// The array start from zero
-				valid_file = board.load(files_names_vec[key]);
-				if (!valid_file)
-					menu();
+				return key;
 			}
 			else if (key == EXIT_GAME)
 				menu();
@@ -64,37 +61,48 @@ void Game::chooseGameScreen()
 			break;
 		}
 	}
-
 }
 
 
 // Starts the game loop and handles gameplay logic
-void Game::startGame()
+void Game::startGame(int screen_index)
 {
-	setStartingGame();								// Initializes the game state and Mario's starting position and attributes
-	playing_mario = true;							// Indicates that the Mario gameplay loop is active
-	exit_game = false;								// Indicates that the Mario gameplay loop is active
+	bool valid_file;
+	playing_mario = true;							    // Indicates that the Mario gameplay loop is active
+	exit_game = false;								    // Indicates that the Mario gameplay loop is active
 
-
-	while (playing_mario && !exit_game)				// Main game loop: continues as long as Mario is playing and has lives
+	for (int i = screen_index; (i < files_names_vec.size()) && (playing_mario && !exit_game); i++)
 	{
-		if (wonTheLevel())
-			break;
+		valid_file = board.load(files_names_vec[i]);
+		if (!valid_file)
+			menu();
 
-		barrels.bringBackExplodedBarrels();			// Reset the state of barrels that have exploded
-		draw();										// Draws the current state of the game (Mario, barrels)
-		updateIfDiedByBarrel();						// Checks if Mario collided with a barrel and updates his state if he has died
+		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
+		playing_mario = true;							// Indicates that the Mario gameplay loop is active
+		exit_game = false;								// Indicates that the Mario gameplay loop is active
 
-		if (_kbhit())
+		while (playing_mario && !exit_game)				// Main game loop: continues as long as Mario is playing and has lives
 		{
-			updateActionByKeys();
+			if (wonTheLevel())
+			{
+				break;
+			}
+
+			barrels.bringBackExplodedBarrels();			// Reset the state of barrels that have exploded
+			draw();										// Draws the current state of the game (Mario, barrels)
+			updateIfDiedByBarrel();						// Checks if Mario collided with a barrel and updates his state if he has died
+
+			if (_kbhit())
+			{
+				updateActionByKeys();
+			}
+			Sleep(SCREEN_TIME);
+			barrels.updateBarrelsCharParameters();
+			erase();
+			move();
+			updateIfDiedByBarrel();						// Checks if Mario collided with a barrel and updates his state if he has died
+			playing_mario = isAlive(mario.getLives());	// Determine if Mario is still alive based on his remaining lives (if lives > 0, the game continues)
 		}
-		Sleep(SCREEN_TIME);
-		barrels.updateBarrelsCharParameters();
-		erase();
-		move();
-		updateIfDiedByBarrel();						// Checks if Mario collided with a barrel and updates his state if he has died
-		playing_mario = isAlive(mario.getLives());	// Determine if Mario is still alive based on his remaining lives (if lives > 0, the game continues)
 	}
 	clrscr();
 	board.printScreen(board.getStartBoard());

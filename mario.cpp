@@ -1,12 +1,12 @@
 #include "mario.h"
 #include "point.h"
 
-// Initialize barrel
+// Initialize mario
 void Mario::setStartingMario()
 {
 	won_level = false;
 
-	p.setPosition(pBoard->getStartPosMario());									// Set stating position for x-axis
+	p.setPosition(pBoard->getStartPosMario());				// Set stating position for x-axis
 
 	p.setDir({ STAY, STAY });								// Set stating direction for Mario
 
@@ -37,6 +37,7 @@ void Mario::move()
 	checkWhatState();			// Check what is mario state (climbing/ jumping/ falling/ walking or staying)
 	updateState();				// Update the moves that mario should commit by the state
 
+	if (just_died) { just_died = false; return; }
 
 	//update prameters
 	updateNextMove();			// activate next move
@@ -279,7 +280,8 @@ void Mario::printLives()
 
 // Reset the game after mario died but still has more than 0 lives
 void Mario::startOver()
-{									
+{		
+	just_died = true;
 	flashingMario();
 
 	pBoard->reset();

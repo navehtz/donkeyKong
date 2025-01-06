@@ -8,9 +8,9 @@
 class Barrel
 {
 	// Constants
-	static constexpr int STARTING_POS_LEFT_X = 36;
-	static constexpr int STARTING_POS_RIGHT_X = 38;
-	static constexpr int STARTING_POS_Y = 3;
+	//static constexpr int STARTING_POS_LEFT_X = 36;
+	//static constexpr int STARTING_POS_RIGHT_X = 38;
+	//static constexpr int STARTING_POS_Y = 3;
 
 	static constexpr int DOWN = 1;
 	static constexpr int RIGHT = 1;
@@ -31,8 +31,7 @@ class Barrel
 	char ch_covered = SPACE, ch_below = SPACE, two_chars_below = SPACE;
 	char ch_left = SPACE, ch_right = SPACE;
 
-	bool res_is_on_ladder = false, res_is_on_floor = false, res_is_below_roof = false;
-	bool res_is_wall_on_left = false, res_is_wall_on_right = false, res_is_two_chars_below_floor = false;
+	bool res_is_on_floor = false, res_is_wall_on_left = false, res_is_wall_on_right = false;
 
 	bool is_activated = false;
 	bool is_exploded = false;

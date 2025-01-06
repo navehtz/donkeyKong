@@ -99,7 +99,7 @@ bool Board::load(const std::string& filename) {
             originalBoard[curr_row][curr_col++] = c;
         }
     }
-    // TODO: file close!!!
+    screen_file.close();
     return true;
 }
 
@@ -128,6 +128,8 @@ void Board::printScreenOptions(std::vector<std::string>& vec_to_fill) const
 {
     clrscr();
     // Add headline - ascii art
+
+    printScreen(chooseBoard_screen);
 
     int x = 30; // MAGIC NUMBER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     int y = 10;
