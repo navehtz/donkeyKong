@@ -1,13 +1,12 @@
 #include "mario.h"
 #include "point.h"
 
-// Initialize barrel
+// Initialize mario
 void Mario::setStartingMario()
 {
 	won_level = false;
 
-	p.setX(STARTING_POS_X);									// Set stating position for x-axis
-	p.setY(STARTING_POS_Y);									// Set stating position for y-axis
+	p.setPosition(pBoard->getStartPosMario());				// Set stating position for x-axis
 
 	p.setDir({ STAY, STAY });								// Set stating direction for Mario
 
@@ -38,6 +37,7 @@ void Mario::move()
 	checkWhatState();			// Check what is mario state (climbing/ jumping/ falling/ walking or staying)
 	updateState();				// Update the moves that mario should commit by the state
 
+	if (just_died) { just_died = false; return; }
 
 	//update prameters
 	updateNextMove();			// activate next move
@@ -48,7 +48,7 @@ void Mario::move()
 // Update all the char data members around mario
 void Mario::updateCharParameters()
 {
-	int _x = p.getX(), _y = p.getY();
+	int _x = p.getPosition().x, _y = p.getPosition().y;
 
 	ch_covered = getCharFromBoard(_x, _y);
 	ch_below = getCharFromBoard(_x, _y + DOWN);
@@ -56,6 +56,8 @@ void Mario::updateCharParameters()
 	ch_above = getCharFromBoard(_x, _y + UP);
 	ch_left = getCharFromBoard(_x + LEFT, _y);
 	ch_right = getCharFromBoard(_x + RIGHT, _y);
+	ch_left_down = getCharFromBoard(_x + LEFT, _y + DOWN);
+	ch_right_down = getCharFromBoard(_x + RIGHT, _y + DOWN);
 
 	res_is_on_ladder = isOnLadder();
 	res_is_on_floor = isBlock(ch_below);
@@ -63,6 +65,8 @@ void Mario::updateCharParameters()
 	res_is_wall_on_left = isBlock(ch_left);
 	res_is_wall_on_right = isBlock(ch_right);
 	res_is_two_chars_below_floor = isBlock(two_chars_below);
+	res_is_left_down = isBlock(ch_left_down);
+	res_is_right_down = isBlock(ch_right_down);
 }
 
 // Check in which state the Marrio is
@@ -171,7 +175,8 @@ bool Mario::isFalling() const
 void Mario::fall()
 {
 	if (p.getPreviousDir().y == UP || p.getPreviousDir().y == DOWN)		// If mario finish a jump, we want to save the previous x vector
-		p.setDirX(p.getPreviousDir().x);
+		if(!res_is_left_down && !res_is_right_down)
+			p.setDirX(p.getPreviousDir().x);
 	else
 		p.setDirX(STAY);
 
@@ -229,18 +234,20 @@ void Mario::amendNextMove()
 	if (res_is_on_floor && two_chars_below != LADDER) {				// Above floor - mario can't go down
 		if (p.getDir().y == DOWN) { p.setDirY(STAY); }
 	}
+	if (res_is_left_down || res_is_right_down)
+		if (p.getDir().y == DOWN) { p.setDirX(STAY); }
 }
 
 // Updating the movement of the barrel for the next loop according to the position and the direction
 void Mario::updateNextMove()
 {
-	int newX = p.getX() + p.getDir().x;
-	int newY = p.getY() + p.getDir().y;
+	int newX = p.getPosition().x + p.getDir().x;
+	int newY = p.getPosition().y + p.getDir().y;
 
 	if (newX < 0 || newX >= pBoard->get_board_width())						// Update the next move by the board size	
-		newX = p.getX();
+		newX = p.getPosition().x;
 	if (newY < 0 || newY >= pBoard->get_board_height())						// Update the next move by the board size
-		newY = p.getY();
+		newY = p.getPosition().y;
 
 	if (pBoard->getCharFromBoard(newX, newY) == PRINCESS || ch_below == PRINCESS)		// Check if mario reached pauline	
 	{
@@ -248,18 +255,21 @@ void Mario::updateNextMove()
 		return;
 	}
 
-	p.setX(newX);
-	p.setY(newY);
+	p.setPosition(newX, newY);
 }
 
 // Handle Mario's lives (when hit or fall)
 void Mario::life()
 {
 	lives -= 1;
-	char ch_lives = (char)lives + '0';
 
-	printLives();																		// Print Mario's lives on screen
-	pBoard->updateBoard(pBoard->getLifePosX(), pBoard->getLifePosY(), ch_lives);		// Update mario's life on current board
+	//char ch_lives = (char)lives + '0';
+	//printLives();																		// Print Mario's lives on screen
+	//pBoard->updateBoard(pBoard->getLifePosX(), pBoard->getLifePosY(), ch_lives);		// Update mario's life on current board
+
+
+	pBoard->setLifeLegend(lives);
+	pBoard->printLifeLegend();
 
 	if (lives > DEAD_MARIO) {															// Check if lives > 0
 		startOver();																	// Function that reset the game after mario died but still has more than 0 lives
@@ -270,25 +280,18 @@ void Mario::life()
 	}
 }
 
-// Print Mario's lives on screen
-void Mario::printLives()
-{
-	char ch_lives = (char)lives + '0';
-
-	gotoxy(pBoard->getLifePosX(), pBoard->getLifePosY());
-	cout << ch_lives;
-}
 
 // Reset the game after mario died but still has more than 0 lives
 void Mario::startOver()
-{									
+{		
+	just_died = true;
 	flashingMario();
 
 	pBoard->reset();
 	setStartingMario();
 	pBarrels->setStartingBarrels();							//reset barrels
 	pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen
-	printLives();											//printing mario's lives
+	pBoard->printLegend();
 }
 
 // Printing Mario after he died (by flashing the char)

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-using namespace std;
 #include <locale>
 #include <codecvt>
 #include <string>
@@ -25,9 +24,6 @@ class Point {
 	};
 	int x=0, y=0;
 
-	struct Position {
-		int x, y;
-	};
 	Position pos{ 0,0 };
 
 	Direction previous_dir{ STAY,STAY };															// Last direction before the current movement
@@ -38,28 +34,32 @@ class Point {
 
 
 public:
-	Point(int _x, int _y, char _ch) : x(_x), y(_y), ch(_ch) {}						// For Mario (initial position and character)
+	//Point(int _x, int _y, char _ch) : x(_x), y(_y), ch(_ch) {}						// For Mario (initial position and character)
 	Point(char _ch) : ch(_ch) {}													// For barrels (character only)
 	
 
 	Position getPosition() const { return pos; }									// Get the member 'pos'
-	void setPosition(int _x, int _y) { x = _x; y = _y; }							// Set the (x,y) position
+	void setPosition(Position _pos) { pos = _pos; }													// Set the data member 'x'
+	void setPosition(int _x, int _y) { pos.x = _x; pos.y = _y; }							// Set the (x,y) position
+	void setPositionX(int _x) { pos.x = _x; }							// Set the (x,y) position
+	void setPositionY(int _y) { pos.y = _y; }							// Set the (x,y) position
 
-	int getX() const { return x; }													// Get the data member 'x'
-	int getY() const { return y; }													// Get the data member 'y'
-	void setX(int _x) { x = _x; }													// Set the data member 'x'
-	void setY(int _y) { y = _y; }													// Set the data member 'y'
+
+	//int getX() const { return x; }													// Get the data member 'x'
+	//int getY() const { return y; }													// Get the data member 'y'
+	//void setX(int _x) { x = _x; }													// Set the data member 'x'
+	//void setY(int _y) { y = _y; }													// Set the data member 'y'
 
 	char getPreviousChar() const { return previous_char; }							// Get the previous char data memeber
 	void setPreviousChar(char _ch) { previous_char = _ch; }							// Set the previous char data memeber
 
 	void draw(char _ch) const {														// Draw the current character on the board
-		gotoxy(x, y);
-		cout << _ch;
+		gotoxy(pos.x, pos.y);
+		std::cout << _ch;
 	}
 	void erase() const {															// Erase the character by redrawing the previous character
-		gotoxy(x, y);
-		cout << previous_char;
+		gotoxy(pos.x, pos.y);
+		std::cout << previous_char;
 	}
 
 	Direction getDir() const { return dir; }										// Get the current movement direction (x,y)

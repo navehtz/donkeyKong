@@ -1,8 +1,16 @@
 ﻿#pragma once
 
 #include <Windows.h>	//for Sleep and colors
-
 #include "general.h"
+
+#include <iostream>
+#include <algorithm>
+#include <filesystem>
+#include <fstream>
+#include <ios>
+#include <vector>
+#include <string>
+
 
 class Board {
 	static constexpr size_t MAX_X = 80;		// Board width
@@ -11,34 +19,38 @@ class Board {
 	static constexpr int LIFE_POS_X = 11;	// Position in the board that hold the number lives of mario
 	static constexpr int LIFE_POS_Y = 1;
 
-	const char* originalBoard[MAX_Y] = {
-		// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
-		  "                                                                                ", // 0
-		  "     LIFE:                           $                                          ", // 1
-		  "                        ==============================                          ", // 2
-		  "                        H            &               H                          ", // 3
-		  "                        H    ================        H                          ", // 4
-		  "                        H                            H                          ", // 5
-		  "                        H                            H                          ", // 6
-		  "          ======================           =================                    ", // 7
-		  "            H                                 H                                 ", // 8
-		  "            H                                 H                                 ", // 9
-		  "            H                                 H           H                     ", // 10
-		  "            H                                 H           H                     ", // 11
-		  "         >==================            ====================<=====              ", // 12
-		  "                       H                                        H               ", // 13
-		  "                       H                                        H               ", // 14
-		  "                ============<         >===========================              ", // 15
-		  "                  H                               H            H                ", // 16
-		  "                  H                               H            H                ", // 17
-		  "                  H                               H            H                ", // 18
-		  "         =======================               ===================<             ", // 19
-		  "          H                                                H                    ", // 20
-		  "          H                                                H                    ", // 21
-		  "          H                H              H                H                    ", // 22
-		  "          H                H              H                H                    ", // 23
-		  "================================================================================"  // 24
-	};
+	//std::vector<std::string> files_names_vec;
+	std::string directory = ".";
+
+
+	char originalBoard[MAX_Y][MAX_X + 1]; //= {
+	//	// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
+	//	  "                                                                                ", // 0
+	//	  "     LIFE:                           $                                          ", // 1
+	//	  "                        ==============================                          ", // 2
+	//	  "                        H            &               H                          ", // 3
+	//	  "                        H    ================        H                          ", // 4
+	//	  "                        H                            H                          ", // 5
+	//	  "                        H                            H                          ", // 6
+	//	  "          ======================           =================                    ", // 7
+	//	  "            H                                 H                                 ", // 8
+	//	  "            H                                 H                                 ", // 9
+	//	  "            H                                 H           H                     ", // 10
+	//	  "            H                                 H           H                     ", // 11
+	//	  "         >==================            ====================<=====              ", // 12
+	//	  "                       H                                        H               ", // 13
+	//	  "                       H                                        H               ", // 14
+	//	  "                ============<         >===========================              ", // 15
+	//	  "                  H                               H            H                ", // 16
+	//	  "                  H                               H            H                ", // 17
+	//	  "                  H                               H            H                ", // 18
+	//	  "         =======================               ===================<             ", // 19
+	//	  "          H                                                H                    ", // 20
+	//	  "          H                                                H                    ", // 21
+	//	  "          H                H              H                H                    ", // 22
+	//	  "          H                H              H                H                    ", // 23
+	//	  "================================================================================"  // 24
+	//};
 	char start_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************", //0
@@ -59,6 +71,34 @@ class Board {
 		 "*          (1) Start new game                                                  *", //15
 		 "*          (8) Show instructions and keys                                      *", //16
 		 "*          (9) Exit                                                            *", //17
+		 "*                                                                              *", //18
+		 "*                                                                              *", //19
+		 "*                                                                              *", //20
+		 "*                                                                              *", //21
+		 "*                                                                              *", //22
+		 "*                                                                              *", //23
+		 "********************************************************************************"  //24
+	};
+	char choose_boardscreens_picks[MAX_Y][MAX_X + 1] = {
+		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
+		 "********************************************************************************", //0
+		 "*                                                                              *", //1
+		 "*                                                                              *", //2
+		 "*                                                                              *", //3
+		 "*                                                                              *", //4
+		 "*                                                                              *", //5 
+		 "*                                                                              *", //6
+		 "*                                                                              *", //7
+		 "*                                                                              *", //8
+		 "*                                                                              *", //9
+		 "*                                                                              *", //10
+		 "*                                                                              *", //11
+		 "*                                                                              *", //12
+		 "*                                                                              *", //13
+		 "*                                                                              *", //14
+		 "*                                                                              *", //15
+		 "*                                                                              *", //16
+		 "*                                                                              *", //17
 		 "*                                                                              *", //18
 		 "*                                                                              *", //19
 		 "*                                                                              *", //20
@@ -108,11 +148,11 @@ class Board {
 		 "*                                                                              *",//7
 		 "*                                                                              *",//8
 		 "*                __   __             _              _      _                   *",//9
-         "*                \\ \\ / /__  _   _   | |    ___  ___| |_   | |                  *",//10
-         "*                 \\ V / _ \\| | | |  | |   / _ \\/ __| __|  | |                  *",//11
-         "*                  | | (_) | |_| |  | |__| (_) \\__ \\ |_   |_|                  *",//12
-         "*                  |_|\\___/ \\__,_|  |_____\\___/|___/\\__|  (_)                  *",//13
-         "*                                                                              *",//14
+		 "*                \\ \\ / /__  _   _   | |    ___  ___| |_   | |                  *",//10
+		 "*                 \\ V / _ \\| | | |  | |   / _ \\/ __| __|  | |                  *",//11
+		 "*                  | | (_) | |_| |  | |__| (_) \\__ \\ |_   |_|                  *",//12
+		 "*                  |_|\\___/ \\__,_|  |_____\\___/|___/\\__|  (_)                  *",//13
+		 "*                                                                              *",//14
 		 "*                                                                              *",//15
 		 "*                                                                              *",//16
 		 "*                                                                              *",//17
@@ -138,9 +178,9 @@ class Board {
 		 "*                                                                              *",//6
 		 "*           _____                                              _____           *",//7
 		 "*           (___)                                              (___)           *",//8
-         "*           |   |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|   |           *",//9
-         "*           |   | __   __           __        __            _  |   |           *",//10
-         "*           |   | \\ \\ / /__  _   _  \\ \\      / /__  _ __   | | |   |           *",//11
+		 "*           |   |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|   |           *",//9
+		 "*           |   | __   __           __        __            _  |   |           *",//10
+		 "*           |   | \\ \\ / /__  _   _  \\ \\      / /__  _ __   | | |   |           *",//11
 		 "*           |   |  \\ V / _ \\| | | |  \\ \\ /\\ / / _ \\| '_ \\  | | |   |           *",//12
 		 "*           |   |   | | (_) | |_| |   \\ V  V / (_) | | | | |_| |   |           *",//13
 		 "*           |   |   |_|\\___/ \\__,_|    \\_/\\_/ \\___/|_| |_| (_) |   |           *",//14
@@ -154,12 +194,12 @@ class Board {
 		 "*                                                                              *",//22 
 		 "*                                                                              *",//23 
 		 "********************************************************************************" //24
-		              
+
 	};
 
 
 
-	
+
 	char goodBye_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
@@ -189,24 +229,99 @@ class Board {
 		 "********************************************************************************" //24
 	};
 
+	char chooseBoard_screen[MAX_Y][MAX_X + 1] = {
+		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
+		 "********************************************************************************",//0
+		 "*                                                                              *",//1
+		 "*    ____                               ___        _   _                       *",//2
+		 "*   / ___|  ___ _ __ ___  ___ _ __     / _ \\ _ __ | |_(_) ___  _ __  ___   _   *",//3
+		 "*   \\___ \\ / __| '__/ _ \\/ _ \\ '_ \\   | | | | '_ \\| __| |/ _ \\| '_ \\/ __| (_)  *",//4
+		 "*    ___) | (__| | |  __/  __/ | | |  | |_| | |_) | |_| | (_) | | | \\__ \\  _   *",//5
+		 "*   |____/ \\___|_|  \\___|\\___|_| |_|   \\___/| .__/ \\__|_|\\___/|_| |_|___/ (_)  *",//6
+		 "*                                           |_|                                *",//7
+		 "*                                                                              *",//8
+		 "*                                                                              *",//9
+		 "*                                                                              *",//10
+		 "*                                                                              *",//11
+		 "*                                                                              *",//12
+		 "*                                                                              *",//13
+		 "*                                                                              *",//14
+		 "*                                                                              *",//15
+		 "*                                                                              *",//16         
+		 "*                                                                              *",//17
+		 "*                                                                              *",//18 
+		 "*                                                                              *",//19 
+		 "*                                                                              *",//20 
+		 "*                                                                              *",//21 
+		 "*                                                                              *",//22 
+		 "*                                                                              *",//23 
+		 "********************************************************************************" //24
+	};
+
 
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
+
+	Position start_pos_mario{ 0,0 };
+	Position start_pos_gorilla{ 0,0 };
+	Position start_pos_pauline{ 0,0 };
+	Position start_pos_hammer{ 0,0 };
+	std::vector<Position> start_pos_ghosts_vec;
+
+	struct Legend {
+		int score = 0;
+		int life = FULL_LIVES;
+		char hammer = ' ';
+		Position pos_L{ 0,0 };
+		Position pos_score_in_legend{ 0,0 };
+		Position pos_life_in_legend{ 0,0 };
+		Position pos_hammer_in_legend{ 0,0 };
+
+		std::string str_score = "Score: ";
+		std::string str_life = "Life: ";
+		std::string str_hammer = "Hammer: ";
+	};
+
+	Legend legend;
+
 public:
 	void reset();																				// This function resets the board to its original state
 	void printScreen(const char screen[][MAX_X + 1]) const;										// This function prints the input board to the screen
+	char getCharFromBoard(Position _pos) const { return currentBoard[_pos.y][_pos.x]; }					// This function retrieves a specific character from the board at position (x, y)
 	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }					// This function retrieves a specific character from the board at position (x, y)
-	void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }				// This function updates the board by replacing the character at position (x, y) with a new character
+	//void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }				// This function updates the board by replacing the character at position (x, y) with a new character
+	void updateBoard(Position pos, char newChar) { currentBoard[pos.y][pos.x] = newChar; }				// This function updates the board by replacing the character at position (x, y) with a new character
 
-	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1] { return currentBoard; }				// Returns a const reference to the current board's array
-	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1] { return start_screen; }				// Returns a const reference to the initial state of the board (start screen)
-	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{	return instruction_screen; }	// Returns a const reference to the board with instructions (instruction screen)
-	const char(&getLosingBoard() const)[MAX_Y][MAX_X + 1]{	return losing_screen; }				// Returns a const reference to the board shown when the player loses (losing screen)
-	const char(&getWinningBoard() const)[MAX_Y][MAX_X + 1]{	return winning_screen; }			// Returns a const reference to the board shown when the player wins (winning screen)
-	const char(&getGoodByeBoard() const)[MAX_Y][MAX_X + 1]{	return goodBye_screen; }			// Returns a const reference to the board shown when the player wins (goodBye screen)
+	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1]{ return currentBoard; }				// Returns a const reference to the current board's array
+	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1]{ return start_screen; }				// Returns a const reference to the initial state of the board (start screen)
+	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{ return instruction_screen; }	// Returns a const reference to the board with instructions (instruction screen)
+	const char(&getLosingBoard() const)[MAX_Y][MAX_X + 1]{ return losing_screen; }				// Returns a const reference to the board shown when the player loses (losing screen)
+	const char(&getWinningBoard() const)[MAX_Y][MAX_X + 1]{ return winning_screen; }			// Returns a const reference to the board shown when the player wins (winning screen)
+	const char(&getGoodByeBoard() const)[MAX_Y][MAX_X + 1]{ return goodBye_screen; }			// Returns a const reference to the board shown when the player wins (goodBye screen)
 
 	int get_board_width() { return MAX_X; }			// Returns the width of the board
 	int get_board_height() { return MAX_Y; }		// Returns the height of the board
 
 	int getLifePosX() { return LIFE_POS_X; }		// Returns the X position in the board that hold the number lives of mario
 	int getLifePosY() { return LIFE_POS_Y; }		// Returns the Y position in the board that hold the number lives of mario
+
+	void printScreenOptions(std::vector<std::string>& vec_to_fill) const;
+	void getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const;
+	bool load(const std::string& filename);
+	void handleErrors(const std::ifstream& _file);
+
+	Position getStartPosMario() const { return start_pos_mario; }
+	Position getStartPosGorilla() const { return start_pos_gorilla; }
+	Position getStartPosPauline() const { return start_pos_pauline; }
+	Position getStartPosHammer() const { return start_pos_hammer; }
+	Position getStartPosL() const { return legend.pos_L; }
+	Position getStartPosOfGhost(int i) const { return start_pos_ghosts_vec[i]; }
+
+	void setPositionsInLegend();
+	void printLegend() const;
+	void printLifeLegend() const { gotoxy(legend.pos_life_in_legend.x + (int)(legend.str_life.length()), legend.pos_life_in_legend.y); std::cout << legend.life; }
+	void printScoreLegend() const { gotoxy(legend.pos_score_in_legend.x + (int)(legend.str_score.length()), legend.pos_life_in_legend.y); std::cout << legend.score; }
+	void printHammerLegend() const { gotoxy(legend.pos_hammer_in_legend.x + (int)(legend.str_hammer.length()), legend.pos_life_in_legend.y); std::cout << legend.hammer; }
+	void setScoreLegend(int score) { legend.score = score; }
+	void setLifeLegend(int life) { legend.life = life; }
+	void setHammerLegend(char hammer) { legend.hammer = hammer; }
 };
