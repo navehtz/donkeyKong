@@ -18,9 +18,9 @@ class Game {
 	static constexpr int EXIT_GAME = 57;				//The key - 9
 	static constexpr int PAUSE = 27;					//ESC key
 	static constexpr int RETURN_BACK = 114;				//The key - r
-	static constexpr int DEAD_MARIO = 0;
-	static constexpr int FULL_LIVES = 3;
-	static constexpr int EXPLOSION_RADIUS = 2;
+	//static constexpr int DEAD_MARIO = 0;
+	//static constexpr int FULL_LIVES = 3;
+	//static constexpr int EXPLOSION_RADIUS = 2;
 	static constexpr int LEFT = -1;
 	static constexpr int RIGHT = 1;
 

@@ -25,10 +25,8 @@ class Mario
 	bool won_level = false;
 	bool just_died = false;
 	int fall_count = 0;
-	int lives = 3;
+	int lives = FULL_LIVES;
 
-	//static constexpr int STARTING_POS_X = 20;
-	//static constexpr int STARTING_POS_Y = 23;
 	static constexpr int FALL_FROM_TOO_HIGH = 5;
 	static constexpr int DEAD_MARIO = 0;
 	static constexpr int UP = -1;
@@ -107,7 +105,6 @@ public:
 	int getLives() const { return lives; }														// Get Mario's lives
 	void setLives(int _lives) { lives = _lives; }												// Set Mario's lives
 	bool getIfWon() const { return won_level; }													// Check if Mario finish the level (reached Pauline)
-	void printLives();																			// Print Mario's lives on screen
 	void life();																				// Handle Mario's lives (when hit or fall)
 	void startOver();																			// Reset the game after mario died but still has more than 0 lives
 	void flashingMario();																		// Printing Mario after he died (by flashing the char)

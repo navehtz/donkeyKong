@@ -19,7 +19,6 @@ class Board {
 	static constexpr int LIFE_POS_X = 11;	// Position in the board that hold the number lives of mario
 	static constexpr int LIFE_POS_Y = 1;
 
-
 	//std::vector<std::string> files_names_vec;
 	std::string directory = ".";
 
@@ -266,8 +265,23 @@ class Board {
 	Position start_pos_gorilla{ 0,0 };
 	Position start_pos_pauline{ 0,0 };
 	Position start_pos_hammer{ 0,0 };
-	Position pos_L{ 0,0 };
 	std::vector<Position> start_pos_ghosts_vec;
+
+	struct Legend {
+		int score = 0;
+		int life = FULL_LIVES;
+		char hammer = ' ';
+		Position pos_L{ 0,0 };
+		Position pos_score_in_legend{ 0,0 };
+		Position pos_life_in_legend{ 0,0 };
+		Position pos_hammer_in_legend{ 0,0 };
+
+		std::string str_score = "Score: ";
+		std::string str_life = "Life: ";
+		std::string str_hammer = "Hammer: ";
+	};
+
+	Legend legend;
 
 public:
 	void reset();																				// This function resets the board to its original state
@@ -299,7 +313,15 @@ public:
 	Position getStartPosGorilla() const { return start_pos_gorilla; }
 	Position getStartPosPauline() const { return start_pos_pauline; }
 	Position getStartPosHammer() const { return start_pos_hammer; }
-	Position getStartPosL() const { return pos_L; }
+	Position getStartPosL() const { return legend.pos_L; }
 	Position getStartPosOfGhost(int i) const { return start_pos_ghosts_vec[i]; }
 
+	void setPositionsInLegend();
+	void printLegend() const;
+	void printLifeLegend() const { gotoxy(legend.pos_life_in_legend.x + (int)(legend.str_life.length()), legend.pos_life_in_legend.y); std::cout << legend.life; }
+	void printScoreLegend() const { gotoxy(legend.pos_score_in_legend.x + (int)(legend.str_score.length()), legend.pos_life_in_legend.y); std::cout << legend.score; }
+	void printHammerLegend() const { gotoxy(legend.pos_hammer_in_legend.x + (int)(legend.str_hammer.length()), legend.pos_life_in_legend.y); std::cout << legend.hammer; }
+	void setScoreLegend(int score) { legend.score = score; }
+	void setLifeLegend(int life) { legend.life = life; }
+	void setHammerLegend(char hammer) { legend.hammer = hammer; }
 };

@@ -262,10 +262,14 @@ void Mario::updateNextMove()
 void Mario::life()
 {
 	lives -= 1;
-	char ch_lives = (char)lives + '0';
 
-	printLives();																		// Print Mario's lives on screen
+	//char ch_lives = (char)lives + '0';
+	//printLives();																		// Print Mario's lives on screen
 	//pBoard->updateBoard(pBoard->getLifePosX(), pBoard->getLifePosY(), ch_lives);		// Update mario's life on current board
+
+
+	pBoard->setLifeLegend(lives);
+	pBoard->printLifeLegend();
 
 	if (lives > DEAD_MARIO) {															// Check if lives > 0
 		startOver();																	// Function that reset the game after mario died but still has more than 0 lives
@@ -276,14 +280,6 @@ void Mario::life()
 	}
 }
 
-// Print Mario's lives on screen
-void Mario::printLives()
-{
-	char ch_lives = (char)lives + '0';
-
-	gotoxy(pBoard->getLifePosX(), pBoard->getLifePosY());
-	std::cout << ch_lives;
-}
 
 // Reset the game after mario died but still has more than 0 lives
 void Mario::startOver()
@@ -295,7 +291,7 @@ void Mario::startOver()
 	setStartingMario();
 	pBarrels->setStartingBarrels();							//reset barrels
 	pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen
-	printLives();											//printing mario's lives
+	pBoard->printLegend();
 }
 
 // Printing Mario after he died (by flashing the char)

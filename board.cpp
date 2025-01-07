@@ -17,7 +17,7 @@ void Board::printScreen(const char screen[][MAX_X + 1]) const
 
 	for (int i = 0; i < MAX_Y - 1; i++) {
 		std::cout << screen[i] << '\n';
-		Sleep(SCREEN_APPEARANCE);
+		//Sleep(SCREEN_APPEARANCE);
 	}
 	std::cout << screen[MAX_Y - 1];									// Print the last row without a newline to avoid an extra blank line
 }
@@ -93,7 +93,8 @@ bool Board::load(const std::string& filename) {
                 start_pos_ghosts_vec.push_back({ curr_col, curr_row });
                 break;
             case 'L':
-                pos_L = { curr_col, curr_row };
+                legend.pos_L = { curr_col, curr_row };
+                setPositionsInLegend();
                 break;
             }
             originalBoard[curr_row][curr_col++] = c;
@@ -121,6 +122,27 @@ void Board::handleErrors(const std::ifstream& _file) {
     }
     std::cout << "Returning to menu" << std::endl;
     Sleep(500);
+}
+
+void Board::setPositionsInLegend()
+{
+    int x = legend.pos_L.x;
+    int y = legend.pos_L.y;
+    legend.pos_score_in_legend = { x, y };
+    legend.pos_life_in_legend = { x, y + 1 };
+    legend.pos_hammer_in_legend = { x, y + 2 };
+}
+
+void Board::printLegend() const
+{
+    gotoxy(legend.pos_score_in_legend.x, legend.pos_score_in_legend.y);
+    std::cout << legend.str_score << legend.score;
+
+    gotoxy(legend.pos_life_in_legend.x, legend.pos_life_in_legend.y);
+    std::cout << legend.str_life << legend.life;
+
+    gotoxy(legend.pos_hammer_in_legend.x, legend.pos_hammer_in_legend.y);
+    std::cout << legend.str_hammer << legend.hammer;
 }
 
 

@@ -29,6 +29,8 @@ bool Game::menu()
 		case(START_NEW_GAME):						// User pressed the key to start a new game
 			board.printScreenOptions(files_names_vec);
 			screen_index = chooseGameScreen();
+			if (screen_index == -1)
+				break;
 			startGame(screen_index);
 			break;
 		case(INSTRUCTIONS_AND_KEYS):				// User pressed the key to view instructions
@@ -55,12 +57,14 @@ int Game::chooseGameScreen()
 				key--;											// The array start from zero
 				return key;
 			}
-			else if (key == EXIT_GAME)
-				menu();
+			else if (key == EXIT_GAME) {
+				return -1;
+			}
 
 			break;
 		}
 	}
+	return -1;													// Prevent warnings
 }
 
 
@@ -123,10 +127,7 @@ void Game::setStartingGame()
 	barrels.setStartingBarrels();						// Initializes the barrels to their starting positions and states
 
 	board.printScreen(board.getCurrentBoard());
-	
-	char ch_lives = (char)mario.getLives() + '0';		// Converts Mario's life count to a character for display
-	gotoxy(board.getLifePosX(), board.getLifePosY());	// Moves the cursor to the position where Mario's lives are displayed
-	std::cout << ch_lives;									 
+	board.printLegend();
 }
 
 
