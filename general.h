@@ -16,6 +16,7 @@ static constexpr int SCREEN_WIN = 2000;
 static constexpr int SCREEN_EXIT = 2000;
 static constexpr int SCREEN_FLASH_MARIO = 200;
 
+static constexpr char WALL = 'Q';
 static constexpr char FLOOR = '=';
 static constexpr char FLOOR_LEFT = '<';
 static constexpr char FLOOR_RIGHT = '>';

@@ -201,7 +201,7 @@ void Mario::walkOrStay()
 // The function returns true if the parameter is a floor/ceiling/wall and false otherwise
 bool Mario::isBlock(char _ch)
 {
-	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT)
+	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT || _ch == WALL)
 		return true;
 	else
 		return false;

@@ -4,7 +4,7 @@
 
 class Barrels
 {
-	static constexpr int MAX_BARRELS = 1;
+	static constexpr int MAX_BARRELS = 20;
 	static constexpr int TIME_TO_ROLL = 14;		// Every 7 iterations to activate a barrel
 
 	Barrel barrels[MAX_BARRELS];
@@ -13,13 +13,7 @@ class Barrels
 
 
 public:
-	//Barrels() {														// ctor of Barrels. initialize all the barrels in the array
-	//	for (int i = 0; i < MAX_BARRELS; i++) {
-	//		barrels[i].setStartingBarrel();
-	//	}
-	//}
 	Barrels() {}													// ctor of Barrels. initialize all the barrels in the array
-
 
 	int getPosX(int i) { int posX = barrels[i].getPoint().getPosition().x; return posX; }		// Get the X position of the i barrel in the array
 	int getPosY(int i) { int posY = barrels[i].getPoint().getPosition().y; return posY; }		// Get the Y position of the i barrel in the array

@@ -324,4 +324,8 @@ public:
 	void setScoreLegend(int score) { legend.score = score; }
 	void setLifeLegend(int life) { legend.life = life; }
 	void setHammerLegend(char hammer) { legend.hammer = hammer; }
+
+	size_t getGhostVectorSize() { return start_pos_ghosts_vec.size(); }
+	Position getGhostVector(int i) { return start_pos_ghosts_vec[i]; }
+	
 };
