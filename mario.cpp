@@ -56,6 +56,8 @@ void Mario::updateCharParameters()
 	ch_above = getCharFromBoard(_x, _y + UP);
 	ch_left = getCharFromBoard(_x + LEFT, _y);
 	ch_right = getCharFromBoard(_x + RIGHT, _y);
+	ch_left_down = getCharFromBoard(_x + LEFT, _y + DOWN);
+	ch_right_down = getCharFromBoard(_x + RIGHT, _y + DOWN);
 
 	res_is_on_ladder = isOnLadder();
 	res_is_on_floor = isBlock(ch_below);
@@ -63,6 +65,8 @@ void Mario::updateCharParameters()
 	res_is_wall_on_left = isBlock(ch_left);
 	res_is_wall_on_right = isBlock(ch_right);
 	res_is_two_chars_below_floor = isBlock(two_chars_below);
+	res_is_left_down = isBlock(ch_left_down);
+	res_is_right_down = isBlock(ch_right_down);
 }
 
 // Check in which state the Marrio is
@@ -171,7 +175,8 @@ bool Mario::isFalling() const
 void Mario::fall()
 {
 	if (p.getPreviousDir().y == UP || p.getPreviousDir().y == DOWN)		// If mario finish a jump, we want to save the previous x vector
-		p.setDirX(p.getPreviousDir().x);
+		if(!res_is_left_down && !res_is_right_down)
+			p.setDirX(p.getPreviousDir().x);
 	else
 		p.setDirX(STAY);
 
@@ -229,6 +234,8 @@ void Mario::amendNextMove()
 	if (res_is_on_floor && two_chars_below != LADDER) {				// Above floor - mario can't go down
 		if (p.getDir().y == DOWN) { p.setDirY(STAY); }
 	}
+	if (res_is_left_down || res_is_right_down)
+		if (p.getDir().y == DOWN) { p.setDirX(STAY); }
 }
 
 // Updating the movement of the barrel for the next loop according to the position and the direction
