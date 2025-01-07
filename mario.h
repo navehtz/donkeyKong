@@ -13,9 +13,9 @@ class Mario
 	char ch = '@';
 
 	// Characters surrounding Mario
-	char ch_covered = ' ', ch_below = ' ', two_chars_below = ' ';  
-	char ch_above = ' ', ch_left = ' ', ch_right = ' ';
-	char ch_left_down = ' ', ch_right_down = ' ';
+	char ch_covered = SPACE, ch_below = SPACE, two_chars_below = SPACE;
+	char ch_above = SPACE, ch_left = SPACE, ch_right = SPACE;
+	char ch_left_down = SPACE, ch_right_down = SPACE;
 
 	// Flags indicating Mario's interaction with his surroundings
 	bool res_is_on_ladder = false, res_is_on_floor = false, res_is_below_roof = false;
