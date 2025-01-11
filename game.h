@@ -30,10 +30,9 @@ class Game {
 	Barrels barrels;
 	Ghosts ghosts;
 
-
 	std::vector<std::string> files_names_vec;
 
-
+	
 public:
 
 	void showInstructions();									// Displays the game instructions screen to the player

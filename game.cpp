@@ -75,6 +75,8 @@ void Game::startGame(int screen_index)
 	playing_mario = true;							    // Indicates that the Mario gameplay loop is active
 	exit_game = false;								    // Indicates that the Mario gameplay loop is active
 
+	mario.setLives(FULL_LIVES);
+
 	for (int i = screen_index; (i < files_names_vec.size()) && (playing_mario && !exit_game); i++)
 	{
 		valid_file = board.load(files_names_vec[i]);
@@ -84,6 +86,7 @@ void Game::startGame(int screen_index)
 		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
 		playing_mario = true;							// Indicates that the Mario gameplay loop is active
 		exit_game = false;								// Indicates that the Mario gameplay loop is active
+
 
 		while (playing_mario && !exit_game)				// Main game loop: continues as long as Mario is playing and has lives
 		{
@@ -120,7 +123,7 @@ void Game::setStartingGame()
 	board.reset();										// Update current board
 	mario.setBoard(board);								// Links Mario to the game board, so he can interact with it
 	mario.setStartingMario();							// Initializes Mario to his starting position and state
-	mario.setLives(FULL_LIVES);
+	//mario.setLives(FULL_LIVES);
 	mario.setpBarrels(barrels);							// Links Mario to the barrels, allowing interactions between them
 	mario.setpGhosts(ghosts);
 
@@ -130,7 +133,7 @@ void Game::setStartingGame()
 	ghosts.setpBoard(board);
 	ghosts.setStartingGhosts(board.getGhostVectorSize());
 
-	board.setLegend(0, FULL_LIVES, ' ');
+	board.setLegend(0, mario.getLives(), SPACE);
 	board.printScreen(board.getCurrentBoard());
 	board.printLegend();
 }
@@ -240,8 +243,6 @@ void Game::updateIfDiedByBarrelOrGhost()
 	{
 		// Get the current barrel's position
 		barrel_pos = barrels.getPos(i);
-		//barrelPosX = barrels.getPosX(i);
-		//barrelPosY = barrels.getPosY(i);
 
 		hitByBarrel(barrel_pos, mario_pos);		// Check if Mario is hit directly by the barrel
 		diedFromExplodedBarrel(barrel_pos, mario_pos, i);	// Check if Mario died due to an exploding barrel

@@ -137,7 +137,7 @@ void Ghost::blockedByWall()
 // The function returns true if the parameter is a floor/ceiling/wall and false otherwise
 bool Ghost::isBlock(char _ch) const
 {
-	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT || _ch == WALL)
+	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT || _ch == WALL || _ch == ch)
 		return true;
 	else
 		return false;

@@ -100,8 +100,8 @@ class Board {
 		 "* Keys:                                                                        *",//15 
 		 "* - A/a: Move left                     - D/d: Move right                       *",//16 
 		 "* - W/w: Jump or climb up a ladder     - X/x: Climb down a ladder              *",//17 
-		 "* - S/s: Stay in place                 - ESC: Pause, press again to resume     *",//18 
-		 "* - (9): Back to the menu                                                      *",//19 
+		 "* - S/s: Stay in place                 - P/p: Throw a hammer                   *",//18 
+		 "* - (9): Back to the menu              - ESC: Pause, press again to resume     *",//19 
 		 "*                                                                              *",//20 
 		 "*                                                                              *",//21 
 		 "*                                            < Press 'R' to return to menu >   *",//22 
