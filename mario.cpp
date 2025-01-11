@@ -5,8 +5,8 @@
 void Mario::setStartingMario()
 {
 	won_level = false;
+	got_hammer = false;
 	fall_count = 0;
-
 	p.setPosition(pBoard->getStartPosMario());				// Set stating position for x-axis
 
 	p.setDir({ STAY, STAY });								// Set stating direction for Mario
@@ -35,15 +35,21 @@ void Mario::move()
 	updateCharParameters();		// Update all the char data members around mario
 	amendNextMove();			// Neutralizing illegal movements (jumping under the ceiling, going through a wall, etc.)
 
+
 	checkWhatState();			// Check what is mario state (climbing/ jumping/ falling/ walking or staying)
 	updateState();				// Update the moves that mario should commit by the state
 
 	if (just_died) { return; }
 
+	if (ch_covered == HAMMER) { 
+		handleHammer();
+	}
+
 	//update prameters
 	updateNextMove();			// activate next move
 	updatePreviousChar();
 	updatePreviousDir();
+	if (got_hammer) { updateHammerPos(); }
 }
 
 // Update all the char data members around mario
@@ -122,7 +128,9 @@ bool Mario::isClimbing()
 // Handle the Mario's climb
 void Mario::climb()
 {
-	if (!res_is_on_floor && (p.getPreviousDir().x == LEFT || p.getPreviousDir().x == RIGHT))		// When Mario jumps or fall and lands on a ledder
+	int previous_dir_x = p.getPreviousDir().x;
+
+	if (!res_is_on_floor && (previous_dir_x == LEFT || previous_dir_x == RIGHT))		// When Mario jumps or fall and lands on a ledder
 	{
 		p.setDirX(STAY);																			// We want that Mario will HOLD the ledder
 		if (p.getDir().y == UP) { return; }															// When mario JUMPS UP and land on a ladder - we want him to continue his move up                
@@ -169,13 +177,15 @@ void Mario::jump()
 // Check if the Mario is falling
 bool Mario::isFalling() const
 {
-	return ch_below == SPACE ? true : false;
+	return (ch_below == SPACE || ch_below == HAMMER || ch_below == PRINCESS) ? true : false;
 }
 
 // Handle the Mario's falling
 void Mario::fall()
 {
-	if (p.getPreviousDir().y == UP || p.getPreviousDir().y == DOWN)		// If mario finish a jump, we want to save the previous x vector
+	int previous_dir_y = p.getPreviousDir().y;
+
+	if (previous_dir_y == UP || previous_dir_y == DOWN)		// If mario finish a jump, we want to save the previous x vector
 		if(!res_is_left_down && !res_is_right_down)
 			p.setDirX(p.getPreviousDir().x);
 	else
@@ -261,6 +271,25 @@ void Mario::updateNextMove()
 
 	p.setPosition(newX, newY);
 }
+
+void Mario::handleHammer()
+{
+	got_hammer = true;
+	pBoard->setHammerLegend(HAMMER);
+	pBoard->printHammerLegend();
+	pBoard->updateBoard(getPosition(), SPACE);
+	p.setPreviousChar(SPACE);
+	erase();
+	updateHammerPos();
+}
+
+void Mario::updateHammerPos()
+{
+	Position pos = p.getPosition();
+	Direction dir = p.getDir();
+	hammer.pos = { pos.x + dir.x, pos.y + dir.y };
+}
+
 
 // Handle Mario's lives (when hit or fall)
 void Mario::life()

@@ -87,9 +87,9 @@ bool Board::load(const std::string& filename) {
             case '$':
                 start_pos_pauline = { curr_col, curr_row };
                 break;
-            case 'p':
-                start_pos_hammer = { curr_col, curr_row };
-                break;
+            //case 'p':
+            //   start_pos_hammer = { curr_col, curr_row };
+            //    break;
             case 'x':
                 start_pos_ghosts_vec.push_back({ curr_col, curr_row });
                 break;

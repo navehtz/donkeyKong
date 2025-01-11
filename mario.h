@@ -25,7 +25,7 @@ class Mario
 
 	bool won_level = false;
 	bool just_died = false;
-	//bool is_alive = false;
+	bool got_hammer = false;
 	int fall_count = 0;
 	int lives = FULL_LIVES;
 
@@ -50,9 +50,15 @@ class Mario
 	};
 	MarioState state = MarioState::Walking_or_Staying;
 
-	struct Direction {
-		int x, y;
+	//struct Direction {
+	//	int x, y;
+	//};
+
+	struct Hammer {
+		char ch = HAMMER;
+		Position pos;
 	};
+	Hammer hammer;
 
 	// Member variables for Mario's position and game references
 	Point p;
@@ -107,6 +113,7 @@ public:
 	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); }			// Get the char in the (x,y) position on board
 
 	int getLives() const { return lives; }														// Get Mario's lives
+	Position getHammerPos() const { return hammer.pos; }														// Get Mario's lives
 	void setLives(int _lives) { lives = _lives; }												// Set Mario's lives
 	bool getIfWon() const { return won_level; }													// Check if Mario finish the level (reached Pauline)
 	bool getjust_died() const { return just_died; }
@@ -114,5 +121,9 @@ public:
 	void life();																				// Handle Mario's lives (when hit or fall)
 	void startOver();																			// Reset the game after mario died but still has more than 0 lives
 	void flashingMario();																		// Printing Mario after he died (by flashing the char)
+
+	bool const getIfGotHammer() const{ return got_hammer; }
+	void handleHammer();
+	void updateHammerPos();
 };
 

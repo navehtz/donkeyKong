@@ -19,14 +19,14 @@ class Point {
 	static constexpr int LEFT = -1;
 	static constexpr int STAY = 0;
 
-	struct Direction {																				// Direction structure for handling movement	
-		int x, y;
-	};
+	//struct Direction {																				// Direction structure for handling movement	
+	//	int x, y;
+	//};
 	//int x=0, y=0;
 
 	Position pos{ 0,0 };
 
-	Direction previous_dir{ STAY,STAY };															// Last direction before the current movement
+	Direction previous_dir{ STAY, STAY };															// Last direction before the current movement
 	Direction dir_before_falling{ LEFT,STAY };														// Direction prior to a fall
 
 	static constexpr Direction directions[] = { {0, -1}, {-1, 0}, {0, 1}, {1, 0}, {0, 0} };			// Movement options: UP, LEFT, DOWN, RIGHT, STAY

@@ -25,7 +25,12 @@ static constexpr char LADDER = 'H';
 static constexpr char PRINCESS = '$';
 static constexpr char GORRILA = '&';
 static constexpr char SPACE = ' ';
+static constexpr char HAMMER = 'p';
 
 struct Position {
+	int x, y;
+};
+
+struct Direction {																				// Direction structure for handling movement	
 	int x, y;
 };

@@ -49,6 +49,8 @@ public:
 	void erase();												// Erases Mario's and barrels previous position from the screen
 	void move();												// Moves Mario and barrels to a new position based on user input or game logic
 
+	void updateIfMarioHitBarrelOrGhost();
+	void hitEnemy(Position enemy_pos, Position mario_pos);
 	void updateIfDiedByBarrelOrGhost();																			// Checks if Mario died from a barrel (hit or explosion)
 	void hitByBarrel(Position barrel_pos, Position mario_pos);							// Handles the logic when Mario is hit by a barrel
 	void hitByGhost(Position ghost_pos, Position mario_pos);							// Handles the logic when Mario is hit by a barrel
