@@ -3,13 +3,13 @@
 void Ghosts::setStartingGhosts(int size)
 {
 	num_of_ghosts = size;
-	ghosts.clear();
-	ghosts.resize(num_of_ghosts);
+	ghosts_vec.clear();
+	ghosts_vec.resize(num_of_ghosts);
 
 	for (int i = 0; i < size; i++)
 	{
 		Position pos = pBoard->getStartPosOfGhost(i);
-		ghosts[i].setStartingGhost(pBoard, pos);
+		ghosts_vec[i].setStartingGhost(pBoard, pos);
 	}
 }
 
@@ -18,9 +18,9 @@ void Ghosts::draw()
 {
 	for (int i = 0; i < num_of_ghosts; i++)
 	{
-		if (ghosts[i].IsActivated())
+		if (ghosts_vec[i].IsActivated())
 		{
-			ghosts[i].draw();
+			ghosts_vec[i].draw();
 		}
 	}
 }
@@ -30,9 +30,9 @@ void Ghosts::erase()
 {
 	for (int i = 0; i < num_of_ghosts; i++)
 	{
-		if (ghosts[i].IsActivated())
+		if (ghosts_vec[i].IsActivated())
 		{
-			ghosts[i].erase();
+			ghosts_vec[i].erase();
 		}
 	}
 }
@@ -42,10 +42,20 @@ void Ghosts::move()
 {
 	for (int i = 0; i < num_of_ghosts; i++)
 	{
-		if (ghosts[i].IsActivated())
+		if (ghosts_vec[i].IsActivated())
 		{
-			ghosts[i].move();
+			ghosts_vec[i].move();
 		}
+	}
+}
+
+void Ghosts::removeGhostByIndex(int index)
+{
+	if (index < ghosts_vec.size()) {
+		ghosts_vec.erase(ghosts_vec.begin() + index);
+	}
+	else {
+		std::cout << "Error: Invalid index!" << std::endl;
 	}
 }
 
@@ -53,9 +63,9 @@ void Ghosts::updateGhostsCharParameters()
 {
 	for (int i = 0; i < num_of_ghosts; i++)
 	{
-		if (ghosts[i].IsActivated())
+		if (ghosts_vec[i].IsActivated())
 		{
-			ghosts[i].updateCharParameters();
+			ghosts_vec[i].updateCharParameters();
 		}
 	}
 

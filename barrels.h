@@ -28,6 +28,7 @@ public:
 	void activateBarrels();											// Activating the first barrel that isn't activated
 	void draw();													// Draw all the activated barrels
 	void erase();													// Erase all the activated barrels
+	void eraseASpecificBarrel(int i) { barrels[i].erase(); }
 	void move();													// Move all the activated barrels
 
 	bool getIfBarrelExploded(int i) {								// Check if a barrel has exploded
@@ -38,5 +39,7 @@ public:
 
 	void updateBarrelsCharParameters();
 	int getBarrelDirX(int i) { return barrels[i].getDirX(); }
+
+	void dectivate_barrel(int i) { barrels[i].deactivate(); }
 };
 

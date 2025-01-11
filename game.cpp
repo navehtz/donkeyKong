@@ -228,7 +228,7 @@ void Game::showInstructions()
 
 void Game::updateIfMarioHitBarrelOrGhost() {
 	// Variables to store the positions of the barrels and Mario
-	Position mario_pos, barrel_pos, ghost_pos, hammer_pos;
+	Position barrel_pos, ghost_pos, hammer_pos;
 
 	int max_barrels = barrels.getMaxBarrels();
 	int num_of_ghosts = ghosts.getNumOfGhosts();
@@ -240,17 +240,25 @@ void Game::updateIfMarioHitBarrelOrGhost() {
 	for (int i = 0; i < max_barrels; i++)
 	{
 		barrel_pos = barrels.getPos(i);     // Get the current barrel's position
+		if (hitTheEnemy(barrel_pos, hammer_pos))
+		{
+			barrels.dectivate_barrel(i);
+			barrels.eraseASpecificBarrel(i);
+		}
 
 	}
 
 	for (int i = 0; i < num_of_ghosts; i++)
 	{
 		ghost_pos = ghosts.getGhostPosition(i);
-		if(hitEnemy(ghost_pos, hammer_pos))		// Check if Mario is hit directly by the barrel
+		if (hitTheEnemy(ghost_pos, hammer_pos))		// Check if Mario is hit directly by the barrel
+		{
+			ghosts.removeGhostByIndex(i);
+		}
 	}
 }
 
-bool Game::hitEnemy(Position enemy_pos, Position hammer_pos)
+bool Game::hitTheEnemy(Position enemy_pos, Position hammer_pos)
 {
 	if (hammer_pos.x == enemy_pos.x && hammer_pos.y == enemy_pos.y)											// When mario and the barrel at the same place
 		return true;
@@ -266,30 +274,30 @@ void Game::updateIfDiedByBarrelOrGhost()
 {
 	// Variables to store the positions of the barrels and Mario
 	Position mario_pos, barrel_pos, ghost_pos;
-	//int barrelPosX, barrelPosY;
-	int marioPosX, marioPosY;
 	int max_barrels = barrels.getMaxBarrels();
 	int num_of_ghosts = ghosts.getNumOfGhosts();
 
 	// Get Mario's current position
 	mario_pos = mario.getPosition();
-	marioPosX = mario.getPosition().x;
-	marioPosY = mario.getPosition().y;
 
+	//int barrelPosX, barrelPosY;
+	//int marioPosX, marioPosY;
+	//marioPosX = mario.getPosition().x;
+	//marioPosY = mario.getPosition().y;
 
 	for (int i = 0; i < max_barrels; i++)
 	{
 		// Get the current barrel's position
 		barrel_pos = barrels.getPos(i);
 
-		hitByBarrel(barrel_pos, mario_pos);		// Check if Mario is hit directly by the barrel
+		hitByEnemy(barrel_pos, mario_pos);		// Check if Mario is hit directly by the barrel
 		diedFromExplodedBarrel(barrel_pos, mario_pos, i);	// Check if Mario died due to an exploding barrel
 	}
 
 	for (int i = 0; i < num_of_ghosts; i++)
 	{
 		ghost_pos = ghosts.getGhostPosition(i);
-		hitByGhost(ghost_pos, mario_pos);		// Check if Mario is hit directly by the barrel
+		hitByEnemy(ghost_pos, mario_pos);		// Check if Mario is hit directly by the barrel
 	}
 	
 	if (mario.getLives() == DEAD_MARIO)												// If Mario's lives reach zero, stop the game
@@ -297,26 +305,36 @@ void Game::updateIfDiedByBarrelOrGhost()
 }
 
 
+// Handles the logic when Mario is hit by an enemy (barrel or ghost)
+void Game::hitByEnemy(Position enemy_pos, Position mario_pos)
+{
+	if (mario_pos.x == enemy_pos.x && mario_pos.y == enemy_pos.y)											// When mario and the barrel at the same place
+		mario.life();
+	else if (mario_pos.x - 1 == enemy_pos.x && mario_pos.x == enemy_pos.x + 1 && mario_pos.y == enemy_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
+		mario.life();
+	else if (mario_pos.x + 1 == enemy_pos.x && mario_pos.x == enemy_pos.x - 1 && mario_pos.y == enemy_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
+		mario.life();
+}
 // Handles the logic when Mario is hit by a barrel
-void Game::hitByBarrel(Position barrel_pos, Position mario_pos)
-{
-	if (mario_pos.x == barrel_pos.x && mario_pos.y == barrel_pos.y)											// When mario and the barrel at the same place
-		mario.life();
-	else if(mario_pos.x - 1 == barrel_pos.x && mario_pos.x == barrel_pos.x + 1 && mario_pos.y == barrel_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-		mario.life();
-	else if(mario_pos.x + 1 == barrel_pos.x && mario_pos.x == barrel_pos.x - 1 && mario_pos.y == barrel_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-		mario.life();
-}
-
-void Game::hitByGhost(Position ghost_pos, Position mario_pos)
-{
-	if (mario_pos.x == ghost_pos.x && mario_pos.y == ghost_pos.y)											// When mario and the barrel at the same place
-		mario.life();
-	else if (mario_pos.x - 1 == ghost_pos.x && mario_pos.x == ghost_pos.x + 1 && mario_pos.y == ghost_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-		mario.life();
-	else if (mario_pos.x + 1 == ghost_pos.x && mario_pos.x == ghost_pos.x - 1 && mario_pos.y == ghost_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-		mario.life();
-}
+//void Game::hitByBarrel(Position barrel_pos, Position mario_pos)
+//{
+//	if (mario_pos.x == barrel_pos.x && mario_pos.y == barrel_pos.y)											// When mario and the barrel at the same place
+//		mario.life();
+//	else if(mario_pos.x - 1 == barrel_pos.x && mario_pos.x == barrel_pos.x + 1 && mario_pos.y == barrel_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
+//		mario.life();
+//	else if(mario_pos.x + 1 == barrel_pos.x && mario_pos.x == barrel_pos.x - 1 && mario_pos.y == barrel_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
+//		mario.life();
+//}
+//
+//void Game::hitByGhost(Position ghost_pos, Position mario_pos)
+//{
+//	if (mario_pos.x == ghost_pos.x && mario_pos.y == ghost_pos.y)											// When mario and the barrel at the same place
+//		mario.life();
+//	else if (mario_pos.x - 1 == ghost_pos.x && mario_pos.x == ghost_pos.x + 1 && mario_pos.y == ghost_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
+//		mario.life();
+//	else if (mario_pos.x + 1 == ghost_pos.x && mario_pos.x == ghost_pos.x - 1 && mario_pos.y == ghost_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
+//		mario.life();
+//}
 
 
 // Handles the logic when Mario dies due to an exploded barrel

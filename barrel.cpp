@@ -16,8 +16,11 @@ void Barrel::setStartingBarrel(Board* _pBoard)
 		point.setPositionX(pBoard->getStartPosGorilla().x + 1);
 		point.setDirBeforeFalling({ RIGHT, STAY });
 	}
+
 	fall_count = 0;
+	is_activated = false;  //Added now 11/1
 	is_exploded = false;
+	is_smashed = false;
 
 	point.setPreviousChar(SPACE);
 }

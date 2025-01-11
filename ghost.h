@@ -83,7 +83,7 @@ public:
 	void updatePreviousChar() { point.setPreviousChar(getCharFromBoard(point.getPosition())); }	// Function for keeping the char the barrel is on so it can be printes in the next loop
 	void updateNextMove();										// Updating the movement of the barrel for the next loop according to the position and the direction
 
-	bool IsActivated() { return is_activated; };				// The function returns true if the barrel is activated(rolling/falling etc.)and false otherwise
+	bool const IsActivated() const { return is_activated; };				// The function returns true if the barrel is activated(rolling/falling etc.)and false otherwise
 	void activate() { is_activated = true; }					// Function to activate the barrel
 
 	int myRandom();												// Function to raffle a number ( 1 or 0 )
