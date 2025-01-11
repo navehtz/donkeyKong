@@ -2,6 +2,7 @@
 
 #include "point.h"
 #include "barrels.h"
+#include "ghosts.h"
 
 #include <Windows.h>	//for Sleep and colors
 #include <stdbool.h>
@@ -24,6 +25,7 @@ class Mario
 
 	bool won_level = false;
 	bool just_died = false;
+	//bool is_alive = false;
 	int fall_count = 0;
 	int lives = FULL_LIVES;
 
@@ -56,6 +58,7 @@ class Mario
 	Point p;
 	Board* pBoard = nullptr;
 	Barrels* pBarrels = nullptr;
+	Ghosts* pGhosts = nullptr;
 
 public:
 	Mario(): p(ch) {}														// Constructor initializing Mario's starting position
@@ -79,6 +82,7 @@ public:
 
 	void setBoard(Board& _board) {pBoard = &_board; }						// Set the game board pointer
 	void setpBarrels(Barrels& _barrels) { pBarrels = &_barrels; }			// Set the barrels object pointer
+	void setpGhosts(Ghosts& _ghosts) { pGhosts = &_ghosts; }			// Set the barrels object pointer
 
 	void updateCharParameters();											// Update all the char data members around mario
 	void move();															// Handle the Marrio's movement
@@ -105,6 +109,8 @@ public:
 	int getLives() const { return lives; }														// Get Mario's lives
 	void setLives(int _lives) { lives = _lives; }												// Set Mario's lives
 	bool getIfWon() const { return won_level; }													// Check if Mario finish the level (reached Pauline)
+	bool getjust_died() const { return just_died; }
+	void setJust_died() { just_died = false; }
 	void life();																				// Handle Mario's lives (when hit or fall)
 	void startOver();																			// Reset the game after mario died but still has more than 0 lives
 	void flashingMario();																		// Printing Mario after he died (by flashing the char)

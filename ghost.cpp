@@ -6,11 +6,11 @@ void Ghost::setStartingGhost(Board* _pBoard, Position pos)
 	pBoard = _pBoard;
 	point.setPosition(pos);         // Same y-axis starting position for both cases
 
-	if (myRandom() == 0)										// Start from the left side
+	if (myRandom() == 0)										// Start moving left
 	{
 		point.setDirX(LEFT);
 	}
-	else														// Start from the right side
+	else														// Start moving right
 	{
 		point.setDirX(RIGHT);
 	}
@@ -89,14 +89,9 @@ void Ghost::wander()
 	manageDirection();
 
 	blockedByWall();
-	updateWanderDirection();
 	point.setDirY(STAY);
 }
 
-void Ghost::updateWanderDirection()
-{
-	// randommmmmmmmmmmmmm 95 / 5
-}
 // Check if the barrel is falling 
 bool Ghost::isFalling() const
 {
@@ -110,33 +105,31 @@ void Ghost::fall()
 	point.setDirY(DOWN);
 }
 
-// Manage the direction of the barrel while on the floor
+// Manage the direction of the ghost while on the floor
 void Ghost::manageDirection()
 {
-	switch (ch_below)
-	{
-	case(FLOOR_LEFT):
-		point.setDir({ LEFT, STAY });					// Update direction to left
-		point.setDirBeforeFalling(point.getDir());		// Update direction before (maybe) falling
-		break;
-	case(FLOOR_RIGHT):
-		point.setDir({ RIGHT, STAY });					// Update direction to right
-		point.setDirBeforeFalling(point.getDir());		// Update direction before (maybe) falling
-		break;
-	case(FLOOR):
-		point.setDir({ point.getDirBeforeFalling() });	// Keep moving the direction as before
+	int dirX = point.getDir().x;
+	if ((rand() % 100) < (CHANGE_DIR_PROB * 100)) {
+		point.setDirX(dirX * -1);
+		dirX *= -1;
 	}
+	
+	if ((dirX == LEFT && ch_left_down == SPACE) || (dirX = RIGHT && ch_right_down == SPACE))
+		point.setDirX(dirX * -1);
+
+
 }
 
 // Handle the cases which the barrel explodes in (falling 8 chars or at wall)
 void Ghost::blockedByWall()
 {
+	int dirX = point.getDir().x;
 	if (res_is_wall_on_left) {										//linked to a wall - barrel can't pass
-		if (point.getDir().x == LEFT) { point.setDirX(STAY); }
+		if (dirX == LEFT) { point.setDirX(STAY); }
 	}
 
 	if (res_is_wall_on_right) {
-		if (point.getDir().x == RIGHT) { point.setDirX(STAY); }		//linked to a wall - barrel can't pass
+		if (dirX == RIGHT) { point.setDirX(STAY); }		//linked to a wall - barrel can't pass
 	}
 }
 

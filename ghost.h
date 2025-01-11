@@ -11,6 +11,7 @@ class Ghost
 	static constexpr int RIGHT = 1;
 	static constexpr int LEFT = -1;
 	static constexpr int STAY = 0;
+	static constexpr double CHANGE_DIR_PROB = 0.05;
 
 
 	// Members
@@ -27,7 +28,7 @@ class Ghost
 	bool res_is_on_floor = false, res_is_wall_on_left = false, res_is_wall_on_right = false;
 	bool res_is_left_down = false, res_is_right_down = false;
 
-	bool is_activated = false;
+	bool is_activated = true;
 
 	bool is_wander_left = true;
 	// States of ghost
@@ -46,11 +47,12 @@ class Ghost
 
 public:
 	Ghost() : point(ch) {}													// Ctor of barrel with point
+	Ghost(int x, int y) : point(ch) { point.setPositionX(x); point.setPositionY(y); }
 
 	void setStartingGhost(Board* _pBoard, Position pos);					// Initialize barrel
 	void setpBoard(Board& _board) { pBoard = &_board; }						// Set pBoard to the board
 	Point getPoint() const { return point; }								// Get the member 'point'
-	//int getDirX() const { return point.getPosition().x; }													// Get Mario's lives
+	int getDirX() const { return point.getDir().x; }													// Get Mario's lives
 
 	void draw() {															// Draw the barrel on the screen
 		point.draw(ch);														// Erase the barrel from the screen
@@ -70,7 +72,6 @@ public:
 	void updateCharParameters();								// Update all the char data members around mario
 	void move();												// Handle the barrel's movement
 	void wander();												// Handle the barrel's rolling
-	void updateWanderDirection();
 	bool isFalling() const;										// Check if the barrel is falling 
 	void fall();												// Handle the barrel's falling
 	void manageDirection();										// Manage the direction of the barrel while on the floor

@@ -22,7 +22,7 @@ class Point {
 	struct Direction {																				// Direction structure for handling movement	
 		int x, y;
 	};
-	int x=0, y=0;
+	//int x=0, y=0;
 
 	Position pos{ 0,0 };
 
