@@ -11,6 +11,7 @@
 #include "mario.h"
 #include "board.h"
 #include "barrels.h"
+#include "ghosts.h"
 
 class Game {
 	static constexpr int START_NEW_GAME = 49;			// The key - 1
@@ -18,9 +19,6 @@ class Game {
 	static constexpr int EXIT_GAME = 57;				//The key - 9
 	static constexpr int PAUSE = 27;					//ESC key
 	static constexpr int RETURN_BACK = 114;				//The key - r
-	//static constexpr int DEAD_MARIO = 0;
-	//static constexpr int FULL_LIVES = 3;
-	//static constexpr int EXPLOSION_RADIUS = 2;
 	static constexpr int LEFT = -1;
 	static constexpr int RIGHT = 1;
 
@@ -30,10 +28,11 @@ class Game {
 	Mario mario;
 	Board board;
 	Barrels barrels;
+	Ghosts ghosts;
 
 	std::vector<std::string> files_names_vec;
 
-
+	
 public:
 
 	void showInstructions();									// Displays the game instructions screen to the player
@@ -50,9 +49,10 @@ public:
 	void erase();												// Erases Mario's and barrels previous position from the screen
 	void move();												// Moves Mario and barrels to a new position based on user input or game logic
 
-	void updateIfDiedByBarrel();																			// Checks if Mario died from a barrel (hit or explosion)
-	void hitByBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY);							// Handles the logic when Mario is hit by a barrel
-	void diedFromExplodedBarrel(int barrelPosX, int barrelPosY, int marioPosX, int marioPosY, int index);	// Handles the logic when Mario dies due to an exploded barrel
+	void updateIfDiedByBarrelOrGhost();																			// Checks if Mario died from a barrel (hit or explosion)
+	void hitByBarrel(Position barrel_pos, Position mario_pos);							// Handles the logic when Mario is hit by a barrel
+	void hitByGhost(Position ghost_pos, Position mario_pos);							// Handles the logic when Mario is hit by a barrel
+	void diedFromExplodedBarrel(Position barrel_pos, Position mario_pos, int index);	// Handles the logic when Mario dies due to an exploded barrel
 	bool wonTheLevel();																						// Checks if Mario successfully completed the level
 
 	int chooseGameScreen();

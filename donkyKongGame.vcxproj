@@ -134,6 +134,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="general.cpp" />
     <ClCompile Include="ghost.cpp" />
+    <ClCompile Include="ghosts.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mario.cpp" />
   </ItemGroup>
@@ -144,6 +145,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="general.h" />
     <ClInclude Include="ghost.h" />
+    <ClInclude Include="ghosts.h" />
     <ClInclude Include="mario.h" />
     <ClInclude Include="point.h" />
   </ItemGroup>

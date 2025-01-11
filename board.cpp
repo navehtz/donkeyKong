@@ -60,6 +60,7 @@ bool Board::load(const std::string& filename) {
         handleErrors(screen_file);
         return false;
     }
+    start_pos_ghosts_vec.clear();
     int curr_row = 0;
     int curr_col = 0;
     char c;
@@ -143,6 +144,13 @@ void Board::printLegend() const
 
     gotoxy(legend.pos_hammer_in_legend.x, legend.pos_hammer_in_legend.y);
     std::cout << legend.str_hammer << legend.hammer;
+}
+
+void Board::setLegend(int score, int life, char hammer)
+{
+    setScoreLegend(score);
+    setLifeLegend(life);
+    setHammerLegend(hammer);
 }
 
 

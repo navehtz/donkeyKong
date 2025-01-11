@@ -5,6 +5,7 @@
 void Mario::setStartingMario()
 {
 	won_level = false;
+	fall_count = 0;
 
 	p.setPosition(pBoard->getStartPosMario());				// Set stating position for x-axis
 
@@ -37,7 +38,7 @@ void Mario::move()
 	checkWhatState();			// Check what is mario state (climbing/ jumping/ falling/ walking or staying)
 	updateState();				// Update the moves that mario should commit by the state
 
-	if (just_died) { just_died = false; return; }
+	if (just_died) { return; }
 
 	//update prameters
 	updateNextMove();			// activate next move
@@ -188,11 +189,14 @@ void Mario::fall()
 // Handle the Mario's walking and standing
 void Mario::walkOrStay()					
 {
-	if (fall_count >= FALL_FROM_TOO_HIGH)								// If fall from high places, mario lose life
-		life();
+	if (!just_died)
+	{
+		if (fall_count >= FALL_FROM_TOO_HIGH)								// If fall from high places, mario lose life
+			life();
 
-	if (ch_left == GORRILA || ch_right == GORRILA)
-		life();
+		if (ch_left == GORRILA || ch_right == GORRILA)
+			life();
+	}
 
 	fall_count = 0;														// Reset count_jump counter
 	p.setDirY(STAY);
@@ -201,7 +205,7 @@ void Mario::walkOrStay()
 // The function returns true if the parameter is a floor/ceiling/wall and false otherwise
 bool Mario::isBlock(char _ch)
 {
-	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT)
+	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT || _ch == WALL)
 		return true;
 	else
 		return false;
@@ -263,11 +267,6 @@ void Mario::life()
 {
 	lives -= 1;
 
-	//char ch_lives = (char)lives + '0';
-	//printLives();																		// Print Mario's lives on screen
-	//pBoard->updateBoard(pBoard->getLifePosX(), pBoard->getLifePosY(), ch_lives);		// Update mario's life on current board
-
-
 	pBoard->setLifeLegend(lives);
 	pBoard->printLifeLegend();
 
@@ -290,6 +289,7 @@ void Mario::startOver()
 	pBoard->reset();
 	setStartingMario();
 	pBarrels->setStartingBarrels();							//reset barrels
+	pGhosts->setStartingGhosts(pGhosts->getNumOfGhosts());
 	pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen
 	pBoard->printLegend();
 }

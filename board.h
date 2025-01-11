@@ -16,41 +16,14 @@ class Board {
 	static constexpr size_t MAX_X = 80;		// Board width
 	static constexpr size_t MAX_Y = 25;		// Board Height
 
-	static constexpr int LIFE_POS_X = 11;	// Position in the board that hold the number lives of mario
+	static constexpr int LIFE_POS_X = 11  ;	// Position in the board that hold the number lives of mario
 	static constexpr int LIFE_POS_Y = 1;
 
-	//std::vector<std::string> files_names_vec;
+	std::vector<std::string> files_names_vec;
 	std::string directory = ".";
 
 
-	char originalBoard[MAX_Y][MAX_X + 1]; //= {
-	//	// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
-	//	  "                                                                                ", // 0
-	//	  "     LIFE:                           $                                          ", // 1
-	//	  "                        ==============================                          ", // 2
-	//	  "                        H            &               H                          ", // 3
-	//	  "                        H    ================        H                          ", // 4
-	//	  "                        H                            H                          ", // 5
-	//	  "                        H                            H                          ", // 6
-	//	  "          ======================           =================                    ", // 7
-	//	  "            H                                 H                                 ", // 8
-	//	  "            H                                 H                                 ", // 9
-	//	  "            H                                 H           H                     ", // 10
-	//	  "            H                                 H           H                     ", // 11
-	//	  "         >==================            ====================<=====              ", // 12
-	//	  "                       H                                        H               ", // 13
-	//	  "                       H                                        H               ", // 14
-	//	  "                ============<         >===========================              ", // 15
-	//	  "                  H                               H            H                ", // 16
-	//	  "                  H                               H            H                ", // 17
-	//	  "                  H                               H            H                ", // 18
-	//	  "         =======================               ===================<             ", // 19
-	//	  "          H                                                H                    ", // 20
-	//	  "          H                                                H                    ", // 21
-	//	  "          H                H              H                H                    ", // 22
-	//	  "          H                H              H                H                    ", // 23
-	//	  "================================================================================"  // 24
-	//};
+	char originalBoard[MAX_Y][MAX_X + 1];
 	char start_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************", //0
@@ -127,15 +100,14 @@ class Board {
 		 "* Keys:                                                                        *",//15 
 		 "* - A/a: Move left                     - D/d: Move right                       *",//16 
 		 "* - W/w: Jump or climb up a ladder     - X/x: Climb down a ladder              *",//17 
-		 "* - S/s: Stay in place                 - ESC: Pause, press again to resume     *",//18 
-		 "* - (9): Back to the menu                                                      *",//19 
+		 "* - S/s: Stay in place                 - P/p: Throw a hammer                   *",//18 
+		 "* - (9): Back to the menu              - ESC: Pause, press again to resume     *",//19 
 		 "*                                                                              *",//20 
 		 "*                                                                              *",//21 
 		 "*                                            < Press 'R' to return to menu >   *",//22 
 		 "*                                                                              *",//23 
 		 "********************************************************************************" //24
 	};
-
 	char losing_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
@@ -164,9 +136,6 @@ class Board {
 		 "*                                                                              *",//23 
 		 "********************************************************************************" //24
 	};
-
-
-
 	char winning_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
@@ -196,10 +165,6 @@ class Board {
 		 "********************************************************************************" //24
 
 	};
-
-
-
-
 	char goodBye_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
@@ -228,7 +193,6 @@ class Board {
 		 "*                                                                              *",//23 
 		 "********************************************************************************" //24
 	};
-
 	char chooseBoard_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
@@ -257,8 +221,6 @@ class Board {
 		 "*                                                                              *",//23 
 		 "********************************************************************************" //24
 	};
-
-
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
 
 	Position start_pos_mario{ 0,0 };
@@ -324,4 +286,8 @@ public:
 	void setScoreLegend(int score) { legend.score = score; }
 	void setLifeLegend(int life) { legend.life = life; }
 	void setHammerLegend(char hammer) { legend.hammer = hammer; }
+	void setLegend(int score, int life, char hammer);
+	int getGhostVectorSize() { return (int)start_pos_ghosts_vec.size(); }
+	Position getGhostPos(int i) { return start_pos_ghosts_vec[i]; }
+	
 };
