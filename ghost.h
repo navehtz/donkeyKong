@@ -15,7 +15,7 @@ class Ghost
 
 
 	// Members
-	char ch = 'x';
+	char ch = GHOST;
 
 	Point point;
 

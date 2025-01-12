@@ -20,7 +20,6 @@ void Barrel::setStartingBarrel(Board* _pBoard)
 	fall_count = 0;
 	is_activated = false;  //Added now 11/1
 	is_exploded = false;
-	is_smashed = false;
 
 	point.setPreviousChar(SPACE);
 }

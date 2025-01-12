@@ -27,6 +27,7 @@ class Point {
 	Position pos{ 0,0 };
 
 	Direction previous_dir{ STAY, STAY };															// Last direction before the current movement
+	Direction dir_before_stay{ STAY, STAY };														// To remember the direction before mario stopped
 	Direction dir_before_falling{ LEFT,STAY };														// Direction prior to a fall
 
 	static constexpr Direction directions[] = { {0, -1}, {-1, 0}, {0, 1}, {1, 0}, {0, 0} };			// Movement options: UP, LEFT, DOWN, RIGHT, STAY
@@ -73,5 +74,9 @@ public:
 	void setDirBeforeFalling(Direction _dir_before_falling) { dir_before_falling = _dir_before_falling; } // Set the direction before falling
 
 	Direction getDirFromDirectionsArray(int i) { return directions[i]; }			// Get the current the direction 
+	
+	Direction getDirBeforeStay() { return dir_before_stay; }						//
+	void setDirBeforeStay(Direction _dir_before_stay) { dir_before_stay = _dir_before_stay; } // Set the direction before falling
+
 };
 

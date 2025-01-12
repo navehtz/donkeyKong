@@ -18,11 +18,17 @@ void Mario::setStartingMario()
 
 // Processes a key press to determine Mario's movement direction.
 void Mario::keyPressed(char key) {
+	Direction new_dir;
+
 	key = (char)std::tolower(key);
 	for (int i = 0; i < numKeys; i++) {
+		new_dir = p.getDirFromDirectionsArray(i);
 		if (key == keys[i]) {
-			p.setDir(p.getDirFromDirectionsArray(i));		// Update Mario's direction using the index of the matched key in the direction array.
-			return;
+			p.setDir(new_dir);								// Update Mario's direction using the index of the matched key in the direction array.
+			
+			if (new_dir.x != STAY)
+				p.setDirBeforeStay(new_dir);
+		return;
 		}
 	}
 }
@@ -65,6 +71,8 @@ void Mario::updateCharParameters()
 	ch_right = getCharFromBoard(_x + RIGHT, _y);
 	ch_left_down = getCharFromBoard(_x + LEFT, _y + DOWN);
 	ch_right_down = getCharFromBoard(_x + RIGHT, _y + DOWN);
+	three_chars_below = getCharFromBoard(_x, _y + 3);
+
 
 	res_is_on_ladder = isOnLadder();
 	res_is_on_floor = isBlock(ch_below);
@@ -74,6 +82,7 @@ void Mario::updateCharParameters()
 	res_is_two_chars_below_floor = isBlock(two_chars_below);
 	res_is_left_down = isBlock(ch_left_down);
 	res_is_right_down = isBlock(ch_right_down);
+	res_is_three_chars_below_floor = isBlock(three_chars_below);
 }
 
 // Check in which state the Marrio is
@@ -287,9 +296,62 @@ void Mario::updateHammerPos()
 {
 	Position pos = p.getPosition();
 	Direction dir = p.getDir();
-	hammer.pos = { pos.x + dir.x, pos.y + dir.y };
+	Direction dir_before = p.getDirBeforeStay();
+	bool jumping_or_falling = false;
+
+	switch (dir.y)
+	{
+	case(UP):
+		hammer.pos.y = pos.y - HAMMER_DISTANCE;
+		jumping_or_falling = true;
+		break;
+	case(DOWN):
+		hammer.pos.y = pos.y + HAMMER_DISTANCE;
+		jumping_or_falling = true;
+		break;
+	case(STAY):
+		hammer.pos.y = pos.y;
+		break;
+	}
+
+	switch (dir.x)
+	{
+	case(LEFT):
+		hammer.pos.x = pos.x - HAMMER_DISTANCE;
+		break;
+	case(RIGHT):
+		hammer.pos.x = pos.x + HAMMER_DISTANCE;
+		break;
+	case(STAY):
+		if (jumping_or_falling)
+		{
+			hammer.pos.x = pos.x;
+		}
+		else
+		{
+			if (dir_before.x == LEFT)
+				hammer.pos.x = pos.x - HAMMER_DISTANCE;
+			else if (dir_before.x == RIGHT)
+				hammer.pos.x = pos.x + HAMMER_DISTANCE;
+			else
+				hammer.pos.x = pos.x;
+		}
+		break;
+	}
+
+
+
+	// TODO: what do we do if the hammer position is beyond the board
 }
 
+void Mario::printHammerOnBoard()
+{
+	if (!((p.getDir().y == DOWN && (res_is_on_floor || res_is_two_chars_below_floor || res_is_three_chars_below_floor)) || res_is_on_ladder)) {
+		gotoxy(hammer.pos.x, hammer.pos.y);
+		std::cout << hammer.ch;
+		pBoard->updateBoard(hammer.pos, hammer.ch);
+	}
+}
 
 // Handle Mario's lives (when hit or fall)
 void Mario::life()
@@ -303,6 +365,7 @@ void Mario::life()
 		startOver();																	// Function that reset the game after mario died but still has more than 0 lives
 	}
 	else if (lives == DEAD_MARIO) {														
+		flashingMario();
 		pBoard->printScreen(pBoard->getLosingBoard());									// Printing LOSING screen
 		Sleep(SCREEN_EXIT);
 	}
@@ -320,6 +383,7 @@ void Mario::startOver()
 	pBarrels->setStartingBarrels();							//reset barrels
 	pGhosts->setStartingGhosts(pGhosts->getNumOfGhosts());
 	pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen
+	pBoard->setHammerLegend(SPACE);
 	pBoard->printLegend();
 }
 

@@ -25,6 +25,8 @@ public:
 
 	void timing();													// Handle the entry of the barrels into the board
 	void setStartingBarrels();										// Inititialize all barrels
+	void setStartingBarrel(int i) { barrels[i].setStartingBarrel(pBoard); }										// Inititialize 
+	void setPreviousCharOfBarrel(int i, char _ch) { barrels[i].point.setPreviousChar(_ch); }										
 	void activateBarrels();											// Activating the first barrel that isn't activated
 	void draw();													// Draw all the activated barrels
 	void erase();													// Erase all the activated barrels
@@ -40,6 +42,6 @@ public:
 	void updateBarrelsCharParameters();
 	int getBarrelDirX(int i) { return barrels[i].getDirX(); }
 
-	void dectivate_barrel(int i) { barrels[i].deactivate(); }
+	void deactivate_barrel(int i) { barrels[i].deactivate(); }
 };
 

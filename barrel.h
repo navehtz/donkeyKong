@@ -21,7 +21,7 @@ class Barrel
 	static constexpr int EXPLODED_BARREL = 0;
 
 	// Members
-	char ch = 'O';
+	char ch = BARREL;
 
 	int fall_count = 0;
 	Point point;
@@ -35,7 +35,6 @@ class Barrel
 
 	bool is_activated = false;
 	bool is_exploded = false;
-	bool is_smashed = false;
 
 	// States of barrel
 	enum class BarrelState {

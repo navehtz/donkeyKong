@@ -26,6 +26,8 @@ static constexpr char PRINCESS = '$';
 static constexpr char GORRILA = '&';
 static constexpr char SPACE = ' ';
 static constexpr char HAMMER = 'p';
+static constexpr char BARREL = 'O';
+static constexpr char GHOST = 'x';
 
 struct Position {
 	int x, y;
