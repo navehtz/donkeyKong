@@ -16,12 +16,14 @@ class Mario
 	// Characters surrounding Mario
 	char ch_covered = SPACE, ch_below = SPACE, two_chars_below = SPACE;
 	char ch_above = SPACE, ch_left = SPACE, ch_right = SPACE;
-	char ch_left_down = SPACE, ch_right_down = SPACE, three_chars_below, char_behind_hammer = SPACE;
+	char ch_left_down = SPACE, ch_right_down = SPACE, ch_behind_hammer = SPACE;
+	char ch_wall_on_two_left, ch_wall_on_two_right, ch_three_chars_below;	// Used by the hammer
 
 	// Flags indicating Mario's interaction with his surroundings
-	bool res_is_on_ladder = false, res_is_on_floor = false, res_is_below_roof = false;
-	bool res_is_wall_on_left = false, res_is_wall_on_right = false, res_is_two_chars_below_floor = false;
-	bool res_is_left_down = false, res_is_right_down = false, res_is_three_chars_below_floor = false;
+	bool res_is_on_ladder = false, res_is_on_floor = false, res_is_below_roof = false, res_is_two_chars_below_floor = false;
+	bool res_is_wall_on_left = false, res_is_wall_on_right = false;
+	bool res_is_left_down = false, res_is_right_down = false;
+	bool res_ch_wall_on_two_left = false, res_ch_wall_on_two_right = false, res_is_three_chars_below_floor = false;		// Used by the hammer
 
 	bool won_level = false;
 	bool just_died = false;
@@ -31,11 +33,11 @@ class Mario
 
 	static constexpr int FALL_FROM_TOO_HIGH = 5;
 	static constexpr int DEAD_MARIO = 0;
-	static constexpr int UP = -1;
-	static constexpr int LEFT = -1;
-	static constexpr int DOWN = 1;
-	static constexpr int RIGHT = 1;
-	static constexpr int STAY = 0;
+	//static constexpr int UP = -1;
+	//static constexpr int LEFT = -1;
+	//static constexpr int DOWN = 1;
+	//static constexpr int RIGHT = 1;
+	//static constexpr int STAY = 0;
 	static constexpr int HAMMER_DISTANCE = 2;
 
 
@@ -131,15 +133,20 @@ public:
 	void updateHammerPos();
 	Position getHammerPos() const { return hammer.pos; }														// Get Mario's lives
 	void printHammerOnBoard();
-	
+
 	void eraseHammer() {
-		gotoxy(pos_hit_hammer.x, pos_hit_hammer.y );
-		std::cout << char_behind_hammer;
-		pBoard->updateBoard(pos_hit_hammer, char_behind_hammer);
+		gotoxy(pos_hit_hammer.x, pos_hit_hammer.y);
+		std::cout << ch_behind_hammer;      
+		pBoard->updateBoard(pos_hit_hammer, ch_behind_hammer);
 	}
 	void setIfHammerActive(bool b) { hammer.active = b; }
-	void setCharBehindHammer(char _ch) { char_behind_hammer = _ch; }
-	void setPosHitHammer(Position _pos) { pos_hit_hammer = _pos; }
+	void setCharBehindHammer(char _ch) { ch_behind_hammer = _ch; }
+	void setPosHitHammer(Position _pos) { pos_hit_hammer = _pos; }                    
+	bool validHit() {
+		return (!((p.getDir().y == DOWN &&
+			(res_is_on_floor || res_is_two_chars_below_floor || res_is_three_chars_below_floor))
+			|| res_is_on_ladder || res_is_wall_on_left || res_is_wall_on_right || res_ch_wall_on_two_left || res_ch_wall_on_two_right));
+	}
 
 };
 

@@ -5,13 +5,19 @@ void gotoxy(int x, int y);							// Move the cursor to the (x,y) position
 void ShowConsoleCursor(bool showFlag);				// Display the cursor
 void clrscr();										// Clear the screen
 
+static constexpr int DOWN = 1;
+static constexpr int RIGHT = 1;
+static constexpr int LEFT = -1;
+static constexpr int STAY = 0;
+
 static constexpr int DEAD_MARIO = 0;
 static constexpr int FULL_LIVES = 3;
 static constexpr int EXPLOSION_RADIUS = 2;
 static constexpr int MAX_BARRELS = 5;
+static constexpr int POSSIBLE_INPUT = 5;
 
 static constexpr int SCREEN_APPEARANCE = 5;
-static constexpr int SCREEN_TIME = 150;
+static constexpr int SCREEN_TIME = 150 / POSSIBLE_INPUT;
 static constexpr int SCREEN_PAUSE_GAME = 50;
 static constexpr int SCREEN_WIN = 2000;
 static constexpr int SCREEN_EXIT = 2000;

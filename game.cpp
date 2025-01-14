@@ -100,11 +100,14 @@ void Game::startGame(int screen_index)
 			draw();										// Draws the current state of the game (Mario, barrels)
 			updateIfDiedByBarrelOrGhost();						// Checks if Mario collided with a barrel and updates his state if he has died
 
-			if (_kbhit())
+			for (i = 0; i < POSSIBLE_INPUT; i++)
 			{
-				updateActionByKeys();
+				if (_kbhit())
+				{
+					updateActionByKeys();
+				}
+				Sleep(SCREEN_TIME);
 			}
-			Sleep(SCREEN_TIME);
 			barrels.updateBarrelsCharParameters(); //CHECK IF WE CAN WITHOUT THIS LINE OR ONLY WITH THAT LINE (THE OTHER IS IN MOVE FUNC)
 			erase();
 			move();
@@ -153,14 +156,17 @@ void Game::updateActionByKeys()
 	}
 	else if (key == HAMMER && mario.getIfGotHammer())
 	{
-		Position hammer_pos = mario.getHammerPos();
-		char ch = board.getCharFromBoard(hammer_pos.x, hammer_pos.y);
-		mario.setPosHitHammer(hammer_pos);
-		mario.printHammerOnBoard();
-		if (ch != BARREL && ch != GHOST)
-			mario.setCharBehindHammer(ch);
-		mario.setIfHammerActive(true);
-		updateIfMarioHitBarrelOrGhost();
+		if (mario.validHit())
+		{
+			Position hammer_pos = mario.getHammerPos();
+			char ch = board.getCharFromBoard(hammer_pos.x, hammer_pos.y);
+			mario.setPosHitHammer(hammer_pos);
+			mario.printHammerOnBoard();
+			if (ch != BARREL && ch != GHOST)
+				mario.setCharBehindHammer(ch);
+			mario.setIfHammerActive(true);
+			updateIfMarioHitBarrelOrGhost();
+		}
 	}
 	else									// For all other keys, pass the key to Mario's keyPressed handler
 	{
@@ -267,6 +273,8 @@ void Game::updateIfMarioHitBarrelOrGhost() {
 		if (hitTheEnemy(ghost_pos, hammer_pos))		// Check if Mario is hit directly by the barrel
 		{
 			ghosts.removeGhostByIndex(i);
+			ghosts.setNumOfGhosts(--num_of_ghosts);
+			break;
 		}
 	}
 }
@@ -275,10 +283,7 @@ bool Game::hitTheEnemy(Position enemy_pos, Position hammer_pos)
 {
 	if (hammer_pos.x == enemy_pos.x && hammer_pos.y == enemy_pos.y)											// When mario and the barrel at the same place
 		return true;
-	//else if (hammer_pos.x - 1 == enemy_pos.x && hammer_pos.x == enemy_pos.x + 1 && hammer_pos.y == enemy_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-	//	return true;
-	//else if (hammer_pos.x + 1 == enemy_pos.x && hammer_pos.x == enemy_pos.x - 1 && hammer_pos.y == enemy_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-	//	return true;
+
 	return false;
 }
 
@@ -292,11 +297,6 @@ void Game::updateIfDiedByBarrelOrGhost()
 
 	// Get Mario's current position
 	mario_pos = mario.getPosition();
-
-	//int barrelPosX, barrelPosY;
-	//int marioPosX, marioPosY;
-	//marioPosX = mario.getPosition().x;
-	//marioPosY = mario.getPosition().y;
 
 	for (int i = 0; i < max_barrels; i++)
 	{

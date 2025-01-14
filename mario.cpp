@@ -71,7 +71,10 @@ void Mario::updateCharParameters()
 	ch_right = getCharFromBoard(_x + RIGHT, _y);
 	ch_left_down = getCharFromBoard(_x + LEFT, _y + DOWN);
 	ch_right_down = getCharFromBoard(_x + RIGHT, _y + DOWN);
-	three_chars_below = getCharFromBoard(_x, _y + 3);
+	ch_three_chars_below = getCharFromBoard(_x, _y + 3);
+	ch_wall_on_two_left = getCharFromBoard(_x - 2, _y);
+	ch_wall_on_two_right = getCharFromBoard(_x + 2, _y);
+
 
 
 	res_is_on_ladder = isOnLadder();
@@ -82,7 +85,9 @@ void Mario::updateCharParameters()
 	res_is_two_chars_below_floor = isBlock(two_chars_below);
 	res_is_left_down = isBlock(ch_left_down);
 	res_is_right_down = isBlock(ch_right_down);
-	res_is_three_chars_below_floor = isBlock(three_chars_below);
+	res_is_three_chars_below_floor = isBlock(ch_three_chars_below);
+	res_ch_wall_on_two_left = isBlock(ch_wall_on_two_left);
+	res_ch_wall_on_two_right = isBlock(ch_wall_on_two_right);
 }
 
 // Check in which state the Marrio is
@@ -346,11 +351,9 @@ void Mario::updateHammerPos()
 
 void Mario::printHammerOnBoard()
 {
-	if (!((p.getDir().y == DOWN && (res_is_on_floor || res_is_two_chars_below_floor || res_is_three_chars_below_floor)) || res_is_on_ladder)) {
-		gotoxy(hammer.pos.x, hammer.pos.y);
-		std::cout << hammer.ch;
-		pBoard->updateBoard(hammer.pos, hammer.ch);
-	}
+	gotoxy(hammer.pos.x, hammer.pos.y);
+	std::cout << hammer.ch;
+	//pBoard->updateBoard(hammer.pos, hammer.ch);
 }
 
 // Handle Mario's lives (when hit or fall)

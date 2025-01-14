@@ -125,11 +125,11 @@ void Ghost::blockedByWall()
 {
 	int dirX = point.getDir().x;
 	if (res_is_wall_on_left) {										//linked to a wall - barrel can't pass
-		if (dirX == LEFT) { point.setDirX(STAY); }
+		if (dirX == LEFT) { point.setDirX(RIGHT); }
 	}
 
 	if (res_is_wall_on_right) {
-		if (dirX == RIGHT) { point.setDirX(STAY); }		//linked to a wall - barrel can't pass
+		if (dirX == RIGHT) { point.setDirX(LEFT); }		//linked to a wall - barrel can't pass
 	}
 }
 

@@ -14,16 +14,6 @@ class Point {
 	char ch = ' ';
 	char  previous_char = ' ';
 
-	static constexpr int DOWN = 1;
-	static constexpr int RIGHT = 1;
-	static constexpr int LEFT = -1;
-	static constexpr int STAY = 0;
-
-	//struct Direction {																				// Direction structure for handling movement	
-	//	int x, y;
-	//};
-	//int x=0, y=0;
-
 	Position pos{ 0,0 };
 
 	Direction previous_dir{ STAY, STAY };															// Last direction before the current movement
