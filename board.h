@@ -282,7 +282,7 @@ public:
 	void printLegend() const;
 	void printLifeLegend() const { gotoxy(legend.pos_life_in_legend.x + (int)(legend.str_life.length()), legend.pos_life_in_legend.y); std::cout << legend.life; }
 	void printScoreLegend() const { gotoxy(legend.pos_score_in_legend.x + (int)(legend.str_score.length()), legend.pos_life_in_legend.y); std::cout << legend.score; }
-	void printHammerLegend() const { gotoxy(legend.pos_hammer_in_legend.x + (int)(legend.str_hammer.length()), legend.pos_life_in_legend.y); std::cout << legend.hammer; }
+	void printHammerLegend() const { gotoxy(legend.pos_hammer_in_legend.x + (int)(legend.str_hammer.length()), legend.pos_hammer_in_legend.y); std::cout << legend.hammer; }
 	void setScoreLegend(int score) { legend.score = score; }
 	void setLifeLegend(int life) { legend.life = life; }
 	void setHammerLegend(char hammer) { legend.hammer = hammer; }

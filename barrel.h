@@ -8,20 +8,11 @@
 class Barrel
 {
 	// Constants
-	//static constexpr int STARTING_POS_LEFT_X = 36;
-	//static constexpr int STARTING_POS_RIGHT_X = 38;
-	//static constexpr int STARTING_POS_Y = 3;
-
-	static constexpr int DOWN = 1;
-	static constexpr int RIGHT = 1;
-	static constexpr int LEFT = -1;
-	static constexpr int STAY = 0;
-
 	static constexpr int FALL_FROM_TOO_HIGH = 8;
 	static constexpr int EXPLODED_BARREL = 0;
 
 	// Members
-	char ch = 'O';
+	char ch = BARREL;
 
 	int fall_count = 0;
 	Point point;
@@ -42,11 +33,6 @@ class Barrel
 		Rolling
 	};
 	BarrelState state = BarrelState::Rolling;
-
-	// Defining struct for barrel's direction
-	struct Direction {
-		int x, y;
-	};
 
 	friend class Barrels;
 
@@ -90,9 +76,9 @@ public:
 	void updatePreviousChar() { point.setPreviousChar(getCharFromBoard(point.getPosition())); }	// Function for keeping the char the barrel is on so it can be printes in the next loop
 	void updateNextMove();										// Updating the movement of the barrel for the next loop according to the position and the direction
 
-	bool IsActivated() { return is_activated; };				// The function returns true if the barrel is activated(rolling/falling etc.)and false otherwise
+	bool const IsActivated() const { return is_activated; };				// The function returns true if the barrel is activated(rolling/falling etc.)and false otherwise
 	void activate() { is_activated = true; }					// Function to activate the barrel
-	
+	void deactivate() { is_activated = false; }
 	int myRandom();												// Function to raffle a number ( 1 or 0 )
 
 

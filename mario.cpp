@@ -5,8 +5,8 @@
 void Mario::setStartingMario()
 {
 	won_level = false;
+	got_hammer = false;
 	fall_count = 0;
-
 	p.setPosition(pBoard->getStartPosMario());				// Set stating position for x-axis
 
 	p.setDir({ STAY, STAY });								// Set stating direction for Mario
@@ -18,11 +18,17 @@ void Mario::setStartingMario()
 
 // Processes a key press to determine Mario's movement direction.
 void Mario::keyPressed(char key) {
+	Direction new_dir;
+
 	key = (char)std::tolower(key);
 	for (int i = 0; i < numKeys; i++) {
+		new_dir = p.getDirFromDirectionsArray(i);
 		if (key == keys[i]) {
-			p.setDir(p.getDirFromDirectionsArray(i));		// Update Mario's direction using the index of the matched key in the direction array.
-			return;
+			p.setDir(new_dir);								// Update Mario's direction using the index of the matched key in the direction array.
+			
+			if (new_dir.x != STAY)
+				p.setDirBeforeStay(new_dir);
+		return;
 		}
 	}
 }
@@ -35,15 +41,21 @@ void Mario::move()
 	updateCharParameters();		// Update all the char data members around mario
 	amendNextMove();			// Neutralizing illegal movements (jumping under the ceiling, going through a wall, etc.)
 
+
 	checkWhatState();			// Check what is mario state (climbing/ jumping/ falling/ walking or staying)
 	updateState();				// Update the moves that mario should commit by the state
 
 	if (just_died) { return; }
 
+	if (ch_covered == HAMMER) { 
+		handleHammer();
+	}
+
 	//update prameters
 	updateNextMove();			// activate next move
 	updatePreviousChar();
 	updatePreviousDir();
+	if (got_hammer) { updateHammerPos(); }
 }
 
 // Update all the char data members around mario
@@ -59,6 +71,11 @@ void Mario::updateCharParameters()
 	ch_right = getCharFromBoard(_x + RIGHT, _y);
 	ch_left_down = getCharFromBoard(_x + LEFT, _y + DOWN);
 	ch_right_down = getCharFromBoard(_x + RIGHT, _y + DOWN);
+	ch_three_chars_below = getCharFromBoard(_x, _y + 3);
+	ch_wall_on_two_left = getCharFromBoard(_x - 2, _y);
+	ch_wall_on_two_right = getCharFromBoard(_x + 2, _y);
+
+
 
 	res_is_on_ladder = isOnLadder();
 	res_is_on_floor = isBlock(ch_below);
@@ -68,6 +85,9 @@ void Mario::updateCharParameters()
 	res_is_two_chars_below_floor = isBlock(two_chars_below);
 	res_is_left_down = isBlock(ch_left_down);
 	res_is_right_down = isBlock(ch_right_down);
+	res_is_three_chars_below_floor = isBlock(ch_three_chars_below);
+	res_ch_wall_on_two_left = isBlock(ch_wall_on_two_left);
+	res_ch_wall_on_two_right = isBlock(ch_wall_on_two_right);
 }
 
 // Check in which state the Marrio is
@@ -122,7 +142,9 @@ bool Mario::isClimbing()
 // Handle the Mario's climb
 void Mario::climb()
 {
-	if (!res_is_on_floor && (p.getPreviousDir().x == LEFT || p.getPreviousDir().x == RIGHT))		// When Mario jumps or fall and lands on a ledder
+	int previous_dir_x = p.getPreviousDir().x;
+
+	if (!res_is_on_floor && (previous_dir_x == LEFT || previous_dir_x == RIGHT))		// When Mario jumps or fall and lands on a ledder
 	{
 		p.setDirX(STAY);																			// We want that Mario will HOLD the ledder
 		if (p.getDir().y == UP) { return; }															// When mario JUMPS UP and land on a ladder - we want him to continue his move up                
@@ -169,13 +191,15 @@ void Mario::jump()
 // Check if the Mario is falling
 bool Mario::isFalling() const
 {
-	return ch_below == SPACE ? true : false;
+	return (ch_below == SPACE || ch_below == HAMMER || ch_below == PRINCESS) ? true : false;
 }
 
 // Handle the Mario's falling
 void Mario::fall()
 {
-	if (p.getPreviousDir().y == UP || p.getPreviousDir().y == DOWN)		// If mario finish a jump, we want to save the previous x vector
+	int previous_dir_y = p.getPreviousDir().y;
+
+	if (previous_dir_y == UP || previous_dir_y == DOWN)		// If mario finish a jump, we want to save the previous x vector
 		if(!res_is_left_down && !res_is_right_down)
 			p.setDirX(p.getPreviousDir().x);
 	else
@@ -262,6 +286,76 @@ void Mario::updateNextMove()
 	p.setPosition(newX, newY);
 }
 
+void Mario::handleHammer()
+{
+	got_hammer = true;
+	pBoard->setHammerLegend(HAMMER);
+	pBoard->printHammerLegend();
+	pBoard->updateBoard(getPosition(), SPACE);
+	p.setPreviousChar(SPACE);
+	erase();
+	updateHammerPos();
+}
+
+void Mario::updateHammerPos()
+{
+	Position pos = p.getPosition();
+	Direction dir = p.getDir();
+	Direction dir_before = p.getDirBeforeStay();
+	bool jumping_or_falling = false;
+
+	switch (dir.y)
+	{
+	case(UP):
+		hammer.pos.y = pos.y - HAMMER_DISTANCE;
+		jumping_or_falling = true;
+		break;
+	case(DOWN):
+		hammer.pos.y = pos.y + HAMMER_DISTANCE;
+		jumping_or_falling = true;
+		break;
+	case(STAY):
+		hammer.pos.y = pos.y;
+		break;
+	}
+
+	switch (dir.x)
+	{
+	case(LEFT):
+		hammer.pos.x = pos.x - HAMMER_DISTANCE;
+		break;
+	case(RIGHT):
+		hammer.pos.x = pos.x + HAMMER_DISTANCE;
+		break;
+	case(STAY):
+		if (jumping_or_falling)
+		{
+			hammer.pos.x = pos.x;
+		}
+		else
+		{
+			if (dir_before.x == LEFT)
+				hammer.pos.x = pos.x - HAMMER_DISTANCE;
+			else if (dir_before.x == RIGHT)
+				hammer.pos.x = pos.x + HAMMER_DISTANCE;
+			else
+				hammer.pos.x = pos.x;
+		}
+		break;
+	}
+
+
+
+	// TODO: what do we do if the hammer position is beyond the board
+}
+
+void Mario::printHammerOnBoard()
+{
+	gotoxy(hammer.pos.x, hammer.pos.y);
+	std::cout << hammer.ch;
+	//pBoard->updateBoard(hammer.pos, hammer.ch);
+}
+
 // Handle Mario's lives (when hit or fall)
 void Mario::life()
 {
@@ -274,6 +368,7 @@ void Mario::life()
 		startOver();																	// Function that reset the game after mario died but still has more than 0 lives
 	}
 	else if (lives == DEAD_MARIO) {														
+		flashingMario();
 		pBoard->printScreen(pBoard->getLosingBoard());									// Printing LOSING screen
 		Sleep(SCREEN_EXIT);
 	}
@@ -291,6 +386,7 @@ void Mario::startOver()
 	pBarrels->setStartingBarrels();							//reset barrels
 	pGhosts->setStartingGhosts(pGhosts->getNumOfGhosts());
 	pBoard->printScreen(pBoard->getCurrentBoard());			//printing new board screen
+	pBoard->setHammerLegend(SPACE);
 	pBoard->printLegend();
 }
 
