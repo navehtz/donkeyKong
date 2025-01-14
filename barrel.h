@@ -40,9 +40,9 @@ public:
 	Barrel() : point(ch) {}													// Ctor of barrel with point
 
 	void setStartingBarrel(Board* _pBoard);												// Initialize barrel
+	void setpBoard(Board& _board) { pBoard = &_board; }						// Set pBoard to the board
 	bool getIsExploded() { return is_exploded; }							// Get the member 'is_exploded'
 	void setIsExploded(bool _is_exploded) { is_exploded = _is_exploded; }	// Set the member 'is_exploded'
-	void setpBoard(Board& _board) { pBoard = &_board; }						// Set pBoard to the board
 	Point getPoint() const { return point; }								// Get the member 'point'
 	int getDirX() const { return point.getPosition().x; }													// Get Mario's lives
 

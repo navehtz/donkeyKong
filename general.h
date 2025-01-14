@@ -5,6 +5,7 @@ void gotoxy(int x, int y);							// Move the cursor to the (x,y) position
 void ShowConsoleCursor(bool showFlag);				// Display the cursor
 void clrscr();										// Clear the screen
 
+static constexpr int UP = -1;
 static constexpr int DOWN = 1;
 static constexpr int RIGHT = 1;
 static constexpr int LEFT = -1;
