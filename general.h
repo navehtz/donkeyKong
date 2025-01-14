@@ -29,6 +29,7 @@ static constexpr char FLOOR = '=';
 static constexpr char FLOOR_LEFT = '<';
 static constexpr char FLOOR_RIGHT = '>';
 static constexpr char LADDER = 'H';
+static constexpr char MARIO = '@';
 static constexpr char PRINCESS = '$';
 static constexpr char GORRILA = '&';
 static constexpr char SPACE = ' ';

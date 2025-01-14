@@ -29,17 +29,17 @@ int Ghost::myRandom()
 
 
 // Handle the ghost's movement
-void Ghost::move()
-{
-	updateCharParameters();									// Update all the char data members around mario
-	checkWhatState();										// Check what is the ghost's state 
-	updateState();											// Update the moves that the ghost should do by the state
-
-	//update prameters
-	updateNextMove();
-	updatePreviousChar();
-	updatePreviousDir();
-}
+//void Ghost::move()
+//{
+//	updateCharParameters();									// Update all the char data members around mario
+//	checkWhatState();										// Check what is the ghost's state 
+//	updateState();											// Update the moves that the ghost should do by the state
+//
+//	//update prameters
+//	updateNextMove();
+//	updatePreviousChar();
+//	updatePreviousDir();
+//}
 
 // Update all the char data members around mario
 void Ghost::updateCharParameters()
@@ -93,10 +93,10 @@ void Ghost::wander()
 }
 
 // Check if the barrel is falling 
-bool Ghost::isFalling() const
-{
-	return ch_below == SPACE ? true : false;
-}
+//bool Ghost::isFalling() const
+//{
+//	return ch_below == SPACE ? true : false;
+//}
 
 // Handle the barrel's falling
 void Ghost::fall()
@@ -116,8 +116,6 @@ void Ghost::manageDirection()
 	
 	if ((dirX == LEFT && ch_left_down == SPACE) || (dirX = RIGHT && ch_right_down == SPACE))
 		point.setDirX(dirX * -1);
-
-
 }
 
 // Handle the cases which the barrel explodes in (falling 8 chars or at wall)
@@ -135,13 +133,13 @@ void Ghost::blockedByWall()
 
 
 // The function returns true if the parameter is a floor/ceiling/wall and false otherwise
-bool Ghost::isBlock(char _ch) const
-{
-	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT || _ch == WALL || _ch == ch)
-		return true;
-	else
-		return false;
-}
+//bool Ghost::isBlock(char _ch) const
+//{
+//	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT || _ch == WALL || _ch == ch)
+//		return true;
+//	else
+//		return false;
+//}
 
 // Updating the movement of the barrel for the next loop according to the position and the direction
 void Ghost::updateNextMove()
