@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include <Windows.h>	//for Sleep and colors
-#include "general.h"
+#include "gameConfig.h"
 
 #include <iostream>
 #include <algorithm>
@@ -274,7 +274,7 @@ public:
 	void getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const;
 	bool load(const std::string& filename);
 	bool handleReadFileErrors(const std::ifstream& _file);
-	bool handleUnvalidFile() const;
+	bool handleUnvalidFile(const std::string& filename) const;
 	void manageChar(char& ch, bool& already_readen, Position& pos, int curr_col, int curr_row);
 	Position getStartPosMario() const { return start_pos_mario; }
 	Position getStartPosGorilla() const { return start_pos_gorilla; }
@@ -286,7 +286,7 @@ public:
 	void setPositionsInLegend();
 	void printLegend() const;
 	void printLifeLegend() const { gotoxy(legend.pos_life_in_legend.x + (int)(legend.str_life.length()), legend.pos_life_in_legend.y); std::cout << legend.life; }
-	void printScoreLegend() const { gotoxy(legend.pos_score_in_legend.x + (int)(legend.str_score.length()), legend.pos_life_in_legend.y); std::cout << legend.score; }
+	void printScoreLegend() const { gotoxy(legend.pos_score_in_legend.x + (int)(legend.str_score.length()), legend.pos_score_in_legend.y); std::cout << legend.score; }
 	void printHammerLegend() const { gotoxy(legend.pos_hammer_in_legend.x + (int)(legend.str_hammer.length()), legend.pos_hammer_in_legend.y); std::cout << legend.hammer; }
 	void setScoreLegend(int score) { legend.score = score; }
 	void setLifeLegend(int life) { legend.life = life; }
@@ -295,4 +295,7 @@ public:
 	int getGhostVectorSize() { return (int)start_pos_ghosts_vec.size(); }
 	Position getGhostPos(int i) { return start_pos_ghosts_vec[i]; }
 	
+	void setScore() { legend.score = 0; }
+	int getScore() const { return legend.score; }
+	void addScore(int _score) { legend.score += _score; }
 };

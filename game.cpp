@@ -1,5 +1,5 @@
 #include "game.h"
-#include "general.h"
+#include "gameConfig.h"
 #include <Windows.h>
 
 // Manages the overall flow of the game
@@ -75,14 +75,16 @@ void Game::startGame(int screen_index)
 	exit_game = false;								    // Indicates that the Mario gameplay loop is active
 
 	mario.setLives(FULL_LIVES);
+	board.setScore();
 
 	for (int i = screen_index; (i < files_names_vec.size()) && (playing_mario && !exit_game); i++)
 	{
 		valid_file = board.load(files_names_vec[i]);
 		if (!valid_file) 
 		{
-			files_names_vec.clear();
-			run();
+			/*files_names_vec.clear();
+			run();*/
+			continue;
 		}
 
 		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
@@ -94,6 +96,7 @@ void Game::startGame(int screen_index)
 		{
 			if (wonTheLevel())
 			{
+				board.addScore(END_LEVEL);
 				break;
 			}
 
@@ -137,7 +140,7 @@ void Game::setStartingGame()
 	ghosts.setpBoard(board);
 	ghosts.setStartingGhosts(board.getGhostVectorSize());
 
-	board.setLegend(0, mario.getLives(), SPACE);
+	board.setLegend(board.getScore(), mario.getLives(), SPACE);
 	board.printScreen(board.getCurrentBoard());
 	board.printLegend();
 }
@@ -265,6 +268,8 @@ void Game::updateIfMarioHitBarrelOrGhost() {
 			barrels.setPreviousCharOfBarrel(i, mario.getHammerChar());
 			barrels.eraseASpecificBarrel(i);
 			barrels.setStartingBarrel(i);
+			board.addScore(KILL_BARREL);
+			board.printScoreLegend();
 		}
 	}
 
@@ -275,6 +280,8 @@ void Game::updateIfMarioHitBarrelOrGhost() {
 		{
 			ghosts.removeGhostByIndex(i);
 			ghosts.setNumOfGhosts(--num_of_ghosts);
+			board.addScore(KILL_GHOST);
+			board.printScoreLegend();
 			break;
 		}
 	}

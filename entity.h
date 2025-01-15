@@ -1,7 +1,7 @@
 #pragma once
 
 #include "point.h"
-#include "general.h"
+#include "gameConfig.h"
 
 class Entity
 {
