@@ -100,7 +100,7 @@ void Game::startGame(int screen_index)
 			draw();										// Draws the current state of the game (Mario, barrels)
 			updateIfDiedByBarrelOrGhost();						// Checks if Mario collided with a barrel and updates his state if he has died
 
-			for (i = 0; i < POSSIBLE_INPUT; i++)
+			for (int j = 0; j < POSSIBLE_INPUT; j++)
 			{
 				if (_kbhit())
 				{
@@ -125,7 +125,7 @@ void Game::setStartingGame()
 	clrscr();
 
 	board.reset();										// Update current board
-	mario.setBoard(board);								// Links Mario to the game board, so he can interact with it
+	mario.setpBoard(board);								// Links Mario to the game board, so he can interact with it
 	mario.setStartingMario();							// Initializes Mario to his starting position and state
 	mario.setpBarrels(barrels);							// Links Mario to the barrels, allowing interactions between them
 	mario.setpGhosts(ghosts);

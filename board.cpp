@@ -40,7 +40,6 @@ void Board::getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const {
         for (const auto& entry : std::filesystem::directory_iterator(std::filesystem::current_path())) {
             auto filenameStr = entry.path().filename().string();
             if (filenameStr.substr(0, 6) == "dkong_" && entry.path().extension() == ".screen") { //maybe magic number 6
-                std::cout << filenameStr << " added!!\n";
                 vec_to_fill.push_back(filenameStr);
             }
         }
