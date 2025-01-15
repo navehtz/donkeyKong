@@ -5,6 +5,7 @@ void gotoxy(int x, int y);							// Move the cursor to the (x,y) position
 void ShowConsoleCursor(bool showFlag);				// Display the cursor
 void clrscr();										// Clear the screen
 
+static constexpr int UP = -1;
 static constexpr int DOWN = 1;
 static constexpr int RIGHT = 1;
 static constexpr int LEFT = -1;
@@ -28,6 +29,7 @@ static constexpr char FLOOR = '=';
 static constexpr char FLOOR_LEFT = '<';
 static constexpr char FLOOR_RIGHT = '>';
 static constexpr char LADDER = 'H';
+static constexpr char MARIO = '@';
 static constexpr char PRINCESS = '$';
 static constexpr char GORRILA = '&';
 static constexpr char SPACE = ' ';

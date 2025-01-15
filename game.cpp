@@ -125,7 +125,7 @@ void Game::setStartingGame()
 	clrscr();
 
 	board.reset();										// Update current board
-	mario.setBoard(board);								// Links Mario to the game board, so he can interact with it
+	mario.setpBoard(board);								// Links Mario to the game board, so he can interact with it
 	mario.setStartingMario();							// Initializes Mario to his starting position and state
 	mario.setpBarrels(barrels);							// Links Mario to the barrels, allowing interactions between them
 	mario.setpGhosts(ghosts);
