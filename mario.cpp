@@ -226,15 +226,6 @@ void Mario::walkOrStay()
 	point.setDirY(STAY);
 }
 
-// The function returns true if the parameter is a floor/ceiling/wall and false otherwise
-//bool Mario::isBlock(char _ch)
-//{
-//	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT || _ch == WALL)
-//		return true;
-//	else
-//		return false;
-//}
-
 // Check if Mario is on a ladder
 bool Mario::isOnLadder() const
 {
@@ -349,8 +340,11 @@ void Mario::updateHammerPos()
 	// TODO: what do we do if the hammer position is beyond the board
 }
 
-void Mario::printHammerOnBoard()
+void Mario::printHammerOnBoard() const
 {
+	if (hammer.pos.x < 0 || hammer.pos.x >= pBoard->get_board_width() ||
+		hammer.pos.y < 0 || hammer.pos.y >= pBoard->get_board_height())
+			return; // To handle if the hammer's hit is beyond the board
 	gotoxy(hammer.pos.x, hammer.pos.y);
 	std::cout << hammer.ch;
 	//pBoard->updateBoard(hammer.pos, hammer.ch);

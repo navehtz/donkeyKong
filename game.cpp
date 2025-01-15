@@ -60,8 +60,6 @@ int Game::chooseGameScreen()
 			else if (key == EXIT_GAME) {
 				return -1;
 			}
-
-			break;
 		}
 	}
 	return -1;													// Prevent warnings
@@ -81,8 +79,11 @@ void Game::startGame(int screen_index)
 	for (int i = screen_index; (i < files_names_vec.size()) && (playing_mario && !exit_game); i++)
 	{
 		valid_file = board.load(files_names_vec[i]);
-		if (!valid_file)
-			menu();
+		if (!valid_file) 
+		{
+			files_names_vec.clear();
+			run();
+		}
 
 		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
 		playing_mario = true;							// Indicates that the Mario gameplay loop is active

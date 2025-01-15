@@ -24,6 +24,7 @@ static constexpr int SCREEN_WIN = 2000;
 static constexpr int SCREEN_EXIT = 2000;
 static constexpr int SCREEN_FLASH_MARIO = 200;
 
+static constexpr int FILE_NAME_LENGTH = 6;
 static constexpr char WALL = 'Q';
 static constexpr char FLOOR = '=';
 static constexpr char FLOOR_LEFT = '<';
@@ -36,6 +37,7 @@ static constexpr char SPACE = ' ';
 static constexpr char HAMMER = 'p';
 static constexpr char BARREL = 'O';
 static constexpr char GHOST = 'x';
+static constexpr char LEGEND = 'L';
 
 struct Position {
 	int x, y;

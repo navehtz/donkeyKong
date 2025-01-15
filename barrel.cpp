@@ -33,20 +33,6 @@ int Barrel::myRandom()
 	return dist(gen);
 }
 
-
-// Handle the barrel's movement
-//void Barrel::move()
-//{
-//	updateCharParameters();									// Update all the char data members around mario
-//	checkWhatState();										// Check what is the barrel's state (falling/ walking or staying)
-//	updateState();											// Update the moves that the barrel should do by the state
-//
-//	//update prameters
-//	updateNextMove();
-//	updatePreviousChar();
-//	updatePreviousDir();
-//}
-
 // Update all the char data members around mario
 void Barrel::updateCharParameters()
 {
@@ -168,14 +154,6 @@ void Barrel::explode()
 	is_exploded = true;
 }
 
-// The function returns true if the parameter is a floor/ceiling/wall and false otherwise
-//bool Barrel::isBlock(char _ch) const
-//{
-//	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT || _ch == WALL)
-//		return true;
-//	else
-//		return false;
-//}
 
 // Updating the movement of the barrel for the next loop according to the position and the direction
 void Barrel::updateNextMove()

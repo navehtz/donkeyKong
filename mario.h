@@ -55,9 +55,6 @@ class Mario : public Entity
 	Hammer hammer;
 	Position pos_hit_hammer = {0,0};
 
-	// Member variables for Mario's position and game references
-	//Point p;
-	//Board* pBoard = nullptr;
 	Barrels* pBarrels = nullptr;
 	Ghosts* pGhosts = nullptr;
 
@@ -67,22 +64,12 @@ public:
 	void setStartingMario();												// Set Mario to his starting position
 	void keyPressed(char key);												// Handle key press input
 
-	//void draw() {															// Draw Mario on the screen and update the board
-	//	p.draw(ch);
-	//	pBoard->updateBoard(p.getPosition(), ch);
-	//}
 	void erase() override {															// Erase Mario's current position from the screen and update the board
 		point.erase();
 		pBoard->updateBoard(point.getPosition(), point.getPreviousChar());
 		if (hammer.active) { eraseHammer(); hammer.active = false; }
 	}
 
-	//Point getPointP() const { return point; }									// Get Mario position
-	//Position getPosition() const { return point.getPosition(); }								// Get Mario position by x-axis
-	//int getPointX() const { return p.getX(); }								// Get Mario position by x-axis
-	//int getPointY() const { return p.getY(); }								// Get Mario position by y-axis
-
-	//void setBoard(Board& _board) { pBoard = &_board; }						// Set the game board pointer
 	void setpBarrels(Barrels& _barrels) { pBarrels = &_barrels; }			// Set the barrels object pointer
 	void setpGhosts(Ghosts& _ghosts) { pGhosts = &_ghosts; }			// Set the barrels object pointer
 
@@ -90,7 +77,6 @@ public:
 	void move() override;															// Handle the Marrio's movement
 	void amendNextMove();													// Neutralizing illegal movements (jumping under the ceiling, going through a wall, etc.)
 	bool isOnLadder() const;												// Check if Mario is on a ladder
-	//bool isBlock(char _ch);													// The function returns true if the parameter is a floor/ceiling/wall and false otherwise
 
 	bool isJumping();														// Check if the Mario is jump
 	void jump();															// Handle the Mario's jumping
@@ -103,11 +89,9 @@ public:
 	void checkWhatState() override;																		// Check the state of Mario
 	void updateState() override;																			// Update Mario's state
 	void updateNextMove() override;																		// Update Mario's next move
-	//void updatePreviousDir() { point.setPreviousDir(p.getDir()); }									// Function to update the Mario's previous direction to become the current (similar to previous_dir = dir)
-	//void updatePreviousChar() { point.setPreviousChar(getCharFromBoard(point.getPosition().x, p.getPosition().y)); }		// Function for keeping the char the barrel is on so it can be printes in the next loop
 
 	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); }			// Get the char in the (x,y) position on board
-	char getHammerChar() { return hammer.ch; }			 
+	char getHammerChar() const { return hammer.ch; }			 
 
 	int getLives() const { return lives; }														// Get Mario's lives
 	void setLives(int _lives) { lives = _lives; }												// Set Mario's lives
@@ -122,7 +106,7 @@ public:
 	void handleHammer();
 	void updateHammerPos();
 	Position getHammerPos() const { return hammer.pos; }														// Get Mario's lives
-	void printHammerOnBoard();
+	void printHammerOnBoard() const;
 
 	void eraseHammer() {
 		gotoxy(pos_hit_hammer.x, pos_hit_hammer.y);

@@ -22,9 +22,6 @@ void Board::printScreen(const char screen[][MAX_X + 1]) const
 	std::cout << screen[MAX_Y - 1];									// Print the last row without a newline to avoid an extra blank line
 }
 
-
-
-
 // Function made by the lecturer and chatGPT 
 void Board::getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const {
     if (!std::filesystem::exists(directory)) {
@@ -39,7 +36,7 @@ void Board::getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const {
     try {
         for (const auto& entry : std::filesystem::directory_iterator(std::filesystem::current_path())) {
             auto filenameStr = entry.path().filename().string();
-            if (filenameStr.substr(0, 6) == "dkong_" && entry.path().extension() == ".screen") { //maybe magic number 6
+            if (filenameStr.substr(0, FILE_NAME_LENGTH) == "dkong_" && entry.path().extension() == ".screen") { 
                 vec_to_fill.push_back(filenameStr);
             }
         }
@@ -54,10 +51,11 @@ void Board::getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const {
 }
 
 bool Board::load(const std::string& filename) {
+    readen_mario = readen_princess = readen_gorilla = readen_legend = 0;
+
     std::ifstream screen_file(filename);                // Open file
     if (!screen_file) {                                 // Check if opened correctly
-        handleErrors(screen_file);
-        return false;
+        return handleReadFileErrors(screen_file);
     }
     start_pos_ghosts_vec.clear();
     int curr_row = 0;
@@ -68,7 +66,7 @@ bool Board::load(const std::string& filename) {
             if (curr_col < MAX_X) {
                 // add spaces for missing cols
                 #pragma warning(suppress : 4996) // to allow strcpy
-                strcpy(originalBoard[curr_row] + curr_col, std::string(MAX_X - curr_col - 1, ' ').c_str());
+                strcpy(originalBoard[curr_row] + curr_col, std::string(MAX_X - curr_col, SPACE).c_str());
             }
             ++curr_row;
             curr_col = 0;
@@ -77,36 +75,48 @@ bool Board::load(const std::string& filename) {
         if (curr_col < MAX_X) {                           
             switch (c)
             {
-            case '@':
-                start_pos_mario = { curr_col, curr_row };
+            case MARIO:
+                manageChar(c, readen_mario, start_pos_mario, curr_col, curr_row);
                 break;
-            case '&':
-                start_pos_gorilla = { curr_col, curr_row };
+            case GORRILA:
+                manageChar(c, readen_gorilla, start_pos_gorilla, curr_col, curr_row);
                 break;
-            case '$':
-                start_pos_pauline = { curr_col, curr_row };
+            case PRINCESS:
+                manageChar(c, readen_princess, start_pos_princess, curr_col, curr_row);
                 break;
-            //case 'p':
-            //   start_pos_hammer = { curr_col, curr_row };
-            //    break;
-            case 'x':
+            case GHOST:
                 start_pos_ghosts_vec.push_back({ curr_col, curr_row });
                 break;
-            case 'L':
+            case LEGEND:
+                readen_legend++;
                 legend.pos_L = { curr_col, curr_row };
                 setPositionsInLegend();
+                break;
+            default:
+                if (c != FLOOR && c != FLOOR_LEFT && c != FLOOR_RIGHT && c != HAMMER && c != LADDER && c != WALL)
+                    c = SPACE;
                 break;
             }
             originalBoard[curr_row][curr_col++] = c;
         }
     }
     screen_file.close();
-    return true;
+
+    return handleUnvalidFile();
 }
 
+void Board::manageChar(char& ch, bool& already_readen_char, Position& pos, int curr_col, int curr_row)
+{
+    if (!already_readen_char) {
+        pos = { curr_col, curr_row };
+        already_readen_char = true;
+    }
+    else
+        ch = SPACE;
+}
 
-void Board::handleErrors(const std::ifstream& _file) {
-
+bool Board::handleReadFileErrors(const std::ifstream& _file)
+{
     clrscr();														// Clears the console screen before printing the new board
     if (_file.eof()) {
         std::cerr << "End of file reached." << std::endl;
@@ -121,7 +131,49 @@ void Board::handleErrors(const std::ifstream& _file) {
         std::cerr << "Unknown error." << std::endl;
     }
     std::cout << "Returning to menu" << std::endl;
-    Sleep(500);
+    Sleep(SCREEN_EXIT);
+    return false;
+}
+
+bool Board::handleUnvalidFile() const
+{
+    int count_errors = 0;
+    clrscr();
+    if (!readen_mario)
+    {
+        std::cerr << "No mario in file" << std::endl;
+        count_errors++;
+    }
+    if (!readen_princess)
+    {
+        std::cerr << "No princess in file" << std::endl;
+        count_errors++;
+    }
+    if (!readen_gorilla) 
+    {
+        std::cerr << "No gorilla in file" << std::endl;
+        count_errors++;
+    }
+    if (readen_legend < 1)
+    {
+        std::cerr << "No legend in file" << std::endl;
+        count_errors++;
+    }
+    else if (readen_legend > 1)
+    {
+        std::cerr << "To many legends in file" << std::endl;
+        count_errors++;
+    }
+
+
+    if (count_errors > 0)
+    {
+        Sleep(SCREEN_EXIT);
+
+        return false;
+    }
+    else
+        return true;
 }
 
 void Board::setPositionsInLegend()
