@@ -18,7 +18,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="general.cpp">
+    <ClCompile Include="gameConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mario.cpp">
@@ -47,7 +47,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="general.h">
+    <ClInclude Include="gameConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="point.h">

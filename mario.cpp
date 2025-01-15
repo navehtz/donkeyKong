@@ -75,8 +75,6 @@ void Mario::updateCharParameters()
 	ch_wall_on_two_left = getCharFromBoard(_x - 2, _y);
 	ch_wall_on_two_right = getCharFromBoard(_x + 2, _y);
 
-
-
 	res_is_on_ladder = isOnLadder();
 	res_is_on_floor = isBlock(ch_below);
 	res_is_below_roof = isBlock(ch_above);

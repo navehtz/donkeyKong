@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-#include "general.h"
+#include "gameConfig.h"
 #include "point.h"
 #include "mario.h"
 #include "board.h"
@@ -53,8 +53,6 @@ public:
 	bool hitTheEnemy(Position enemy_pos, Position mario_pos);
 	void updateIfDiedByBarrelOrGhost();																			// Checks if Mario died from a barrel (hit or explosion)
 	void hitByEnemy(Position enemy_pos, Position mario_pos);							// Handles the logic when Mario is hit by a barrel
-	//void hitByBarrel(Position barrel_pos, Position mario_pos);							// Handles the logic when Mario is hit by a barrel
-	//void hitByGhost(Position ghost_pos, Position mario_pos);							// Handles the logic when Mario is hit by a barrel
 	void diedFromExplodedBarrel(Position barrel_pos, Position mario_pos, int index);	// Handles the logic when Mario dies due to an exploded barrel
 	bool wonTheLevel();																						// Checks if Mario successfully completed the level
 	int chooseGameScreen();

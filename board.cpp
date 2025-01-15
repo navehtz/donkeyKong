@@ -51,7 +51,7 @@ void Board::getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const {
 }
 
 bool Board::load(const std::string& filename) {
-    readen_mario = readen_princess = readen_gorilla = readen_legend = 0;
+    readen_mario = readen_princess = readen_gorilla = readen_legend = readen_hammer = 0;
 
     std::ifstream screen_file(filename);                // Open file
     if (!screen_file) {                                 // Check if opened correctly
@@ -105,7 +105,7 @@ bool Board::load(const std::string& filename) {
     }
     screen_file.close();
 
-    return handleUnvalidFile();
+    return handleUnvalidFile(filename);
 }
 
 void Board::manageChar(char& ch, bool& already_readen_char, Position& pos, int curr_col, int curr_row)
@@ -138,36 +138,35 @@ bool Board::handleReadFileErrors(const std::ifstream& _file)
     return false;
 }
 
-bool Board::handleUnvalidFile() const
+bool Board::handleUnvalidFile(const std::string& filename) const
 {
     int count_errors = 0;
     clrscr();
     if (!readen_mario)
     {
-        std::cerr << "No mario in file" << std::endl;
+        std::cerr << filename << ": no mario in file" << std::endl;
         count_errors++;
     }
     if (!readen_princess)
     {
-        std::cerr << "No princess in file" << std::endl;
+        std::cerr << filename << ": no princess in file" << std::endl;
         count_errors++;
     }
     if (!readen_gorilla) 
     {
-        std::cerr << "No gorilla in file" << std::endl;
+        std::cerr << filename << ": no gorilla in file" << std::endl;
         count_errors++;
     }
     if (readen_legend < 1)
     {
-        std::cerr << "No legend in file" << std::endl;
+        std::cerr << filename << ": no legend in file" << std::endl;
         count_errors++;
     }
     else if (readen_legend > 1)
     {
-        std::cerr << "To many legends in file" << std::endl;
+        std::cerr << filename << ": too many legends in file" << std::endl;
         count_errors++;
     }
-
 
     if (count_errors > 0)
     {
@@ -211,7 +210,6 @@ void Board::setLegend(int score, int life, char hammer)
 void Board::printScreenOptions(std::vector<std::string>& vec_to_fill) const
 {
     clrscr();
-    // Add headline - ascii art
 
     printScreen(chooseBoard_screen);
 
