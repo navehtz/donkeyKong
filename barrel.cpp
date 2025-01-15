@@ -9,19 +9,19 @@ void Barrel::setStartingBarrel(Board* _pBoard)
 	if (myRandom() == 0)										// Start from the left side
 	{
 		point.setPositionX(pBoard->getStartPosGorilla().x - 1);
-		point.setDirBeforeFalling({ LEFT, STAY });
+		point.setDirBeforeFalling({ GameConfig::LEFT, GameConfig::STAY });
 	}
 	else														// Start from the right side
 	{
 		point.setPositionX(pBoard->getStartPosGorilla().x + 1);
-		point.setDirBeforeFalling({ RIGHT, STAY });
+		point.setDirBeforeFalling({ GameConfig::RIGHT, GameConfig::STAY });
 	}
 
 	fall_count = 0;
 	is_activated = false;  //Added now 11/1
 	is_exploded = false;
 
-	point.setPreviousChar(SPACE);
+	point.setPreviousChar(GameConfig::SPACE);
 }
 
 // Function to raffle a number ( 1 or 0 )
@@ -39,10 +39,10 @@ void Barrel::updateCharParameters()
 	int _x = point.getPosition().x, _y = point.getPosition().y;
 
 	ch_covered = getCharFromBoard(_x, _y);
-	ch_below = getCharFromBoard(_x, _y + DOWN);
+	ch_below = getCharFromBoard(_x, _y + GameConfig::DOWN);
 	two_chars_below = getCharFromBoard(_x, _y + 2);
-	ch_left = getCharFromBoard(_x + LEFT, _y);
-	ch_right = getCharFromBoard(_x + RIGHT, _y);
+	ch_left = getCharFromBoard(_x + GameConfig::LEFT, _y);
+	ch_right = getCharFromBoard(_x + GameConfig::RIGHT, _y);
 
 	res_is_on_floor = isBlock(ch_below);
 	res_is_wall_on_left = isBlock(ch_left);
@@ -83,7 +83,7 @@ void Barrel::roll()
 	blockedByWall();
 
 	fall_count = 0;
-	point.setDirY(STAY);
+	point.setDirY(GameConfig::STAY);
 }
 
 // Manage the direction of the barrel while on the floor
@@ -91,15 +91,15 @@ void Barrel::manageDirection()
 {
 	switch (ch_below)
 	{
-	case(FLOOR_LEFT):
-		point.setDir({ LEFT, STAY });					// Update direction to left
+	case(GameConfig::FLOOR_LEFT):
+		point.setDir({ GameConfig::LEFT, GameConfig::STAY });					// Update direction to left
 		point.setDirBeforeFalling(point.getDir());		// Update direction before (maybe) falling
 		break;
-	case(FLOOR_RIGHT):
-		point.setDir({ RIGHT, STAY });					// Update direction to right
+	case(GameConfig::FLOOR_RIGHT):
+		point.setDir({ GameConfig::RIGHT,GameConfig::STAY });					// Update direction to right
 		point.setDirBeforeFalling(point.getDir());		// Update direction before (maybe) falling
 		break;
-	case(FLOOR):
+	case(GameConfig::FLOOR):
 		point.setDir({ point.getDirBeforeFalling() });	// Keep moving the direction as before
 	}
 }
@@ -125,25 +125,25 @@ bool Barrel::explosionCases()
 void Barrel::blockedByWall()
 {
 	if (res_is_wall_on_left) {										//linked to a wall - barrel can't pass
-		if (point.getDir().x == LEFT) { point.setDirX(STAY); }
+		if (point.getDir().x == GameConfig::LEFT) { point.setDirX(GameConfig::STAY); }
 	}
 
 	if (res_is_wall_on_right) {
-		if (point.getDir().x == RIGHT) { point.setDirX(STAY); }		//linked to a wall - barrel can't pass
+		if (point.getDir().x == GameConfig::RIGHT) { point.setDirX(GameConfig::STAY); }		//linked to a wall - barrel can't pass
 	}
 }
 
 // Check if the barrel is falling 
 bool Barrel::isFalling() const
 {
-	return ch_below == SPACE ? true : false;
+	return ch_below == GameConfig::SPACE ? true : false;
 }
 
 // Handle the barrel's falling
 void Barrel::fall()
 {
-	point.setDirX(STAY);
-	point.setDirY(DOWN);
+	point.setDirX(GameConfig::STAY);
+	point.setDirY(GameConfig::DOWN);
 	fall_count += 1;
 }
 

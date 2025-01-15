@@ -3,9 +3,6 @@
 // Handle the entry of the barrels into the board
 void Barrels::timing()
 {
-	static int iterations = 0;
-	static bool first_run = true;
-
 	if (iterations == TIME_TO_ROLL || first_run == true)	// If it's time to roll a barrel
 	{
 		activateBarrels();
@@ -19,7 +16,7 @@ void Barrels::timing()
 // Inititialize all barrels
 void Barrels::setStartingBarrels()
 {
-	for (int i = 0; i < MAX_BARRELS; i++)
+	for (int i = 0; i < GameConfig::MAX_BARRELS; i++)
 	{
 		barrels[i].setStartingBarrel(pBoard);
 	}
@@ -28,7 +25,7 @@ void Barrels::setStartingBarrels()
 // Activating the first barrel that isn't activated
 void Barrels::activateBarrels()		
 {
-	for (int i = 0; i < MAX_BARRELS; i++)
+	for (int i = 0; i < GameConfig::MAX_BARRELS; i++)
 	{
 		if (!barrels[i].IsActivated())
 		{
@@ -42,7 +39,7 @@ void Barrels::activateBarrels()
 // Draw all the activated barrels
 void Barrels::draw()
 {
-	for (int i = 0; i < MAX_BARRELS; i++)
+	for (int i = 0; i < GameConfig::MAX_BARRELS; i++)
 	{
 		if (barrels[i].IsActivated())
 		{
@@ -54,7 +51,7 @@ void Barrels::draw()
 // Erase all the activated barrels
 void Barrels::erase()
 {
-	for (int i = 0; i < MAX_BARRELS; i++)
+	for (int i = 0; i < GameConfig::MAX_BARRELS; i++)
 	{
 		if (barrels[i].IsActivated())
 		{
@@ -66,7 +63,7 @@ void Barrels::erase()
 // Move all the activated barrels
 void Barrels::move()
 {
-	for (int i = 0; i < MAX_BARRELS; i++)
+	for (int i = 0; i < GameConfig::MAX_BARRELS; i++)
 	{
 		if (barrels[i].IsActivated())
 		{
@@ -78,7 +75,7 @@ void Barrels::move()
 // Initialize all the exploded barrels
 void Barrels::bringBackExplodedBarrels()
 {
-	for (int i = 0; i < MAX_BARRELS; i++)
+	for (int i = 0; i < GameConfig::MAX_BARRELS; i++)
 	{
 		if (barrels[i].getIsExploded())
 		{
@@ -89,7 +86,7 @@ void Barrels::bringBackExplodedBarrels()
 
 void Barrels::updateBarrelsCharParameters()
 {
-	for (int i = 0; i < MAX_BARRELS; i++)
+	for (int i = 0; i < GameConfig::MAX_BARRELS; i++)
 	{
 		if (barrels[i].IsActivated())
 		{

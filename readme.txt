@@ -8,7 +8,11 @@ Notes:
 4. There are ladders without floor at the top.
 5. The barrels start rolling from 2 sides randomly.
 6. Mario hit with hammer is 2 chars away and not 1 - Link to the forum where said it's ok: https://mama.mta.ac.il/mod/forum/discuss.php?d=3638
-7. Mario can't use the hammer when he is on ladder.
+7. Mario can't use the hammer when he is on ladder and also not while jumping or falling
+8. If a board isn't valid the game tries to load the next board.
+9. If a ghost's position isn't on a floor, it will fall until it gets to floor.
+10. If there are more than one Mario/hammer/donkeykong/Pauline, the game will continue with the first one that readen.
+11. If there are no Mario/Pauline/donkeyKong, the board is unvalid.
 
 
 Asks for bonuses:

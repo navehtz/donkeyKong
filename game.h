@@ -40,7 +40,7 @@ public:
 
 	void setStartingGame();										// Initializes the game to its starting state
 	void updateActionByKeys();									// Updates Mario's actions based on key presses from the user
-	bool isAlive(int lives) { return lives > DEAD_MARIO; }		// Returns true if Mario is alive (has more lives than DEAD_MARIO), otherwise false
+	bool isAlive(int lives) { return lives > GameConfig::DEAD_MARIO; }		// Returns true if Mario is alive (has more lives than DEAD_MARIO), otherwise false
 	void startGame(int screen_index);							// Starts the game loop and handles gameplay logic
 	bool menu();												// Displays the game menu and handles user input to start or quit the game
 	void pauseGame();											// Pauses the game when a specific key is pressed (PAUSE)
@@ -50,10 +50,10 @@ public:
 	void move();												// Moves Mario and barrels to a new position based on user input or game logic
 
 	void updateIfMarioHitBarrelOrGhost();
-	bool hitTheEnemy(Position enemy_pos, Position mario_pos);
+	bool hitTheEnemy(GameConfig::Position enemy_pos, GameConfig::Position mario_pos);
 	void updateIfDiedByBarrelOrGhost();																			// Checks if Mario died from a barrel (hit or explosion)
-	void hitByEnemy(Position enemy_pos, Position mario_pos);							// Handles the logic when Mario is hit by a barrel
-	void diedFromExplodedBarrel(Position barrel_pos, Position mario_pos, int index);	// Handles the logic when Mario dies due to an exploded barrel
+	void hitByEnemy(GameConfig::Position enemy_pos, GameConfig::Position mario_pos);							// Handles the logic when Mario is hit by a barrel
+	void diedFromExplodedBarrel(GameConfig::Position barrel_pos, GameConfig::Position mario_pos, int index);	// Handles the logic when Mario dies due to an exploded barrel
 	bool wonTheLevel();																						// Checks if Mario successfully completed the level
 	int chooseGameScreen();
 };

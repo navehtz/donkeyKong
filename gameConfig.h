@@ -1,8 +1,11 @@
 #pragma once
 
-	void gotoxy(int x, int y);							// Move the cursor to the (x,y) position
-	void ShowConsoleCursor(bool showFlag);				// Display the cursor
-	void clrscr();										// Clear the screen
+class GameConfig
+{
+public:
+	static void gotoxy(int x, int y);							// Move the cursor to the (x,y) position
+	static void ShowConsoleCursor(bool showFlag);				// Display the cursor
+	static void clrscr();										// Clear the screen
 
 	static constexpr int UP = -1;
 	static constexpr int DOWN = 1;
@@ -42,6 +45,8 @@
 	static constexpr int KILL_BARREL = 80;
 	static constexpr int END_LEVEL = 1000;
 
+	static constexpr int POS_X_PRINT_SCREEN = 30;
+	static constexpr int POS_Y_PRINT_SCREEN = 10;
 
 
 	struct Position {
@@ -52,3 +57,4 @@
 		int x, y;
 	};
 
+}; 

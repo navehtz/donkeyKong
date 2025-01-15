@@ -16,7 +16,7 @@ class Barrel : public Entity
 
 	int fall_count = 0;
 
-	char two_chars_below = SPACE;
+	char two_chars_below = GameConfig::SPACE;
 
 	bool is_activated = false;
 	bool is_exploded = false;
@@ -31,10 +31,10 @@ class Barrel : public Entity
 	friend class Barrels;
 
 public:
-	Barrel() : Entity(BARREL) {} 												// Ctor of barrel with point
+	Barrel() : Entity(GameConfig::BARREL) {} 												// Ctor of barrel with point
 
 	void setStartingBarrel(Board* _pBoard);												// Initialize barrel
-	bool getIsExploded() { return is_exploded; }							// Get the member 'is_exploded'
+	bool getIsExploded() const { return is_exploded; }							// Get the member 'is_exploded'
 	void setIsExploded(bool _is_exploded) { is_exploded = _is_exploded; }	// Set the member 'is_exploded'
 	Point getPoint() const { return point; }								// Get the member 'point'
 	int getDirX() const { return point.getDir().x; }													// Get Mario's lives

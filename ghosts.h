@@ -32,14 +32,11 @@ public:
 	}
 	void removeGhostByIndex(int index);
 
-	//void bringBackExplodedBarrels();								// Initialize all the exploded barrels
-
 	void updateGhostsCharParameters();
-
 	int getGhostDirX(int i) { return ghosts_vec[i].getDirX(); }
-	int getNumOfGhosts() { return num_of_ghosts; }
+	int getNumOfGhosts() const { return num_of_ghosts; }
 	void setNumOfGhosts(int new_num) { num_of_ghosts = new_num; }
-	Position getGhostPosition(int i) { return ghosts_vec[i].point.getPosition(); }
+	GameConfig::Position getGhostPosition(int i) const { return ghosts_vec[i].point.getPosition(); }
 };
 
 

@@ -8,13 +8,7 @@ class Ghost : public Entity
 	// Constants
 	static constexpr double CHANGE_DIR_PROB = 0.05;
 
-
-	// Members
-	//char ch = GHOST; //$
-
-	//Point point; //$
-
-	char ch_left_down = SPACE, ch_right_down = SPACE;
+	char ch_left_down = GameConfig::SPACE, ch_right_down = GameConfig::SPACE;
 
 	bool res_is_left_down = false, res_is_right_down = false;
 
@@ -32,10 +26,10 @@ class Ghost : public Entity
 	friend class Ghosts;
 
 public:
-	Ghost() : Entity(GHOST) {}												// Ctor of barrel with point
-	Ghost(int x, int y) : Entity(x, y, GHOST) {}
+	Ghost() : Entity(GameConfig::GHOST) {}												// Ctor of barrel with point
+	Ghost(int x, int y) : Entity(x, y, GameConfig::GHOST) {}
 
-	void setStartingGhost(Board* _pBoard, Position pos);					// Initialize barrel
+	void setStartingGhost(Board* _pBoard, GameConfig::Position pos);					// Initialize barrel
 	int getDirX() const { return point.getDir().x; }													// Get Mario's lives
 
 	void checkWhatState() override;										// Check in which state the barrel is

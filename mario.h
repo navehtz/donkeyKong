@@ -15,9 +15,10 @@ class Mario : public Entity
 	//char ch = MARIO;
 
 	// Characters surrounding Mario
-	char two_chars_below = SPACE, ch_above = SPACE;
-	char ch_left_down = SPACE, ch_right_down = SPACE, ch_behind_hammer = SPACE;
-	char ch_wall_on_two_left = SPACE, ch_wall_on_two_right = SPACE, ch_three_chars_below = SPACE;	// Used by the hammer
+	char two_chars_below = GameConfig::SPACE, ch_above = GameConfig::SPACE;
+	char ch_left_down = GameConfig::SPACE, ch_right_down = GameConfig::SPACE, ch_behind_hammer = GameConfig::SPACE;
+	char ch_wall_on_two_left = GameConfig::SPACE, ch_wall_on_two_right = GameConfig::SPACE, ch_three_chars_below = GameConfig::SPACE;	// Used by the hammer
+
 
 	// Flags indicating Mario's interaction with his surroundings
 	bool res_is_on_ladder = false, res_is_below_roof = false, res_is_two_chars_below_floor = false;
@@ -28,7 +29,7 @@ class Mario : public Entity
 	bool just_died = false;
 	bool got_hammer = false;
 	int fall_count = 0;
-	int lives = FULL_LIVES;
+	int lives = GameConfig::FULL_LIVES;
 
 	static constexpr int FALL_FROM_TOO_HIGH = 5;
 	static constexpr int DEAD_MARIO = 0;
@@ -48,18 +49,18 @@ class Mario : public Entity
 	MarioState state = MarioState::Walking_or_Staying;
 
 	struct Hammer {
-		char ch = HAMMER;
-		Position pos;
-		bool active;
+		char ch = GameConfig::HAMMER;
+		GameConfig::Position pos = { 0,0 };
+		bool active = false;
 	};
 	Hammer hammer;
-	Position pos_hit_hammer = {0,0};
+	GameConfig::Position pos_hit_hammer = {0,0};
 
 	Barrels* pBarrels = nullptr;
 	Ghosts* pGhosts = nullptr;
 
 public:
-	Mario() : Entity(MARIO) {}													// Constructor initializing Mario's starting position
+	Mario() : Entity(GameConfig::MARIO) {}													// Constructor initializing Mario's starting position
 
 	void setStartingMario();												// Set Mario to his starting position
 	void keyPressed(char key);												// Handle key press input
@@ -105,19 +106,19 @@ public:
 	bool const getIfGotHammer() const { return got_hammer; }
 	void handleHammer();
 	void updateHammerPos();
-	Position getHammerPos() const { return hammer.pos; }														// Get Mario's lives
+	GameConfig::Position getHammerPos() const { return hammer.pos; }														// Get Mario's lives
 	void printHammerOnBoard() const;
 
 	void eraseHammer() {
-		gotoxy(pos_hit_hammer.x, pos_hit_hammer.y);
+		GameConfig::gotoxy(pos_hit_hammer.x, pos_hit_hammer.y);
 		std::cout << ch_behind_hammer;      
 		pBoard->updateBoard(pos_hit_hammer, ch_behind_hammer);
 	}
 	void setIfHammerActive(bool b) { hammer.active = b; }
 	void setCharBehindHammer(char _ch) { ch_behind_hammer = _ch; }
-	void setPosHitHammer(Position _pos) { pos_hit_hammer = _pos; }                    
+	void setPosHitHammer(GameConfig::Position _pos) { pos_hit_hammer = _pos; }
 	bool validHit() {
-		return (!(point.getDir().y == DOWN || point.getDir().y == UP
+		return (!(point.getDir().y == GameConfig::DOWN || point.getDir().y == GameConfig::UP
 			|| res_is_on_ladder || res_is_wall_on_left || res_is_wall_on_right || res_ch_wall_on_two_left || res_ch_wall_on_two_right));
 	}
 

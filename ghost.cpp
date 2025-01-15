@@ -1,21 +1,21 @@
 #include "ghost.h"
 
 // Initialize ghost
-void Ghost::setStartingGhost(Board* _pBoard, Position pos)
+void Ghost::setStartingGhost(Board* _pBoard, GameConfig::Position pos)
 {
 	pBoard = _pBoard;
 	point.setPosition(pos);         // Same y-axis starting position for both cases
 
 	if (myRandom() == 0)										// Start moving left
 	{
-		point.setDirX(LEFT);
+		point.setDirX(GameConfig::LEFT);
 	}
 	else														// Start moving right
 	{
-		point.setDirX(RIGHT);
+		point.setDirX(GameConfig::RIGHT);
 	}
 
-	point.setPreviousChar(SPACE);
+	point.setPreviousChar(GameConfig::SPACE);
 }
 
 // Function 
@@ -34,11 +34,11 @@ void Ghost::updateCharParameters()
 	int _x = point.getPosition().x, _y = point.getPosition().y;
 
 	ch_covered = getCharFromBoard(_x, _y);
-	ch_below = getCharFromBoard(_x, _y + DOWN);
-	ch_left = getCharFromBoard(_x + LEFT, _y);
-	ch_right = getCharFromBoard(_x + RIGHT, _y);
-	ch_left_down = getCharFromBoard(_x + LEFT, _y + DOWN);
-	ch_right_down = getCharFromBoard(_x + RIGHT, _y + DOWN);
+	ch_below = getCharFromBoard(_x, _y + GameConfig::DOWN);
+	ch_left = getCharFromBoard(_x + GameConfig::LEFT, _y);
+	ch_right = getCharFromBoard(_x + GameConfig::RIGHT, _y);
+	ch_left_down = getCharFromBoard(_x + GameConfig::LEFT, _y + GameConfig::DOWN);
+	ch_right_down = getCharFromBoard(_x + GameConfig::RIGHT, _y + GameConfig::DOWN);
 
 	res_is_on_floor = isBlock(ch_below);
 	res_is_wall_on_left = isBlock(ch_left);
@@ -76,14 +76,14 @@ void Ghost::wander()
 	manageDirection();
 
 	blockedByWall();
-	point.setDirY(STAY);
+	point.setDirY(GameConfig::STAY);
 }
 
 // Handle the barrel's falling
 void Ghost::fall()
 {
-	point.setDirX(STAY);
-	point.setDirY(DOWN);
+	point.setDirX(GameConfig::STAY);
+	point.setDirY(GameConfig::DOWN);
 	
 }
 
@@ -92,8 +92,8 @@ void Ghost::manageDirection()
 {
 	int dirX = point.getDir().x;
 
-	if (dirX == STAY) {  // In case just finish falling
-		dirX = LEFT;
+	if (dirX == GameConfig::STAY) {  // In case just finish falling
+		dirX = GameConfig::LEFT;
 		point.setDirX(dirX);
 	}
 	if ((rand() % 100) < (CHANGE_DIR_PROB * 100)) {
@@ -101,7 +101,7 @@ void Ghost::manageDirection()
 		dirX *= -1;
 	}
 	
-	if ((dirX == LEFT && ch_left_down == SPACE) || (dirX = RIGHT && ch_right_down == SPACE))
+	if ((dirX == GameConfig::LEFT && ch_left_down == GameConfig::SPACE) || (dirX = GameConfig::RIGHT && ch_right_down == GameConfig::SPACE))
 		point.setDirX(dirX * -1);
 
 
@@ -112,11 +112,11 @@ void Ghost::blockedByWall()
 {
 	int dirX = point.getDir().x;
 	if (res_is_wall_on_left) {										//linked to a wall - barrel can't pass
-		if (dirX == LEFT) { point.setDirX(RIGHT); }
+		if (dirX == GameConfig::LEFT) { point.setDirX(GameConfig::RIGHT); }
 	}
 
 	if (res_is_wall_on_right) {
-		if (dirX == RIGHT) { point.setDirX(LEFT); }		//linked to a wall - barrel can't pass
+		if (dirX == GameConfig::RIGHT) { point.setDirX(GameConfig::LEFT); }		//linked to a wall - barrel can't pass
 	}
 }
 

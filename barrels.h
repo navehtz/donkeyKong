@@ -4,22 +4,24 @@
 
 class Barrels
 {
-	static constexpr int TIME_TO_ROLL = 14;		// Every 7 iterations to activate a barrel
+	static constexpr int TIME_TO_ROLL = 14;		// Every x iterations to activate a barrel
 
-	Barrel barrels[MAX_BARRELS];
+	Barrel barrels[GameConfig::MAX_BARRELS];
 
 	Board* pBoard = nullptr;
-
+	
+	int iterations = 0;
+	bool first_run = true;
 
 public:
 	Barrels() {}													// ctor of Barrels. initialize all the barrels in the array
 
 	int getPosX(int i) { int posX = barrels[i].getPoint().getPosition().x; return posX; }		// Get the X position of the i barrel in the array
 	int getPosY(int i) { int posY = barrels[i].getPoint().getPosition().y; return posY; }		// Get the Y position of the i barrel in the array
-	Position getPos(int i) { Position pos = barrels[i].getPoint().getPosition(); return pos; }
+	GameConfig::Position getPos(int i) { GameConfig::Position pos = barrels[i].getPoint().getPosition(); return pos; }
 	
 	const Barrel* getBarrels() { return barrels; }					// Get the member 'barrels'
-	int getMaxBarrels() { return MAX_BARRELS; }						// Get the member 'MAX_BARRELS'
+	int getMaxBarrels() { return GameConfig::MAX_BARRELS; }						// Get the member 'MAX_BARRELS'
 	void setpBoard(Board& _board) { pBoard = &_board; }				// Set pBoard to the board
 
 
