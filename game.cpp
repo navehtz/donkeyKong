@@ -100,7 +100,7 @@ void Game::startGame(int screen_index)
 			draw();										// Draws the current state of the game (Mario, barrels)
 			updateIfDiedByBarrelOrGhost();						// Checks if Mario collided with a barrel and updates his state if he has died
 
-			for (i = 0; i < POSSIBLE_INPUT; i++)
+			for (int j = 0; j < POSSIBLE_INPUT; j++)
 			{
 				if (_kbhit())
 				{

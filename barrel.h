@@ -13,7 +13,7 @@ class Barrel : public Entity
 	static constexpr int EXPLODED_BARREL = 0;
 
 	// Members
-	char ch = BARREL;
+	//char ch = BARREL;
 
 	int fall_count = 0;
 	//Point point;
@@ -39,7 +39,7 @@ class Barrel : public Entity
 	friend class Barrels;
 
 public:
-	Barrel() : Entity(ch) {} 												// Ctor of barrel with point
+	Barrel() : Entity(BARREL) {} 												// Ctor of barrel with point
 
 	void setStartingBarrel(Board* _pBoard);												// Initialize barrel
 	//void setpBoard(Board& _board) { pBoard = &_board; }						// Set pBoard to the board
