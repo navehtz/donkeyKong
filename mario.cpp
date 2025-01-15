@@ -337,7 +337,6 @@ void Mario::updateHammerPos()
 
 
 
-	// TODO: what do we do if the hammer position is beyond the board
 }
 
 void Mario::printHammerOnBoard() const

@@ -87,13 +87,16 @@ bool Board::load(const std::string& filename) {
             case GHOST:
                 start_pos_ghosts_vec.push_back({ curr_col, curr_row });
                 break;
+            case HAMMER:
+                manageChar(c, readen_hammer, start_pos_hammer, curr_col, curr_row);
+                break;
             case LEGEND:
                 readen_legend++;
                 legend.pos_L = { curr_col, curr_row };
                 setPositionsInLegend();
                 break;
             default:
-                if (c != FLOOR && c != FLOOR_LEFT && c != FLOOR_RIGHT && c != HAMMER && c != LADDER && c != WALL)
+                if (c != FLOOR && c != FLOOR_LEFT && c != FLOOR_RIGHT && c != LADDER && c != WALL)
                     c = SPACE;
                 break;
             }

@@ -117,8 +117,7 @@ public:
 	void setCharBehindHammer(char _ch) { ch_behind_hammer = _ch; }
 	void setPosHitHammer(Position _pos) { pos_hit_hammer = _pos; }                    
 	bool validHit() {
-		return (!((point.getDir().y == DOWN &&
-			(res_is_on_floor || res_is_two_chars_below_floor || res_is_three_chars_below_floor))
+		return (!(point.getDir().y == DOWN || point.getDir().y == UP
 			|| res_is_on_ladder || res_is_wall_on_left || res_is_wall_on_right || res_ch_wall_on_two_left || res_ch_wall_on_two_right));
 	}
 

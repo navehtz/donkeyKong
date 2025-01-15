@@ -329,26 +329,6 @@ void Game::hitByEnemy(Position enemy_pos, Position mario_pos)
 	else if (mario_pos.x + 1 == enemy_pos.x && mario_pos.x == enemy_pos.x - 1 && mario_pos.y == enemy_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
 		mario.life();
 }
-// Handles the logic when Mario is hit by a barrel
-//void Game::hitByBarrel(Position barrel_pos, Position mario_pos)
-//{
-//	if (mario_pos.x == barrel_pos.x && mario_pos.y == barrel_pos.y)											// When mario and the barrel at the same place
-//		mario.life();
-//	else if(mario_pos.x - 1 == barrel_pos.x && mario_pos.x == barrel_pos.x + 1 && mario_pos.y == barrel_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-//		mario.life();
-//	else if(mario_pos.x + 1 == barrel_pos.x && mario_pos.x == barrel_pos.x - 1 && mario_pos.y == barrel_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-//		mario.life();
-//}
-//
-//void Game::hitByGhost(Position ghost_pos, Position mario_pos)
-//{
-//	if (mario_pos.x == ghost_pos.x && mario_pos.y == ghost_pos.y)											// When mario and the barrel at the same place
-//		mario.life();
-//	else if (mario_pos.x - 1 == ghost_pos.x && mario_pos.x == ghost_pos.x + 1 && mario_pos.y == ghost_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-//		mario.life();
-//	else if (mario_pos.x + 1 == ghost_pos.x && mario_pos.x == ghost_pos.x - 1 && mario_pos.y == ghost_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-//		mario.life();
-//}
 
 
 // Handles the logic when Mario dies due to an exploded barrel

@@ -247,6 +247,7 @@ class Board {
 	bool readen_mario = false;
 	bool readen_princess = false;
 	bool readen_gorilla = false;
+	bool readen_hammer = false;
 	int readen_legend = 0;
 
 public:
