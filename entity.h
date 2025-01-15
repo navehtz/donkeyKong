@@ -6,25 +6,23 @@
 class Entity
 {
 protected:
-	//char ch;
-
 	Point point;
 
 	Board* pBoard = nullptr;
 
-	char ch_covered = SPACE, ch_below = SPACE;
-	char ch_left = SPACE, ch_right = SPACE;
+	char ch_covered = GameConfig::SPACE, ch_below = GameConfig::SPACE;
+	char ch_left = GameConfig::SPACE, ch_right = GameConfig::SPACE;
 
 	bool res_is_on_floor = false, res_is_wall_on_left = false, res_is_wall_on_right = false;
 
 public:
-	Entity(char _ch) : /*ch(_ch),*/ point(_ch) {}
-	Entity(int x, int y, char _ch) : /*ch(_ch),*/ point(_ch) { point.setPositionX(x); point.setPositionY(y); }
+	Entity(char _ch) : point(_ch) {}
+	Entity(int x, int y, char _ch) : point(_ch) { point.setPositionX(x); point.setPositionY(y); }
 
 	void setpBoard(Board& _board) { pBoard = &_board; }						// Set pBoard to the board
-	Point getPoint() const { return point; }								// Get the member 'point'
-	Position getPosition() const { return point.getPosition(); }								// Get Mario position by x-axis
-	Direction getDir() const { return point.getDir(); }		//Use it!!!!    // Get Mario's lives
+	const Point& getPoint() const { return point; }								// Get the member 'point'
+	GameConfig::Position getPosition() const { return point.getPosition(); }								// Get Mario position by x-axis
+	GameConfig::Direction getDir() const { return point.getDir(); }		//Use it!!!!    // Get Mario's lives
 	void draw() {															// Draw Mario on the screen and update the board
 		point.draw();
 		pBoard->updateBoard(point.getPosition(), point.getChar());
@@ -43,7 +41,7 @@ public:
 	bool isFalling() const;										// Check if the barrel is falling 
 	bool isBlock(char _ch) const;								// The function returns true if the parameter is a floor/ceiling/wall and false otherwise
 
-	char getCharFromBoard(Position _pos) const { return pBoard->getCharFromBoard(_pos); }			// Get the char in the (x,y) position on board
+	char getCharFromBoard(GameConfig::Position _pos) const { return pBoard->getCharFromBoard(_pos); }			// Get the char in the (x,y) position on board
 	char getCharFromBoard(int _x, int _y) const { return pBoard->getCharFromBoard(_x, _y); }			// Get the char in the (x,y) position on board
 
 	void updatePreviousDir() { point.setPreviousDir(point.getDir()); }									// Function to update the Mario's previous direction to become the current (similar to previous_dir = dir)

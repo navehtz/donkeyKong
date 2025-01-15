@@ -5,7 +5,7 @@
 
 
 // Moves the console cursor to a specific position (x, y) on the screen.       (From the lab)
-void gotoxy(int x, int y)
+void GameConfig::gotoxy(int x, int y)
 {
 	HANDLE hConsoleOutput;											// Handle to access the console output buffer
 	COORD dwCursorPosition;											// Structure to hold the cursor's X and Y coordinates
@@ -17,7 +17,7 @@ void gotoxy(int x, int y)
 }
 
 // Display the cursor														   (From the lab)
-void ShowConsoleCursor(bool showFlag) {
+void GameConfig::ShowConsoleCursor(bool showFlag) {
 	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);					// Get console handle
 	CONSOLE_CURSOR_INFO     cursorInfo;								// Cursor info structure
 	GetConsoleCursorInfo(out, &cursorInfo);							// Retrieve current cursor info
@@ -26,7 +26,7 @@ void ShowConsoleCursor(bool showFlag) {
 }
 
 // Clear the screen 
-void clrscr()
+void GameConfig::clrscr()
 {
 	system("cls");
 }

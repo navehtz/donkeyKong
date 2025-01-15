@@ -8,7 +8,7 @@ void Ghosts::setStartingGhosts(int size)
 
 	for (int i = 0; i < size; i++)
 	{
-		Position pos = pBoard->getStartPosOfGhost(i);
+		GameConfig::Position pos = pBoard->getStartPosOfGhost(i);
 		ghosts_vec[i].setStartingGhost(pBoard, pos);
 	}
 }
@@ -68,5 +68,4 @@ void Ghosts::updateGhostsCharParameters()
 			ghosts_vec[i].updateCharParameters();
 		}
 	}
-
 }
