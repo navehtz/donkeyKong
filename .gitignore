@@ -1,5 +1,6 @@
 *.db
 *.ipch
 *.vsidx
+*.zip
 .vs/
 x64/
