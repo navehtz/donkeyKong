@@ -28,19 +28,6 @@ int Ghost::myRandom()
 }
 
 
-// Handle the ghost's movement
-//void Ghost::move()
-//{
-//	updateCharParameters();									// Update all the char data members around mario
-//	checkWhatState();										// Check what is the ghost's state 
-//	updateState();											// Update the moves that the ghost should do by the state
-//
-//	//update prameters
-//	updateNextMove();
-//	updatePreviousChar();
-//	updatePreviousDir();
-//}
-
 // Update all the char data members around mario
 void Ghost::updateCharParameters()
 {
@@ -92,23 +79,23 @@ void Ghost::wander()
 	point.setDirY(STAY);
 }
 
-// Check if the barrel is falling 
-//bool Ghost::isFalling() const
-//{
-//	return ch_below == SPACE ? true : false;
-//}
-
 // Handle the barrel's falling
 void Ghost::fall()
 {
 	point.setDirX(STAY);
 	point.setDirY(DOWN);
+	
 }
 
 // Manage the direction of the ghost while on the floor
 void Ghost::manageDirection()
 {
 	int dirX = point.getDir().x;
+
+	if (dirX == STAY) {  // In case just finish falling
+		dirX = LEFT;
+		point.setDirX(dirX);
+	}
 	if ((rand() % 100) < (CHANGE_DIR_PROB * 100)) {
 		point.setDirX(dirX * -1);
 		dirX *= -1;
@@ -116,6 +103,8 @@ void Ghost::manageDirection()
 	
 	if ((dirX == LEFT && ch_left_down == SPACE) || (dirX = RIGHT && ch_right_down == SPACE))
 		point.setDirX(dirX * -1);
+
+
 }
 
 // Handle the cases which the barrel explodes in (falling 8 chars or at wall)
@@ -131,15 +120,6 @@ void Ghost::blockedByWall()
 	}
 }
 
-
-// The function returns true if the parameter is a floor/ceiling/wall and false otherwise
-//bool Ghost::isBlock(char _ch) const
-//{
-//	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT || _ch == WALL || _ch == ch)
-//		return true;
-//	else
-//		return false;
-//}
 
 // Updating the movement of the barrel for the next loop according to the position and the direction
 void Ghost::updateNextMove()

@@ -60,8 +60,6 @@ int Game::chooseGameScreen()
 			else if (key == EXIT_GAME) {
 				return -1;
 			}
-
-			break;
 		}
 	}
 	return -1;													// Prevent warnings
@@ -81,8 +79,11 @@ void Game::startGame(int screen_index)
 	for (int i = screen_index; (i < files_names_vec.size()) && (playing_mario && !exit_game); i++)
 	{
 		valid_file = board.load(files_names_vec[i]);
-		if (!valid_file)
-			menu();
+		if (!valid_file) 
+		{
+			files_names_vec.clear();
+			run();
+		}
 
 		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
 		playing_mario = true;							// Indicates that the Mario gameplay loop is active
@@ -328,26 +329,6 @@ void Game::hitByEnemy(Position enemy_pos, Position mario_pos)
 	else if (mario_pos.x + 1 == enemy_pos.x && mario_pos.x == enemy_pos.x - 1 && mario_pos.y == enemy_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
 		mario.life();
 }
-// Handles the logic when Mario is hit by a barrel
-//void Game::hitByBarrel(Position barrel_pos, Position mario_pos)
-//{
-//	if (mario_pos.x == barrel_pos.x && mario_pos.y == barrel_pos.y)											// When mario and the barrel at the same place
-//		mario.life();
-//	else if(mario_pos.x - 1 == barrel_pos.x && mario_pos.x == barrel_pos.x + 1 && mario_pos.y == barrel_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-//		mario.life();
-//	else if(mario_pos.x + 1 == barrel_pos.x && mario_pos.x == barrel_pos.x - 1 && mario_pos.y == barrel_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-//		mario.life();
-//}
-//
-//void Game::hitByGhost(Position ghost_pos, Position mario_pos)
-//{
-//	if (mario_pos.x == ghost_pos.x && mario_pos.y == ghost_pos.y)											// When mario and the barrel at the same place
-//		mario.life();
-//	else if (mario_pos.x - 1 == ghost_pos.x && mario_pos.x == ghost_pos.x + 1 && mario_pos.y == ghost_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-//		mario.life();
-//	else if (mario_pos.x + 1 == ghost_pos.x && mario_pos.x == ghost_pos.x - 1 && mario_pos.y == ghost_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
-//		mario.life();
-//}
 
 
 // Handles the logic when Mario dies due to an exploded barrel
