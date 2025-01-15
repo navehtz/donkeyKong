@@ -225,7 +225,7 @@ class Board {
 
 	Position start_pos_mario{ 0,0 };
 	Position start_pos_gorilla{ 0,0 };
-	Position start_pos_pauline{ 0,0 };
+	Position start_pos_princess{ 0,0 };
 	Position start_pos_hammer{ 0,0 };
 	std::vector<Position> start_pos_ghosts_vec;
 
@@ -242,15 +242,19 @@ class Board {
 		std::string str_life = "Life: ";
 		std::string str_hammer = "Hammer: ";
 	};
-
 	Legend legend;
+
+	bool readen_mario = false;
+	bool readen_princess = false;
+	bool readen_gorilla = false;
+	bool readen_hammer = false;
+	int readen_legend = 0;
 
 public:
 	void reset();																				// This function resets the board to its original state
 	void printScreen(const char screen[][MAX_X + 1]) const;										// This function prints the input board to the screen
 	char getCharFromBoard(Position _pos) const { return currentBoard[_pos.y][_pos.x]; }					// This function retrieves a specific character from the board at position (x, y)
 	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }					// This function retrieves a specific character from the board at position (x, y)
-	//void updateBoard(int x, int y, char newChar) { currentBoard[y][x] = newChar; }				// This function updates the board by replacing the character at position (x, y) with a new character
 	void updateBoard(Position pos, char newChar) { currentBoard[pos.y][pos.x] = newChar; }				// This function updates the board by replacing the character at position (x, y) with a new character
 
 	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1]{ return currentBoard; }				// Returns a const reference to the current board's array
@@ -269,11 +273,12 @@ public:
 	void printScreenOptions(std::vector<std::string>& vec_to_fill) const;
 	void getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const;
 	bool load(const std::string& filename);
-	void handleErrors(const std::ifstream& _file);
-
+	bool handleReadFileErrors(const std::ifstream& _file);
+	bool handleUnvalidFile() const;
+	void manageChar(char& ch, bool& already_readen, Position& pos, int curr_col, int curr_row);
 	Position getStartPosMario() const { return start_pos_mario; }
 	Position getStartPosGorilla() const { return start_pos_gorilla; }
-	Position getStartPosPauline() const { return start_pos_pauline; }
+	Position getStartPosPauline() const { return start_pos_princess; }
 	Position getStartPosHammer() const { return start_pos_hammer; }
 	Position getStartPosL() const { return legend.pos_L; }
 	Position getStartPosOfGhost(int i) const { return start_pos_ghosts_vec[i]; }
