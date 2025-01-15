@@ -10,7 +10,7 @@ class Ghost : public Entity
 
 
 	// Members
-	char ch = GHOST; //$
+	//char ch = GHOST; //$
 
 	//Point point; //$
 
@@ -37,8 +37,8 @@ class Ghost : public Entity
 	friend class Ghosts;
 
 public:
-	Ghost() : Entity(ch) {}												// Ctor of barrel with point
-	Ghost(int x, int y) : Entity(x, y, ch) {}
+	Ghost() : Entity(GHOST) {}												// Ctor of barrel with point
+	Ghost(int x, int y) : Entity(x, y, GHOST) {}
 
 	void setStartingGhost(Board* _pBoard, Position pos);					// Initialize barrel
 	//void setpBoard(Board& _board) { pBoard = &_board; }						// Set pBoard to the board

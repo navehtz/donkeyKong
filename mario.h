@@ -12,7 +12,7 @@
 
 class Mario : public Entity
 {
-	char ch = MARIO;
+	//char ch = MARIO;
 
 	// Characters surrounding Mario
 	char two_chars_below = SPACE, ch_above = SPACE;
@@ -62,7 +62,7 @@ class Mario : public Entity
 	Ghosts* pGhosts = nullptr;
 
 public:
-	Mario() : Entity(ch) {}													// Constructor initializing Mario's starting position
+	Mario() : Entity(MARIO) {}													// Constructor initializing Mario's starting position
 
 	void setStartingMario();												// Set Mario to his starting position
 	void keyPressed(char key);												// Handle key press input
