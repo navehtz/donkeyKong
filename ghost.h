@@ -1,50 +1,50 @@
 #pragma once
 
-#include <Windows.h>	//for Sleep and colors
+
 #include <random>
 #include "point.h"
 
-
-class Barrel
+class Ghost
 {
 	// Constants
-	static constexpr int FALL_FROM_TOO_HIGH = 8;
-	static constexpr int EXPLODED_BARREL = 0;
+	static constexpr double CHANGE_DIR_PROB = 0.05;
+
 
 	// Members
-	char ch = BARREL;
+	char ch = GHOST; //$
 
-	int fall_count = 0;
-	Point point;
+	Point point; //$
 
-	Board* pBoard = nullptr;
+	Board* pBoard = nullptr; //$
 
-	char ch_covered = SPACE, ch_below = SPACE, two_chars_below = SPACE;
-	char ch_left = SPACE, ch_right = SPACE;
+	char ch_covered = SPACE, ch_below = SPACE; //$
+	char ch_left = SPACE, ch_right = SPACE; //$
+	char ch_left_down = SPACE, ch_right_down = SPACE;
 
-	bool res_is_on_floor = false, res_is_wall_on_left = false, res_is_wall_on_right = false;
+	bool res_is_on_floor = false, res_is_wall_on_left = false, res_is_wall_on_right = false; //$
+	bool res_is_left_down = false, res_is_right_down = false;
 
-	bool is_activated = false;
-	bool is_exploded = false;
+	bool is_activated = true; //$
+	bool is_wander_left = true;
 
-	// States of barrel
-	enum class BarrelState {
-		Falling,
-		Rolling
+	// States of ghost
+	enum class GhostState {
+		Wander,
+		Falling
 	};
-	BarrelState state = BarrelState::Rolling;
+	GhostState state = GhostState::Wander;
 
-	friend class Barrels;
+
+	friend class Ghosts;
 
 public:
-	Barrel() : point(ch) {}													// Ctor of barrel with point
+	Ghost() : point(ch) {}													// Ctor of barrel with point
+	Ghost(int x, int y) : point(ch) { point.setPositionX(x); point.setPositionY(y); }
 
-	void setStartingBarrel(Board* _pBoard);												// Initialize barrel
-	bool getIsExploded() { return is_exploded; }							// Get the member 'is_exploded'
-	void setIsExploded(bool _is_exploded) { is_exploded = _is_exploded; }	// Set the member 'is_exploded'
+	void setStartingGhost(Board* _pBoard, Position pos);					// Initialize barrel
 	void setpBoard(Board& _board) { pBoard = &_board; }						// Set pBoard to the board
 	Point getPoint() const { return point; }								// Get the member 'point'
-	int getDirX() const { return point.getPosition().x; }													// Get Mario's lives
+	int getDirX() const { return point.getDir().x; }													// Get Mario's lives
 
 	void draw() {															// Draw the barrel on the screen
 		point.draw(ch);														// Erase the barrel from the screen
@@ -63,12 +63,11 @@ public:
 
 	void updateCharParameters();								// Update all the char data members around mario
 	void move();												// Handle the barrel's movement
+	void wander();												// Handle the barrel's rolling
 	bool isFalling() const;										// Check if the barrel is falling 
 	void fall();												// Handle the barrel's falling
-	void roll();												// Handle the barrel's rolling
 	void manageDirection();										// Manage the direction of the barrel while on the floor
-	bool explosionCases();										// Handle the cases which the barrel explodes in (falling 8 chars or at wall)
-	void explode();												// Function to update the barrel's 'is_activated' and 'is_exploded' members
+	void disappear() { is_activated = false; }												// Function to update the barrel's 'is_activated' and 'is_exploded' members
 	void blockedByWall();										// Function to stop the barrels's movement if it reaches a wall
 	bool isBlock(char _ch) const;								// The function returns true if the parameter is a floor/ceiling/wall and false otherwise
 
@@ -78,10 +77,7 @@ public:
 
 	bool const IsActivated() const { return is_activated; };				// The function returns true if the barrel is activated(rolling/falling etc.)and false otherwise
 	void activate() { is_activated = true; }					// Function to activate the barrel
-	void deactivate() { is_activated = false; }
+
 	int myRandom();												// Function to raffle a number ( 1 or 0 )
-
-
 };
-
 

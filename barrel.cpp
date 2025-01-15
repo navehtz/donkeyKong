@@ -1,21 +1,24 @@
 #include "barrel.h"
 
 // Initialize barrel
-void Barrel::setStartingBarrel()
+void Barrel::setStartingBarrel(Board* _pBoard)
 {	
-	point.setY(STARTING_POS_Y);									// Same y-axis starting position for both cases
+	pBoard = _pBoard;
+	point.setPositionY(pBoard->getStartPosGorilla().y);         // Same y-axis starting position for both cases
 
 	if (myRandom() == 0)										// Start from the left side
 	{
-		point.setX(STARTING_POS_LEFT_X);
+		point.setPositionX(pBoard->getStartPosGorilla().x - 1);
 		point.setDirBeforeFalling({ LEFT, STAY });
 	}
 	else														// Start from the right side
 	{
-		point.setX(STARTING_POS_RIGHT_X);
+		point.setPositionX(pBoard->getStartPosGorilla().x + 1);
 		point.setDirBeforeFalling({ RIGHT, STAY });
 	}
+
 	fall_count = 0;
+	is_activated = false;  //Added now 11/1
 	is_exploded = false;
 
 	point.setPreviousChar(SPACE);
@@ -47,7 +50,7 @@ void Barrel::move()
 // Update all the char data members around mario
 void Barrel::updateCharParameters()
 {
-	int _x = point.getX(), _y = point.getY();
+	int _x = point.getPosition().x, _y = point.getPosition().y;
 
 	ch_covered = getCharFromBoard(_x, _y);
 	ch_below = getCharFromBoard(_x, _y + DOWN);
@@ -123,7 +126,7 @@ bool Barrel::explosionCases()
 		return true;
 	}
 
-	if (point.getX() < 1 || point.getX() >= pBoard->get_board_width() - 1) { // 1 less than the board width from both sides	
+	if (point.getPosition().x < 1 || point.getPosition().x >= pBoard->get_board_width() - 1) { // 1 less than the board width from both sides	
 		explode();
 		return true;
 	}
@@ -168,7 +171,7 @@ void Barrel::explode()
 // The function returns true if the parameter is a floor/ceiling/wall and false otherwise
 bool Barrel::isBlock(char _ch) const
 {
-	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT)
+	if (_ch == FLOOR || _ch == FLOOR_RIGHT || _ch == FLOOR_LEFT || _ch == WALL)
 		return true;
 	else
 		return false;
@@ -177,14 +180,14 @@ bool Barrel::isBlock(char _ch) const
 // Updating the movement of the barrel for the next loop according to the position and the direction
 void Barrel::updateNextMove()
 {
-	int newX = point.getX() + point.getDir().x;
-	int newY = point.getY() + point.getDir().y;
+	int newX = point.getPosition().x + point.getDir().x;
+	int newY = point.getPosition().y + point.getDir().y;
 
 	if (newX < 0 || newX >= pBoard->get_board_width())				// Update the next move by the board size	
-		newX = point.getX();
+		newX = point.getPosition().x;
 	if (newY < 0 || newY >= pBoard->get_board_height())				// Update the next move by the board size	
-		newY = point.getY();
+		newY = point.getPosition().y;
 
-	point.setX(newX);
-	point.setY(newY);
+	point.setPositionX(newX);
+	point.setPositionY(newY);
 }
