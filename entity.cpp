@@ -22,6 +22,7 @@ bool Entity::isBlock(char _ch) const
 		return false;
 }
 
+// The function returns true if the entity is falling 
 bool Entity::isFalling() const
 {
 	return ch_below == GameConfig::SPACE ? true : false;

@@ -32,7 +32,6 @@ class Game {
 
 	std::vector<std::string> files_names_vec;
 
-	
 public:
 
 	void showInstructions();									// Displays the game instructions screen to the player
@@ -54,8 +53,9 @@ public:
 	void updateIfDiedByBarrelOrGhost();																			// Checks if Mario died from a barrel (hit or explosion)
 	void hitByEnemy(GameConfig::Position enemy_pos, GameConfig::Position mario_pos);							// Handles the logic when Mario is hit by a barrel
 	void diedFromExplodedBarrel(GameConfig::Position barrel_pos, GameConfig::Position mario_pos, int index);	// Handles the logic when Mario dies due to an exploded barrel
-	bool wonTheLevel();																						// Checks if Mario successfully completed the level
-	int chooseGameScreen();
+	bool wonTheLevel();																							// Checks if Mario successfully completed the level
+	int chooseGameScreen();																						// Allow the user to choose a game screen and return the selected screen index
+
 };
 
 
