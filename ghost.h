@@ -30,11 +30,11 @@ public:
 	Ghost(int x, int y) : Entity(x, y, GameConfig::GHOST) {}
 
 	void setStartingGhost(Board* _pBoard, GameConfig::Position pos);					// Initialize barrel
-	int getDirX() const { return point.getDir().x; }													// Get Mario's lives
+	int getDirX() const { return point.getDir().x; }									// Get Mario's lives
 
-	void checkWhatState() override;										// Check in which state the barrel is
-	void updateState() override;											// Update the barrel's state
-	void updateNextMove() override;										// Updating the movement of the barrel for the next loop according to the position and the direction
+	void checkWhatState() override;								// Check in which state the barrel is
+	void updateState() override;								// Update the barrel's state
+	void updateNextMove() override;								// Updating the movement of the barrel for the next loop according to the position and the direction
 	void updateCharParameters() override;						// Update all the char data members around mario
 
 	void wander();												// Handle the barrel's rolling
@@ -43,9 +43,10 @@ public:
 	void disappear() { is_activated = false; }												// Function to update the barrel's 'is_activated' and 'is_exploded' members
 	void blockedByWall();										// Function to stop the barrels's movement if it reaches a wall
 
-	bool const IsActivated() const { return is_activated; };				// The function returns true if the barrel is activated(rolling/falling etc.)and false otherwise
-	void activate() { is_activated = true; }					// Function to activate the barrel
-
 	int myRandom();												// Function to raffle a number ( 1 or 0 )
+
+	bool const IsActivated() const { return is_activated; };	// The function returns true if the ghost is activated(rolling/falling etc.) and false otherwise
+	void activate() { is_activated = true; }					// Function to activate the barrel
+	void deactivate() { is_activated = false; }					// Function to deactivate the barrel
 };
 

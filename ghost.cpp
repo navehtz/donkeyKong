@@ -16,6 +16,10 @@ void Ghost::setStartingGhost(Board* _pBoard, GameConfig::Position pos)
 	}
 
 	point.setPreviousChar(GameConfig::SPACE);
+
+	is_activated = true;
+
+	point.setPreviousChar(GameConfig::SPACE);
 }
 
 // Function 
