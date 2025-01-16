@@ -13,6 +13,8 @@ Notes:
 9. If a ghost's position isn't on a floor, it will fall until it gets to floor.
 10. If there are more than one Mario/hammer/donkeykong/Pauline, the game will continue with the first one that readen.
 11. If there are no Mario/Pauline/donkeyKong, the board is unvalid.
+12. Mario gets score when he kill a ghost/ destroy a barrel or moving to the next the stage.
+13. Mario loses points when dying.
 
 
 Asks for bonuses:
