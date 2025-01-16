@@ -52,34 +52,7 @@ class Board {
 		 "*                                                                              *", //23
 		 "********************************************************************************"  //24
 	};
-	char choose_boardscreens_picks[MAX_Y][MAX_X + 1] = {
-		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
-		 "********************************************************************************", //0
-		 "*                                                                              *", //1
-		 "*                                                                              *", //2
-		 "*                                                                              *", //3
-		 "*                                                                              *", //4
-		 "*                                                                              *", //5 
-		 "*                                                                              *", //6
-		 "*                                                                              *", //7
-		 "*                                                                              *", //8
-		 "*                                                                              *", //9
-		 "*                                                                              *", //10
-		 "*                                                                              *", //11
-		 "*                                                                              *", //12
-		 "*                                                                              *", //13
-		 "*                                                                              *", //14
-		 "*                                                                              *", //15
-		 "*                                                                              *", //16
-		 "*                                                                              *", //17
-		 "*                                                                              *", //18
-		 "*                                                                              *", //19
-		 "*                                                                              *", //20
-		 "*                                                                              *", //21
-		 "*                                                                              *", //22
-		 "*                                                                              *", //23
-		 "********************************************************************************"  //24
-	};
+	
 	char instruction_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
@@ -89,25 +62,26 @@ class Board {
 		 "* Instructions:                                                                *",//4
 		 "* - The goal is to help Mario (@) rescue Pauline ($) while avoiding barrels.   *",//5
 		 "* - Donkey Kong (&) throws barrels that move across floors (<, >, =).          *",//6
-		 "* - Use ladders (H) and jumps to avoid barrels and reach Pauline.              *",//7 
-		 "* - Mario loses a life if hit by a barrel or falls from a height of 5 lines.   *",//8 
-		 "* - Mario has 3 lives; losing all ends the game.                               *",//9 
-		 "* - Barrels explode if they fall 8 lines, damaging nearby areas.               *",//10 
-		 "* - The stage restarts after losing a life.                                    *",//11 
-		 "* - Reach Pauline to win the stage.                                            *",//12
-		 "*                                                                              *",//13 
-		 "*                                                                              *",//14 
-		 "* Keys:                                                                        *",//15 
-		 "* - A/a: Move left                     - D/d: Move right                       *",//16 
-		 "* - W/w: Jump or climb up a ladder     - X/x: Climb down a ladder              *",//17 
-		 "* - S/s: Stay in place                 - P/p: Throw a hammer                   *",//18 
-		 "* - (9): Back to the menu              - ESC: Pause, press again to resume     *",//19 
-		 "*                                                                              *",//20 
-		 "*                                                                              *",//21 
-		 "*                                            < Press 'R' to return to menu >   *",//22 
-		 "*                                                                              *",//23 
+		 "* - Use ladders (H), jumps, and a hammer (p) to avoid barrels and ghosts (x).  *",//7
+		 "* - Mario loses a life if hit by a barrel, ghost, or falls from a height.      *",//8
+		 "* - Mario has 3 lives; losing all ends the game.                               *",//9
+		 "* - Barrels explode if they fall 8 lines, damaging nearby areas.               *",//10
+		 "* - Ghosts move randomly and harm Mario on contact.                            *",//11
+		 "* - The stage restarts after losing a life.                                    *",//12
+		 "* - Reach Pauline to win the stage.                                            *",//13
+		 "*                                                                              *",//14
+		 "* Keys:                                                                        *",//15
+		 "* - A/a: Move left                     - D/d: Move right                       *",//16
+		 "* - W/w: Jump or climb up a ladder     - X/x: Climb down a ladder              *",//17
+		 "* - S/s: Stay in place                 - P/p: Use hammer                       *",//18
+		 "* - (9): Back to the menu              - ESC: Pause, press again to resume     *",//19
+		 "*                                                                              *",//20
+		 "*                                                                              *",//21
+		 "*                                            < Press 'R' to return to menu >   *",//22
+		 "*                                                                              *",//23
 		 "********************************************************************************" //24
 	};
+
 	char losing_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
@@ -119,11 +93,11 @@ class Board {
 		 "*                                                                              *",//6
 		 "*                                                                              *",//7
 		 "*                                                                              *",//8
-		 "*                __   __             _              _      _                   *",//9
-		 "*                \\ \\ / /__  _   _   | |    ___  ___| |_   | |                  *",//10
-		 "*                 \\ V / _ \\| | | |  | |   / _ \\/ __| __|  | |                  *",//11
-		 "*                  | | (_) | |_| |  | |__| (_) \\__ \\ |_   |_|                  *",//12
-		 "*                  |_|\\___/ \\__,_|  |_____\\___/|___/\\__|  (_)                  *",//13
+		 "*            ____                         ___                 _                *",//9
+		 "*           / ___| __ _ _ __ ___   ___   / _ \\__   _____ _ __| |               *",//10
+		 "*          | |  _ / _` | '_ ` _ \\ / _ \\ | | | \\ \\ / / _ \\ '__| |               *",//11
+		 "*          | |_| | (_| | | | | | |  __/ | |_| |\\ V /  __/ |  |_|               *",//12
+		 "*           \\____|\\__,_|_| |_| |_|\\___|  \\___/  \\_/ \\___|_|  (_)               *",//13
 		 "*                                                                              *",//14
 		 "*                                                                              *",//15
 		 "*                                                                              *",//16
@@ -136,6 +110,8 @@ class Board {
 		 "*                                                                              *",//23 
 		 "********************************************************************************" //24
 	};
+
+
 	char winning_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
@@ -163,8 +139,37 @@ class Board {
 		 "*                                                                              *",//22 
 		 "*                                                                              *",//23 
 		 "********************************************************************************" //24
-
 	};
+
+	char next_stage_screen[MAX_Y][MAX_X + 1] = {
+		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
+		 "********************************************************************************",//0
+		 "*                                                                              *",//1
+		 "*                                                                              *",//2
+		 "*                                                                              *",//3
+		 "*                                                                              *",//4
+		 "*                                                                              *",//5
+		 "*                                                                              *",//6
+		 "*                   _                        _             _                   *",//7
+		 "*                  / \\   _ __ ___   __ _ ___(_)_ __   __ _| |                  *",//8
+		 "*                 / _ \\ | '_ ` _ \\ / _` |_  / | '_ \\ / _` | |                  *",//9
+		 "*                / ___ \\| | | | | | (_| |/ /| | | | | (_| |_|                  *",//10
+		 "*               /_/   \\_\\_| |_| |_|\\__,_/___|_|_| |_|\\__, (_)                  *",//11
+		 "*                                                   |___/                      *",//12
+		 "*                                                                              *",//13
+		 "*                                                                              *",//14
+		 "*                        -Moving to the next stage-                            *",//15
+		 "*                                                                              *",//16
+		 "*                                                                              *",//17
+		 "*                                                                              *",//18
+		 "*                                                                              *",//19 
+		 "*                                                                              *",//20 
+		 "*                                                                              *",//21
+		 "*                                                                              *",//22 
+		 "*                                                                              *",//23 
+		 "********************************************************************************" //24
+	};                    
+
 	char goodBye_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
@@ -193,6 +198,7 @@ class Board {
 		 "*                                                                              *",//23 
 		 "********************************************************************************" //24
 	};
+
 	char chooseBoard_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
@@ -267,6 +273,7 @@ public:
 	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{ return instruction_screen; }	// Returns a const reference to the board with instructions (instruction screen)
 	const char(&getLosingBoard() const)[MAX_Y][MAX_X + 1]{ return losing_screen; }				// Returns a const reference to the board shown when the player loses (losing screen)
 	const char(&getWinningBoard() const)[MAX_Y][MAX_X + 1]{ return winning_screen; }			// Returns a const reference to the board shown when the player wins (winning screen)
+	const char(&getNextStageBoard() const)[MAX_Y][MAX_X + 1]{ return next_stage_screen; }			// Returns a const reference to the board shown when the player wins (winning screen)
 	const char(&getGoodByeBoard() const)[MAX_Y][MAX_X + 1]{ return goodBye_screen; }			// Returns a const reference to the board shown when the player wins (goodBye screen)
 
 	const int get_board_width() const { return MAX_X; }			// Returns the width of the board
