@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Windows.h>	//for Sleep and colors
-#include <random>
 #include "point.h"
 #include "entity.h"
 #include "gameConfig.h"
@@ -19,7 +18,7 @@ class Barrel : public Entity
 
 	char two_chars_below = GameConfig::SPACE;
 
-	bool is_activated = false;
+	//bool is_activated = false;
 	bool is_exploded = false;
 
 	// States of barrel
@@ -51,12 +50,7 @@ public:
 	void manageDirection();										// Manage the direction of the barrel while on the floor
 	bool explosionCases();										// Handle the cases which the barrel explodes in (falling 8 chars or at wall)
 	void explode();												// Function to update the barrel's 'is_activated' and 'is_exploded' members
-	void blockedByWall();										// Function to stop the barrels's movement if it reaches a wall
-
-	bool const IsActivated() const { return is_activated; };	// The function returns true if the barrel is activated(rolling/falling etc.) and false otherwise
-	void activate() { is_activated = true; }					// Function to activate the barrel
-	void deactivate() { is_activated = false; }					// Function to deactivate the barrel
-	int myRandom();												// Function to raffle a number ( 1 or 0 )
+	void blockedByWall();								// Function to stop the barrels's movement if it reaches a wall
 
 };
 

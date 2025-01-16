@@ -27,3 +27,12 @@ bool Entity::isFalling() const
 {
 	return ch_below == GameConfig::SPACE ? true : false;
 }
+
+// Generate a random number (0 or 1)
+int Entity::myRandom()
+{
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dist(0, 1);
+	return dist(gen);
+}

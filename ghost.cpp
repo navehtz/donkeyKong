@@ -22,15 +22,6 @@ void Ghost::setStartingGhost(Board* _pBoard, GameConfig::Position pos)
 	point.setPreviousChar(GameConfig::SPACE);
 }
 
-// Generate a random number (0 or 1)
-int Ghost::myRandom()
-{
-	static std::random_device rd;
-	static std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dist(0, 1);
-	return dist(gen);
-}
-
 // Update the chars representing the tiles around the ghost
 void Ghost::updateCharParameters()
 {
