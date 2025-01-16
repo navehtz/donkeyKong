@@ -362,7 +362,7 @@ bool Game::wonTheLevel()
 {
 	if (mario.getIfWon())
 	{
-		board.printScreen(last_screen ? board.getWinningBoard() : board.getNextStageBoard());
+		board.printScreen(last_screen ? board.getWinningBoard() : board.getNextStageBoard()); // Printing next stage screen unless it is the last one and then printing winning screen
 		Sleep(GameConfig::SCREEN_WIN);
 		return true;
 	}
