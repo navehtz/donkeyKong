@@ -297,6 +297,7 @@ public:
 	void printLifeLegend() const { GameConfig::gotoxy(legend.pos_life_in_legend.x + (int)(legend.str_life.length()), legend.pos_life_in_legend.y); std::cout << legend.life; }			 // Print the life count in the legend
 	void printScoreLegend() const { GameConfig::gotoxy(legend.pos_score_in_legend.x + (int)(legend.str_score.length()), legend.pos_score_in_legend.y); std::cout << legend.score; }		 // Print the life count in the legend
 	void printHammerLegend() const { GameConfig::gotoxy(legend.pos_hammer_in_legend.x + (int)(legend.str_hammer.length()), legend.pos_hammer_in_legend.y); std::cout << legend.hammer; } // Print the hammer status in the legend 
+	void printEndLevelScore() const;												// Print the current score when finish level					
 	void setScoreLegend(int score) { legend.score = score; }				// Set the score in the legend
 	void setLifeLegend(int life) { legend.life = life; }					// Set the life count in the legend
 	void setHammerLegend(char hammer) { legend.hammer = hammer; }			// Set the hammer status in the legend
