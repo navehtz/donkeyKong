@@ -278,7 +278,6 @@ void Game::updateIfMarioHitBarrelOrGhost() {
 			ghosts.deactivate_ghost(i);									// Deactivate the ghost
 			ghosts.setPreviousCharOfGhost(i, mario.getHammerChar());	// Update the character behind the ghost
 			ghosts.eraseASpecificGhost(i);								// Remove the ghost from the board
-			//ghosts.setStartingSpecificGhost(i);						// Reset the ghost's position
 			board.addScore(GameConfig::KILL_GHOST);						// Add score for destroying a ghost
 			break;
 		}
