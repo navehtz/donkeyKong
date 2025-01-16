@@ -2,26 +2,35 @@
 
 #include "ghost.h"
 #include "board.h"
+#include "gameConfig.h"
 
 
 class Ghosts
 {
-	std::vector <Ghost> ghosts_vec;
-	Board* pBoard = nullptr;
-	int num_of_ghosts = 0;
+	std::vector <Ghost> ghosts_vec;                                    // Vector containing all ghosts
+	Board* pBoard = nullptr;                                           // Pointer to the game board
+	int num_of_ghosts = 0;                                             // Number of ghosts in the game
 
 public:
-	Ghosts() {}													// ctor of Barrels. initialize all the barrels in the array
-	void setpBoard(Board& _board) { pBoard = &_board; }				// Set pBoard to the board
+	Ghosts() {}                                                        // Constructor for the Ghosts class
 
+<<<<<<< HEAD
 	void setStartingGhosts(int size);										// Inititialize all barrels
 	void setStartingSpecificGhost(int index);										// Inititialize all barrels
 	void draw();													// Draw all the activated barrels
 	void erase();													// Erase all the activated barrels
 	void move();													// Move all the activated barrels
+=======
+	void setpBoard(Board& _board) { pBoard = &_board; }                // Set the board pointer
+	void setStartingGhosts(int size);                                  // Initialize all ghosts
+	void draw();                                                       // Draw all activated ghosts
+	void erase();                                                      // Erase all activated ghosts
+	void move();                                                       // Move all activated ghosts
+>>>>>>> e34b7b97ccf91f69252dee602fc3522fdb584928
 
-	void removeGhostByIndex(int index);
+	void removeGhostByIndex(int index);                                // Remove a ghost by its index
 
+<<<<<<< HEAD
 	void updateGhostsCharParameters();
 	int getGhostDirX(int i) { return ghosts_vec[i].getDirX(); }
 	int getNumOfGhosts() const { return num_of_ghosts; }
@@ -32,4 +41,13 @@ public:
 	void setPreviousCharOfGhost(int i, char _ch) { ghosts_vec[i].point.setPreviousChar(_ch); }  // Set the previous character of the ghost at index 'i'									
 	void eraseASpecificGhost(int i) { ghosts_vec[i].erase(); }									// Erase the ghost at index 'i' FROM THE BOARD
 	//void setStartingSpecificGhost(int i) { ghosts_vec[i].setStartingGhost(pBoard, pBoard->getStartPosOfGhost(i)); }			// Inititialize a specific ghost
+=======
+	void updateGhostsCharParameters();                                 // Update the character parameters for all activated ghosts
+	int getGhostDirX(int i) { return ghosts_vec[i].getDirX(); }        // Get the horizontal direction of a specific ghost
+	int getNumOfGhosts() const { return num_of_ghosts; }               // Get the total number of ghosts
+	void setNumOfGhosts(int new_num) { num_of_ghosts = new_num; }      // Set the total number of ghosts
+	GameConfig::Position getGhostPosition(int i) const {               // Get the position of a specific ghost
+		return ghosts_vec[i].point.getPosition();
+	}
+>>>>>>> e34b7b97ccf91f69252dee602fc3522fdb584928
 };

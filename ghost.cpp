@@ -1,16 +1,16 @@
 #include "ghost.h"
 
-// Initialize ghost
+// Initialize a ghost based on starting position
 void Ghost::setStartingGhost(Board* _pBoard, GameConfig::Position pos)
 {
 	pBoard = _pBoard;
-	point.setPosition(pos);         // Same y-axis starting position for both cases
+	point.setPosition(pos);         // Set the initial position of the ghost
 
-	if (myRandom() == 0)										// Start moving left
+	if (myRandom() == 0)            // Randomly decide initial direction (left or right)
 	{
 		point.setDirX(GameConfig::LEFT);
 	}
-	else														// Start moving right
+	else
 	{
 		point.setDirX(GameConfig::RIGHT);
 	}
@@ -22,7 +22,7 @@ void Ghost::setStartingGhost(Board* _pBoard, GameConfig::Position pos)
 	point.setPreviousChar(GameConfig::SPACE);
 }
 
-// Function 
+// Generate a random number (0 or 1)
 int Ghost::myRandom()
 {
 	static std::random_device rd;
@@ -31,8 +31,7 @@ int Ghost::myRandom()
 	return dist(gen);
 }
 
-
-// Update all the char data members around mario
+// Update the chars representing the tiles around the ghost
 void Ghost::updateCharParameters()
 {
 	int _x = point.getPosition().x, _y = point.getPosition().y;
@@ -51,7 +50,7 @@ void Ghost::updateCharParameters()
 	res_is_right_down = isBlock(ch_right_down);
 }
 
-//// Check in which state the barrel is
+// Check the ghost's current state
 void Ghost::checkWhatState()
 {
 	if (isFalling())
@@ -60,7 +59,7 @@ void Ghost::checkWhatState()
 		state = GhostState::Wander;
 }
 
-// Update the barrel's state
+// Update the ghost's state
 void Ghost::updateState()
 {
 	switch (state)
@@ -74,67 +73,63 @@ void Ghost::updateState()
 	}
 }
 
-// Handle the barrel's rolling
+// Handle the ghost's wandering behavior
 void Ghost::wander()
 {
 	manageDirection();
-
 	blockedByWall();
 	point.setDirY(GameConfig::STAY);
 }
 
-// Handle the barrel's falling
+// Handle the ghost's falling behavior
 void Ghost::fall()
 {
 	point.setDirX(GameConfig::STAY);
 	point.setDirY(GameConfig::DOWN);
-	
 }
 
-// Manage the direction of the ghost while on the floor
+// Manage the ghost's direction while wandering on the floor
 void Ghost::manageDirection()
 {
 	int dirX = point.getDir().x;
 
-	if (dirX == GameConfig::STAY) {  // In case just finish falling
+	if (dirX == GameConfig::STAY) {  // If just finished falling, set initial direction
 		dirX = GameConfig::LEFT;
 		point.setDirX(dirX);
 	}
-	if ((rand() % 100) < (CHANGE_DIR_PROB * 100)) {
+	if ((rand() % 100) < (CHANGE_DIR_PROB * 100)) {  // Randomly change direction
 		point.setDirX(dirX * -1);
 		dirX *= -1;
 	}
-	
-	if ((dirX == GameConfig::LEFT && ch_left_down == GameConfig::SPACE) || (dirX = GameConfig::RIGHT && ch_right_down == GameConfig::SPACE))
+
+	if ((dirX == GameConfig::LEFT && ch_left_down == GameConfig::SPACE) || (dirX == GameConfig::RIGHT && ch_right_down == GameConfig::SPACE))
 		point.setDirX(dirX * -1);
-
-
 }
 
-// Handle the cases which the barrel explodes in (falling 8 chars or at wall)
+// Stop the ghost's movement if it encounters a wall
 void Ghost::blockedByWall()
 {
 	int dirX = point.getDir().x;
-	if (res_is_wall_on_left) {										//linked to a wall - barrel can't pass
-		if (dirX == GameConfig::LEFT) { point.setDirX(GameConfig::RIGHT); }
+	if (res_is_wall_on_left && dirX == GameConfig::LEFT) {
+		point.setDirX(GameConfig::RIGHT);
 	}
-
-	if (res_is_wall_on_right) {
-		if (dirX == GameConfig::RIGHT) { point.setDirX(GameConfig::LEFT); }		//linked to a wall - barrel can't pass
+	if (res_is_wall_on_right && dirX == GameConfig::RIGHT) {
+		point.setDirX(GameConfig::LEFT);
 	}
 }
 
-
-// Updating the movement of the barrel for the next loop according to the position and the direction
+// Update the ghost's movement for the next game loop
 void Ghost::updateNextMove()
 {
 	int newX = point.getPosition().x + point.getDir().x;
 	int newY = point.getPosition().y + point.getDir().y;
 
-	if (newX < 0 || newX >= pBoard->get_board_width())				// Update the next move by the board size	
+	if (newX < 0 || newX >= pBoard->get_board_width()) {  // Ensure position is within board bounds
 		newX = point.getPosition().x;
-	if (newY < 0 || newY >= pBoard->get_board_height())				// Update the next move by the board size	
+	}
+	if (newY < 0 || newY >= pBoard->get_board_height()) {
 		newY = point.getPosition().y;
+	}
 
 	point.setPositionX(newX);
 	point.setPositionY(newY);
