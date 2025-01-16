@@ -4,7 +4,7 @@
 #include "gameConfig.h"
 
 
-// Moves the console cursor to a specific position (x, y) on the screen.       (From the lab)
+// Move the cursor to the specified (x, y) position in the console
 void GameConfig::gotoxy(int x, int y)
 {
 	HANDLE hConsoleOutput;											// Handle to access the console output buffer
@@ -16,17 +16,11 @@ void GameConfig::gotoxy(int x, int y)
 	SetConsoleCursorPosition(hConsoleOutput, dwCursorPosition);		// Move the console cursor to the specified coordinates
 }
 
-// Display the cursor														   (From the lab)
+// Show or hide the console cursor based on the given flag
 void GameConfig::ShowConsoleCursor(bool showFlag) {
 	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);					// Get console handle
 	CONSOLE_CURSOR_INFO     cursorInfo;								// Cursor info structure
 	GetConsoleCursorInfo(out, &cursorInfo);							// Retrieve current cursor info
 	cursorInfo.bVisible = showFlag;									// Set visibility based on showFlag
 	SetConsoleCursorInfo(out, &cursorInfo);							// Apply the updated cursor info
-}
-
-// Clear the screen 
-void GameConfig::clrscr()
-{
-	system("cls");
 }

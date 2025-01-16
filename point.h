@@ -5,7 +5,7 @@
 #include <codecvt>
 #include <string>
 
-//#include "gameConfig.h"
+#include "gameConfig.h"
 #include "board.h"
 
 
