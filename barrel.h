@@ -32,30 +32,30 @@ class Barrel : public Entity
 	friend class Barrels;
 
 public:
-	Barrel() : Entity(GameConfig::BARREL) {} 												// Ctor of barrel with point
+	Barrel() : Entity(GameConfig::BARREL) {} 								// Ctor of barrel with point
 
-	void setStartingBarrel(Board* _pBoard);												// Initialize barrel
-	bool getIsExploded() const { return is_exploded; }							// Get the member 'is_exploded'
+	void setStartingBarrel(Board* _pBoard);									// Initialize barrel
+	bool getIsExploded() const { return is_exploded; }						// Get the member 'is_exploded'
 	void setIsExploded(bool _is_exploded) { is_exploded = _is_exploded; }	// Set the member 'is_exploded'
-	Point getPoint() const { return point; }								// Get the member 'point'
-	int getDirX() const { return point.getDir().x; }													// Get Mario's lives
+	const Point& getPoint() const { return point; }							// Get the member 'point'
+	int getDirX() const { return point.getDir().x; }						// Get the x-direction of 'point'
 
-	void checkWhatState() override;										// Check in which state the barrel is
+	void checkWhatState() override;											// Check in which state the barrel is
 	void updateState() override;											// Update the barrel's state
-	void updateNextMove() override;										// Updating the movement of the barrel for the next loop according to the position and the direction
+	void updateNextMove() override;											// Updating the movement of the barrel for the next loop according to the position and the direction
 
 	void updateCharParameters() override;						// Update all the char data members around mario
 	bool isFalling() const;										// Check if the barrel is falling 
-	void fall() override;												// Handle the barrel's falling
+	void fall() override;										// Handle the barrel's falling
 	void roll();												// Handle the barrel's rolling
 	void manageDirection();										// Manage the direction of the barrel while on the floor
 	bool explosionCases();										// Handle the cases which the barrel explodes in (falling 8 chars or at wall)
 	void explode();												// Function to update the barrel's 'is_activated' and 'is_exploded' members
 	void blockedByWall();										// Function to stop the barrels's movement if it reaches a wall
 
-	bool const IsActivated() const { return is_activated; };				// The function returns true if the barrel is activated(rolling/falling etc.)and false otherwise
+	bool const IsActivated() const { return is_activated; };	// The function returns true if the barrel is activated(rolling/falling etc.) and false otherwise
 	void activate() { is_activated = true; }					// Function to activate the barrel
-	void deactivate() { is_activated = false; }
+	void deactivate() { is_activated = false; }					// Function to deactivate the barrel
 	int myRandom();												// Function to raffle a number ( 1 or 0 )
 
 };

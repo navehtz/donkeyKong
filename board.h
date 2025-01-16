@@ -13,17 +13,17 @@
 
 
 class Board {
-	static constexpr size_t MAX_X = 80;		// Board width
-	static constexpr size_t MAX_Y = 25;		// Board Height
+	static constexpr size_t MAX_X = 80;			// Board width
+	static constexpr size_t MAX_Y = 25;			// Board Height
 
-	static constexpr int LIFE_POS_X = 11  ;	// Position in the board that hold the number lives of mario
+	static constexpr int LIFE_POS_X = 11  ;		// Position in the board that hold the number lives of mario
 	static constexpr int LIFE_POS_Y = 1;
 
-	std::vector<std::string> files_names_vec;
-	std::string directory = ".";
+	std::vector<std::string> files_names_vec;	// Vector to store file names
+	std::string directory = ".";				// Directory path for file operations (default is current directory)
 
 
-	char originalBoard[MAX_Y][MAX_X + 1];
+	char originalBoard[MAX_Y][MAX_X + 1];		// The board that we will load from the file
 	char start_screen[MAX_Y][MAX_X + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************", //0
@@ -223,12 +223,16 @@ class Board {
 	};
 	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
 
+	// Starting position for Mario, gorilla, princess and hammer
 	GameConfig::Position start_pos_mario{ 0,0 };
 	GameConfig::Position start_pos_gorilla{ 0,0 };
 	GameConfig::Position start_pos_princess{ 0,0 };
 	GameConfig::Position start_pos_hammer{ 0,0 };
-	std::vector<GameConfig::Position> start_pos_ghosts_vec;
 
+	// Vector to store the starting positions of ghosts
+	std::vector<GameConfig::Position> start_pos_ghosts_vec; 
+
+	// Structure to represent the game legend displayed on the board
 	struct Legend {
 		int score = 0;
 		int life = GameConfig::FULL_LIVES;
@@ -253,9 +257,10 @@ class Board {
 public:
 	void reset();																				// This function resets the board to its original state
 	void printScreen(const char screen[][MAX_X + 1]) const;										// This function prints the input board to the screen
-	char getCharFromBoard(const GameConfig::Position& _pos) const { return currentBoard[_pos.y][_pos.x]; }					// This function retrieves a specific character from the board at position (x, y)
+	char getCharFromBoard(const GameConfig::Position& _pos) const { return currentBoard[_pos.y][_pos.x]; }	// This function retrieves a specific character from the board at position (x, y)
 	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }					// This function retrieves a specific character from the board at position (x, y)
-	void updateBoard(const GameConfig::Position& pos, char newChar) { currentBoard[pos.y][pos.x] = newChar; }				// This function updates the board by replacing the character at position (x, y) with a new character
+	void updateBoard(const GameConfig::Position& pos, char newChar) { currentBoard[pos.y][pos.x] = newChar; }	// This function updates the board by replacing the character at position (x, y) with a new character
+	void updateBoardOriginal(const GameConfig::Position& pos, char newChar) { originalBoard[pos.y][pos.x] = newChar; }	// This function updates the board by replacing the character at position (x, y) with a new character
 
 	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1]{ return currentBoard; }				// Returns a const reference to the current board's array
 	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1]{ return start_screen; }				// Returns a const reference to the initial state of the board (start screen)
@@ -270,32 +275,30 @@ public:
 	const int getLifePosX() const { return LIFE_POS_X; }		// Returns the X position in the board that hold the number lives of mario
 	const int getLifePosY() const { return LIFE_POS_Y; }		// Returns the Y position in the board that hold the number lives of mario
 
-	void printScreenOptions(const std::vector<std::string>& vec_to_fill) const;
-	void getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const;
-	bool load(const std::string& filename);
-	bool handleReadFileErrors(const std::ifstream& _file);
-	bool handleUnvalidFile(const std::string& filename) const;
-	void manageChar(char& ch, bool& already_readen, GameConfig::Position& pos, int curr_col, int curr_row);
-	GameConfig::Position getStartPosMario() const { return start_pos_mario; }
-	GameConfig::Position getStartPosGorilla() const { return start_pos_gorilla; }
-	GameConfig::Position getStartPosPauline() const { return start_pos_princess; }
-	GameConfig::Position getStartPosHammer() const { return start_pos_hammer; }
-	GameConfig::Position getStartPosL() const { return legend.pos_L; }
-	GameConfig::Position getStartPosOfGhost(int i) const { return start_pos_ghosts_vec[i]; }
-
-	void setPositionsInLegend();
-	void printLegend() const;
-	void printLifeLegend() const { GameConfig::gotoxy(legend.pos_life_in_legend.x + (int)(legend.str_life.length()), legend.pos_life_in_legend.y); std::cout << legend.life; }
-	void printScoreLegend() const { GameConfig::gotoxy(legend.pos_score_in_legend.x + (int)(legend.str_score.length()), legend.pos_score_in_legend.y); std::cout << legend.score; }
-	void printHammerLegend() const { GameConfig::gotoxy(legend.pos_hammer_in_legend.x + (int)(legend.str_hammer.length()), legend.pos_hammer_in_legend.y); std::cout << legend.hammer; }
-	void setScoreLegend(int score) { legend.score = score; }
-	void setLifeLegend(int life) { legend.life = life; }
-	void setHammerLegend(char hammer) { legend.hammer = hammer; }
-	void setLegend(int score, int life, char hammer);
-	int getGhostVectorSize() { return (int)start_pos_ghosts_vec.size(); }
-	GameConfig::Position getGhostPos(int i) { return start_pos_ghosts_vec[i]; }
+	void printScreenOptions(const std::vector<std::string>& vec_to_fill) const;		// Print the available screen options from the provided vector
+	void getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const;			// Retrieve all board file names and store them in the provided vector
+	bool load(const std::string& filename);											// Load the specified board file
+	bool handleReadFileErrors(const std::ifstream& _file);							// Handle errors encountered while reading a file
+	bool handleUnvalidFile(const std::string& filename) const;						// Handle cases where the given file is invalid
+	void manageChar(char& ch, bool& already_readen, GameConfig::Position& pos, int curr_col, int curr_row);	// Process a specific character from the board file, updating its state and position
+	const GameConfig::Position& getStartPosMario() const { return start_pos_mario; }						// Get the starting position of Mario
+	const GameConfig::Position& getStartPosGorilla() const { return start_pos_gorilla; }					// Get the starting position of Gorilla
+	const GameConfig::Position& getStartPosOfGhost(int i) const { return start_pos_ghosts_vec[i]; }			// Get the starting position of the ghost at index 'i'
 	
-	void setScore() { legend.score = 0; }
-	int getScore() const { return legend.score; }
-	void addScore(int _score) { legend.score += _score; }
+	void setPositionsInLegend();		// Set the positions for the elements in the legend
+	void printLegend() const;			// Print the entire legend on the board
+	void printLifeLegend() const { GameConfig::gotoxy(legend.pos_life_in_legend.x + (int)(legend.str_life.length()), legend.pos_life_in_legend.y); std::cout << legend.life; }			 // Print the life count in the legend
+	void printScoreLegend() const { GameConfig::gotoxy(legend.pos_score_in_legend.x + (int)(legend.str_score.length()), legend.pos_score_in_legend.y); std::cout << legend.score; }		 // Print the life count in the legend
+	void printHammerLegend() const { GameConfig::gotoxy(legend.pos_hammer_in_legend.x + (int)(legend.str_hammer.length()), legend.pos_hammer_in_legend.y); std::cout << legend.hammer; } // Print the hammer status in the legend 
+	void setScoreLegend(int score) { legend.score = score; }				// Set the score in the legend
+	void setLifeLegend(int life) { legend.life = life; }					// Set the life count in the legend
+	void setHammerLegend(char hammer) { legend.hammer = hammer; }			// Set the hammer status in the legend
+	void setLegend(int score, int life, char hammer);						// Set all legend values at once
+	int getGhostVectorSize() { return (int)start_pos_ghosts_vec.size(); }	// Get the size of the ghost positions vector
+	
+	void setScore() { legend.score = 0; }									// Reset the player's score to zero
+	int getScore() const { return legend.score; }							// Get the current player's score
+	void addScore(int _score) { legend.score += _score; }					// Add the given value to the player's score
+
+
 };

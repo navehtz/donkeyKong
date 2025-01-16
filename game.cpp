@@ -51,10 +51,10 @@ int Game::chooseGameScreen()
 	{
 		if (_kbhit())
 		{
-			int key = _getch() - '0';									// Reads the key that was pressed
-			if (!files_names_vec.empty() && key > 0 && key <= files_names_vec.size())
+			int key = _getch() - '0';													// Reads the key that was pressed
+			if (!files_names_vec.empty() && key > 0 && key <= files_names_vec.size())	// Valid key
 			{
-				key--;											// The array start from zero
+				key--;																	// The array start from zero
 				return key;
 			}
 			else if (key == EXIT_GAME) {
@@ -80,10 +80,7 @@ void Game::startGame(int screen_index)
 	for (int i = screen_index; (i < files_names_vec.size()) && (playing_mario && !exit_game); i++)
 	{
 		valid_file = board.load(files_names_vec[i]);
-		if (!valid_file) 
-		{
-			/*files_names_vec.clear();
-			run();*/
+		if (!valid_file) {	// If the file isnt valid: continue to the next file
 			continue;
 		}
 
@@ -104,7 +101,7 @@ void Game::startGame(int screen_index)
 			draw();										// Draws the current state of the game (Mario, barrels)
 			updateIfDiedByBarrelOrGhost();						// Checks if Mario collided with a barrel and updates his state if he has died
 
-			for (int j = 0; j < GameConfig::POSSIBLE_INPUT; j++)
+			for (int j = 0; j < GameConfig::POSSIBLE_INPUT; j++)	// Able to get some input from the user at the same game loop
 			{
 				if (_kbhit())
 				{
@@ -112,10 +109,10 @@ void Game::startGame(int screen_index)
 				}
 				Sleep(GameConfig::SCREEN_TIME);
 			}
-			barrels.updateBarrelsCharParameters(); //CHECK IF WE CAN WITHOUT THIS LINE OR ONLY WITH THAT LINE (THE OTHER IS IN MOVE FUNC)
+			barrels.updateBarrelsCharParameters();		
 			erase();
 			move();
-			updateIfDiedByBarrelOrGhost();						// Checks if Mario collided with a barrel and updates his state if he has died
+			updateIfDiedByBarrelOrGhost();				// Checks if Mario collided with a barrel and updates his state if he has died
 			playing_mario = isAlive(mario.getLives());	// Determine if Mario is still alive based on his remaining lives (if lives > 0, the game continues)
 		}
 	}
@@ -137,10 +134,10 @@ void Game::setStartingGame()
 	barrels.setpBoard(board);							// Links the barrels to the game board, enabling their interaction with it
 	barrels.setStartingBarrels();						// Initializes the barrels to their starting positions and states
 
-	ghosts.setpBoard(board);
-	ghosts.setStartingGhosts(board.getGhostVectorSize());
+	ghosts.setpBoard(board);								// Set the board pointer for the ghosts manager
+	ghosts.setStartingGhosts(board.getGhostVectorSize());	// Initialize the starting positions and count of ghosts
 
-	board.setLegend(board.getScore(), mario.getLives(), GameConfig::SPACE);
+	board.setLegend(board.getScore(), mario.getLives(), GameConfig::SPACE); // Update the legend with the current score, Mario's remaining lives, and hammer status
 	board.printScreen(board.getCurrentBoard());
 	board.printLegend();
 }
@@ -162,18 +159,17 @@ void Game::updateActionByKeys()
 	{
 		if (mario.validHit())
 		{
-			GameConfig::Position hammer_pos = mario.getHammerPos();
-			char ch = board.getCharFromBoard(hammer_pos.x, hammer_pos.y);
-			mario.setPosHitHammer(hammer_pos);
-			mario.printHammerOnBoard();
-			if (ch != GameConfig::BARREL && ch != GameConfig::GHOST)
+			GameConfig::Position hammer_pos = mario.getHammerPos();			// Get the current hammer position from Mario
+			char ch = board.getCharFromBoard(hammer_pos.x, hammer_pos.y);	// Retrieve the character at the hammer's position on the board
+			mario.setPosHitHammer(hammer_pos);								// Update Mario's internal state with the hammer's position
+			mario.printHammerOnBoard();										// Print the hammer on the game board
+			if (ch != GameConfig::BARREL && ch != GameConfig::GHOST)		// If the hammer's position does not overlap with a barrel or ghost, update the character behind the hammer
 				mario.setCharBehindHammer(ch);
-			mario.setIfHammerActive(true);
-			updateIfMarioHitBarrelOrGhost();
-		}
+			mario.setIfHammerActive(true);									// Activate the hammer
+			updateIfMarioHitBarrelOrGhost();								// Check if Mario hits a barrel or a ghost while the hammer is active
+		}	
 	}
-	else									// For all other keys, pass the key to Mario's keyPressed handler
-	{
+	else {									// For all other keys, pass the key to Mario's keyPressed handler
 		mario.keyPressed((char)key);
 	}
 }
@@ -187,7 +183,7 @@ void Game::draw()
 	ghosts.draw();
 }
 
-// Erases Mario's and barrels previous position from the screen
+// Erases Mario's, barrels and ghosts previous position from the screen
 void Game::erase()
 {
 	mario.erase();
@@ -195,7 +191,7 @@ void Game::erase()
 	ghosts.erase();
 }
 
-// Moves Mario and barrels to a new position based on user input or game logic
+// Moves Mario, barrels and ghosts to a new position based on user input or game logic
 void Game::move()
 {
 	mario.move();
@@ -254,34 +250,35 @@ void Game::updateIfMarioHitBarrelOrGhost() {
 	int max_barrels = barrels.getMaxBarrels();
 	int num_of_ghosts = ghosts.getNumOfGhosts();
 
-	// Get Mario's current position
-
+	// Get Mario's current hammer position
 	hammer_pos = mario.getHammerPos();
 
 
+	// Check if Mario's hammer hits any barrels
 	for (int i = 0; i < max_barrels; i++)
 	{
-		barrel_pos = barrels.getPos(i);     // Get the current barrel's position
-		if (hitTheEnemy(barrel_pos, hammer_pos))
+		barrel_pos = barrels.getPos(i);								    // Get the current barrel's position
+		if (hitTheEnemy(barrel_pos, hammer_pos))						// Check for collision
 		{
-			barrels.deactivate_barrel(i);
-			barrels.setPreviousCharOfBarrel(i, mario.getHammerChar());
-			barrels.eraseASpecificBarrel(i);
-			barrels.setStartingBarrel(i);
-			board.addScore(GameConfig::KILL_BARREL);
-			board.printScoreLegend();
+			barrels.deactivate_barrel(i);								// Deactivate the barrel
+			barrels.setPreviousCharOfBarrel(i, mario.getHammerChar());	// Update the character behind the barrel
+			barrels.eraseASpecificBarrel(i);							// Remove the barrel from the board
+			barrels.setStartingBarrel(i);								// Reset the barrel's position
+			board.addScore(GameConfig::KILL_BARREL);					// Add score for destroying a barrel
+			board.printScoreLegend();									// Update the score display
 		}
 	}
 
+	// Check if Mario's hammer hits any ghosts
 	for (int i = 0; i < num_of_ghosts; i++)
 	{
 		ghost_pos = ghosts.getGhostPosition(i);
-		if (hitTheEnemy(ghost_pos, hammer_pos))		// Check if Mario is hit directly by the barrel
+		if (hitTheEnemy(ghost_pos, hammer_pos))							// Check for collision									
 		{
-			ghosts.removeGhostByIndex(i);
-			ghosts.setNumOfGhosts(--num_of_ghosts);
-			board.addScore(GameConfig::KILL_GHOST);
-			board.printScoreLegend();
+			ghosts.removeGhostByIndex(i);								// Remove the ghost from the game
+			ghosts.setNumOfGhosts(--num_of_ghosts);						// Update the ghost count
+			board.addScore(GameConfig::KILL_GHOST);						// Add score for destroying a ghost
+			board.printScoreLegend();									// Update the score display
 			break;
 		}
 	}
@@ -289,13 +286,13 @@ void Game::updateIfMarioHitBarrelOrGhost() {
 
 bool Game::hitTheEnemy(GameConfig::Position enemy_pos, GameConfig::Position hammer_pos)
 {
-	if (hammer_pos.x == enemy_pos.x && hammer_pos.y == enemy_pos.y)											// When mario and the barrel at the same place
+	if (hammer_pos.x == enemy_pos.x && hammer_pos.y == enemy_pos.y)		// When mario and the enemy at the same place
 		return true;
 
 	return false;
 }
 
-// Checks if Mario died from a barrel (hit or explosion)
+// Checks if Mario died from a barrel or ghost
 void Game::updateIfDiedByBarrelOrGhost()
 {
 	// Variables to store the positions of the barrels and Mario
@@ -311,17 +308,17 @@ void Game::updateIfDiedByBarrelOrGhost()
 		// Get the current barrel's position
 		barrel_pos = barrels.getPos(i);
 
-		hitByEnemy(barrel_pos, mario_pos);		// Check if Mario is hit directly by the barrel
+		hitByEnemy(barrel_pos, mario_pos);					// Check if Mario is hit directly by the barrel
 		diedFromExplodedBarrel(barrel_pos, mario_pos, i);	// Check if Mario died due to an exploding barrel
 	}
 
 	for (int i = 0; i < num_of_ghosts; i++)
 	{
 		ghost_pos = ghosts.getGhostPosition(i);
-		hitByEnemy(ghost_pos, mario_pos);		// Check if Mario is hit directly by the barrel
+		hitByEnemy(ghost_pos, mario_pos);					// Check if Mario is hit directly by the ghost
 	}
 
-	if (mario.getLives() == GameConfig::DEAD_MARIO)												// If Mario's lives reach zero, stop the game
+	if (mario.getLives() == GameConfig::DEAD_MARIO)			// If Mario's lives reach zero, stop the game
 		playing_mario = false;
 }
 
@@ -329,7 +326,7 @@ void Game::updateIfDiedByBarrelOrGhost()
 // Handles the logic when Mario is hit by an enemy (barrel or ghost)
 void Game::hitByEnemy(GameConfig::Position enemy_pos, GameConfig::Position mario_pos)
 {
-	if (mario_pos.x == enemy_pos.x && mario_pos.y == enemy_pos.y)											// When mario and the barrel at the same place
+	if (mario_pos.x == enemy_pos.x && mario_pos.y == enemy_pos.y)												// When mario and the barrel at the same place
 		mario.life();
 	else if (mario_pos.x - 1 == enemy_pos.x && mario_pos.x == enemy_pos.x + 1 && mario_pos.y == enemy_pos.y)	// When Mario and the barrel move toward each other, we need to check their previous positions
 		mario.life();
@@ -343,8 +340,9 @@ void Game::diedFromExplodedBarrel(GameConfig::Position barrel_pos, GameConfig::P
 {
 	bool is_exploded = barrels.getIfBarrelExploded(i);			// Check if the specified i barrel has exploded
 	if (is_exploded)
+		// Check if Mario is within the explosion radius of the barrel
 		if (abs(barrel_pos.x - mario_pos.x + 1) <= GameConfig::EXPLOSION_RADIUS && abs(barrel_pos.y - mario_pos.y + 1) <= GameConfig::EXPLOSION_RADIUS)  // +1 because its movement updated before draw
-			mario.life();
+			mario.life();	// Deduct a life from Mario
 }
 
 // Checks if Mario successfully completed the level
