@@ -76,7 +76,7 @@ void Game::startGame(int screen_index)
 	last_screen = false;								// Indicates that it isn't the last screen
 
 	mario.setLives(GameConfig::FULL_LIVES);
-	board.setScore();
+	board.resetScore();
 
 	for (int i = screen_index; (i < files_names_vec.size()) && (playing_mario && !exit_game); i++)
 	{

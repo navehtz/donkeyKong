@@ -303,7 +303,7 @@ public:
 	void setLegend(int score, int life, char hammer);						// Set all legend values at once
 	int getGhostVectorSize() { return (int)start_pos_ghosts_vec.size(); }	// Get the size of the ghost positions vector
 	
-	void setScore() { legend.score = 0; }									// Reset the player's score to zero
+	void resetScore() { legend.score = 0; }									// Reset the player's score to zero
 	int getScore() const { return legend.score; }							// Get the current player's score
 	void addScore(int _score) { legend.score += _score; }					// Add the given value to the player's score
 

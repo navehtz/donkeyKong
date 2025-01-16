@@ -322,6 +322,11 @@ void Mario::printHammerOnBoard() const
 void Mario::life()
 {
 	lives -= 1;
+	if (pBoard->getScore() >= -GameConfig::DIE_SCORE) { // Decrease points when die
+		pBoard->addScore(GameConfig::DIE_SCORE);
+	}
+	else
+		pBoard->resetScore(); // For not get to negative score
 
 	pBoard->setLifeLegend(lives);
 	pBoard->printLifeLegend();
