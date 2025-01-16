@@ -24,15 +24,6 @@ void Barrel::setStartingBarrel(Board* _pBoard)
 	point.setPreviousChar(GameConfig::SPACE);
 }
 
-// Function to raffle a number ( 1 or 0 )
-int Barrel::myRandom()
-{
-	static std::random_device rd;
-	static std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dist(0, 1);
-	return dist(gen);
-}
-
 // Update all the char data members around mario
 void Barrel::updateCharParameters()
 {

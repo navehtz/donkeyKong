@@ -1,5 +1,4 @@
 #pragma once
-#include <random>
 #include "point.h"
 #include "entity.h"
 #include "gameConfig.h"
@@ -15,7 +14,7 @@ class Ghost : public Entity
 	bool res_is_left_down = false;                                              // True if the tile below the left side is passable
 	bool res_is_right_down = false;                                             // True if the tile below the right side is passable
 
-	bool is_activated = true;                                                   // True if the ghost is active (visible and moving)
+	//bool is_activated = true;                                                   // True if the ghost is active (visible and moving)
 	bool is_wander_left = true;                                                 // True if the ghost is currently wandering to the left
 
 	enum class GhostState {
@@ -42,11 +41,6 @@ public:
 	void fall() override;                                                       // Handle the ghost's falling behavior
 	void manageDirection();                                                     // Manage the ghost's direction while wandering on the floor
 	void disappear() { is_activated = false; }                                  // Deactivate the ghost, making it disappear
-	void blockedByWall();                                                       // Stop the ghost's movement if it encounters a wall
+	void blockedByWall();                                              // Stop the ghost's movement if it encounters a wall
 
-	int myRandom();												// Function to raffle a number ( 1 or 0 )
-
-	bool const IsActivated() const { return is_activated; };	// The function returns true if the ghost is activated(rolling/falling etc.) and false otherwise
-	void activate() { is_activated = true; }					// Function to activate the barrel
-	void deactivate() { is_activated = false; }					// Function to deactivate the barrel
 };
