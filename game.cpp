@@ -265,7 +265,7 @@ void Game::updateIfMarioHitBarrelOrGhost() {
 			barrels.eraseASpecificBarrel(i);							// Remove the barrel from the board
 			barrels.setStartingBarrel(i);								// Reset the barrel's position
 			board.addScore(GameConfig::KILL_BARREL);					// Add score for destroying a barrel
-			board.printScoreLegend();									// Update the score display
+			break;
 		}
 	}
 
@@ -275,13 +275,15 @@ void Game::updateIfMarioHitBarrelOrGhost() {
 		ghost_pos = ghosts.getGhostPosition(i);
 		if (hitTheEnemy(ghost_pos, hammer_pos))							// Check for collision									
 		{
-			ghosts.removeGhostByIndex(i);								// Remove the ghost from the game
-			ghosts.setNumOfGhosts(--num_of_ghosts);						// Update the ghost count
+			ghosts.deactivate_ghost(i);									// Deactivate the ghost
+			ghosts.setPreviousCharOfGhost(i, mario.getHammerChar());	// Update the character behind the ghost
+			ghosts.eraseASpecificGhost(i);								// Remove the ghost from the board
+			//ghosts.setStartingSpecificGhost(i);						// Reset the ghost's position
 			board.addScore(GameConfig::KILL_GHOST);						// Add score for destroying a ghost
-			board.printScoreLegend();									// Update the score display
 			break;
 		}
 	}
+	board.printScoreLegend();									// Update the score display
 }
 
 bool Game::hitTheEnemy(GameConfig::Position enemy_pos, GameConfig::Position hammer_pos)
@@ -305,8 +307,7 @@ void Game::updateIfDiedByBarrelOrGhost()
 
 	for (int i = 0; i < max_barrels; i++)
 	{
-		// Get the current barrel's position
-		barrel_pos = barrels.getPos(i);
+		barrel_pos = barrels.getPos(i);						// Get the current barrel's position
 
 		hitByEnemy(barrel_pos, mario_pos);					// Check if Mario is hit directly by the barrel
 		diedFromExplodedBarrel(barrel_pos, mario_pos, i);	// Check if Mario died due to an exploding barrel
@@ -314,7 +315,7 @@ void Game::updateIfDiedByBarrelOrGhost()
 
 	for (int i = 0; i < num_of_ghosts; i++)
 	{
-		ghost_pos = ghosts.getGhostPosition(i);
+		ghost_pos = ghosts.getGhostPosition(i);				// Get the current ghost's position
 		hitByEnemy(ghost_pos, mario_pos);					// Check if Mario is hit directly by the ghost
 	}
 

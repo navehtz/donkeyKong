@@ -44,8 +44,9 @@ public:
 	void disappear() { is_activated = false; }                                  // Deactivate the ghost, making it disappear
 	void blockedByWall();                                                       // Stop the ghost's movement if it encounters a wall
 
-	bool const IsActivated() const { return is_activated; };                    // Check if the ghost is currently active
-	void activate() { is_activated = true; }                                    // Activate the ghost, allowing it to move again
+	int myRandom();												// Function to raffle a number ( 1 or 0 )
 
-	int myRandom();                                                             // Generate a random number (1 or 0)
+	bool const IsActivated() const { return is_activated; };	// The function returns true if the ghost is activated(rolling/falling etc.) and false otherwise
+	void activate() { is_activated = true; }					// Function to activate the barrel
+	void deactivate() { is_activated = false; }					// Function to deactivate the barrel
 };

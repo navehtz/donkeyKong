@@ -13,7 +13,6 @@ class Ghosts
 
 public:
 	Ghosts() {}                                                        // Constructor for the Ghosts class
-
 	void setpBoard(Board& _board) { pBoard = &_board; }                // Set the board pointer
 	void setStartingGhosts(int size);                                  // Initialize all ghosts
 	void draw();                                                       // Draw all activated ghosts
@@ -28,5 +27,10 @@ public:
 	void setNumOfGhosts(int new_num) { num_of_ghosts = new_num; }      // Set the total number of ghosts
 	GameConfig::Position getGhostPosition(int i) const {               // Get the position of a specific ghost
 		return ghosts_vec[i].point.getPosition();
-	}
+}
+
+	void deactivate_ghost(int i) { ghosts_vec[i].deactivate(); }								// Deactivate the ghost at index 'i'
+	void setPreviousCharOfGhost(int i, char _ch) { ghosts_vec[i].point.setPreviousChar(_ch); }  // Set the previous character of the ghost at index 'i'									
+	void eraseASpecificGhost(int i) { ghosts_vec[i].erase(); }									// Erase the ghost at index 'i' FROM THE BOARD
+
 };
