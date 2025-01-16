@@ -260,6 +260,7 @@ public:
 	char getCharFromBoard(const GameConfig::Position& _pos) const { return currentBoard[_pos.y][_pos.x]; }	// This function retrieves a specific character from the board at position (x, y)
 	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }					// This function retrieves a specific character from the board at position (x, y)
 	void updateBoard(const GameConfig::Position& pos, char newChar) { currentBoard[pos.y][pos.x] = newChar; }	// This function updates the board by replacing the character at position (x, y) with a new character
+	void updateBoardOriginal(const GameConfig::Position& pos, char newChar) { originalBoard[pos.y][pos.x] = newChar; }	// This function updates the board by replacing the character at position (x, y) with a new character
 
 	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1]{ return currentBoard; }				// Returns a const reference to the current board's array
 	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1]{ return start_screen; }				// Returns a const reference to the initial state of the board (start screen)
@@ -298,4 +299,6 @@ public:
 	void setScore() { legend.score = 0; }									// Reset the player's score to zero
 	int getScore() const { return legend.score; }							// Get the current player's score
 	void addScore(int _score) { legend.score += _score; }					// Add the given value to the player's score
+
+
 };
