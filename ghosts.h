@@ -19,10 +19,6 @@ public:
 	void erase();													// Erase all the activated barrels
 	void move();													// Move all the activated barrels
 
-	bool getIfGhostExploded(int i) {								// Check if a barrel has exploded
-		bool is_barrel_exploded = ghosts_vec[i].IsActivated();
-		return is_barrel_exploded;
-	}
 	void removeGhostByIndex(int index);
 
 	void updateGhostsCharParameters();
