@@ -47,6 +47,7 @@ public:
     static constexpr int KILL_GHOST = 100;   // Score for killing a ghost
     static constexpr int KILL_BARREL = 80;   // Score for destroying a barrel
     static constexpr int END_LEVEL = 1000;   // Score for completing a level
+    static constexpr int DIE_SCORE = -100;   // Score for completing a level
 
     // Position constants for printing elements on the screen
     static constexpr int POS_X_PRINT_SCREEN = 30; // X-coordinate for print position
