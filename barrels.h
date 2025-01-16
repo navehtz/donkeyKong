@@ -16,8 +16,6 @@ class Barrels
 public:
 	Barrels() {}													// ctor of Barrels. initialize all the barrels in the array
 
-	int getPosX(int i) { int posX = barrels[i].getPoint().getPosition().x; return posX; }		// Get the X position of the i barrel in the array
-	int getPosY(int i) { int posY = barrels[i].getPoint().getPosition().y; return posY; }		// Get the Y position of the i barrel in the array
 	GameConfig::Position getPos(int i) { GameConfig::Position pos = barrels[i].getPoint().getPosition(); return pos; }
 	
 	const Barrel* getBarrels() { return barrels; }					// Get the member 'barrels'

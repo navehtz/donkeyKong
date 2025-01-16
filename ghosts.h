@@ -12,14 +12,7 @@ class Ghosts
 
 public:
 	Ghosts() {}													// ctor of Barrels. initialize all the barrels in the array
-
-	int getPosX(int i) { int posX = ghosts_vec[i].getPoint().getPosition().x; return posX; }		// Get the X position of the i barrel in the array
-	int getPosY(int i) { int posY = ghosts_vec[i].getPoint().getPosition().y; return posY; }		// Get the Y position of the i barrel in the array
-
-	const std::vector <Ghost> getGhostsVec() { return ghosts_vec; }					// Get the member 'ghosts'
-	int getGhostsVecSize() { return pBoard->getGhostVectorSize(); }						// Get the number of ghosts
 	void setpBoard(Board& _board) { pBoard = &_board; }				// Set pBoard to the board
-
 
 	void setStartingGhosts(int size);										// Inititialize all barrels
 	void draw();													// Draw all the activated barrels
