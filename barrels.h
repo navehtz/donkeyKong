@@ -1,6 +1,8 @@
 #pragma once
 
 #include "barrel.h"
+#include "gameConfig.h"
+
 
 class Barrels
 {

@@ -4,6 +4,7 @@
 #include <random>
 #include "point.h"
 #include "entity.h"
+#include "gameConfig.h"
 
 
 class Barrel : public Entity

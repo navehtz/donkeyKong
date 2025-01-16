@@ -1,5 +1,6 @@
 #include "ghosts.h"
 
+// Initialize all ghosts
 void Ghosts::setStartingGhosts(int size)
 {
 	num_of_ghosts = size;
@@ -13,7 +14,7 @@ void Ghosts::setStartingGhosts(int size)
 	}
 }
 
-// Draw all the activated barrels
+// Draw all the activated ghosts
 void Ghosts::draw()
 {
 	for (int i = 0; i < num_of_ghosts; i++)
@@ -25,7 +26,7 @@ void Ghosts::draw()
 	}
 }
 
-// Erase all the activated barrels
+// Erase all the activated ghosts
 void Ghosts::erase()
 {
 	for (int i = 0; i < num_of_ghosts; i++)
@@ -37,7 +38,7 @@ void Ghosts::erase()
 	}
 }
 
-// Move all the activated barrels
+// Move all the activated ghosts
 void Ghosts::move()
 {
 	for (int i = 0; i < num_of_ghosts; i++)
@@ -49,6 +50,7 @@ void Ghosts::move()
 	}
 }
 
+// Remove a ghost by its index
 void Ghosts::removeGhostByIndex(int index)
 {
 	if (index < ghosts_vec.size()) {
@@ -59,6 +61,7 @@ void Ghosts::removeGhostByIndex(int index)
 	}
 }
 
+// Update the character parameters for all activated ghosts
 void Ghosts::updateGhostsCharParameters()
 {
 	for (int i = 0; i < num_of_ghosts; i++)
