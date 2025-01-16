@@ -73,6 +73,7 @@ void Game::startGame(int screen_index)
 	bool valid_file;
 	playing_mario = true;							    // Indicates that the Mario gameplay loop is active
 	exit_game = false;								    // Indicates that the Mario gameplay loop is active
+	last_screen = false;								// Indicates that it isn't the last screen
 
 	mario.setLives(GameConfig::FULL_LIVES);
 	board.setScore();
@@ -83,6 +84,8 @@ void Game::startGame(int screen_index)
 		if (!valid_file) {	// If the file isnt valid: continue to the next file
 			continue;
 		}
+
+		if (i == files_names_vec.size() - 1) { last_screen = true; }
 
 		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
 		playing_mario = true;							// Indicates that the Mario gameplay loop is active
@@ -350,7 +353,7 @@ bool Game::wonTheLevel()
 {
 	if (mario.getIfWon())
 	{
-		board.printScreen(board.getWinningBoard());
+		board.printScreen(last_screen ? board.getWinningBoard() : board.getNextStageBoard());
 		Sleep(GameConfig::SCREEN_WIN);
 		return true;
 	}

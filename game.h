@@ -24,6 +24,7 @@ class Game {
 
 	bool playing_mario = true;							// True = while mario has more than 0 lives
 	bool exit_game = false;								// False = while EXIT_GAME hasn't been pressed
+	bool last_screen = false;							// False = while it isn't the last screen
 
 	Mario mario;
 	Board board;
