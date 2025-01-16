@@ -200,6 +200,12 @@ void Board::printLegend() const
     std::cout << legend.str_hammer << legend.hammer;
 }
 
+void Board::printEndLevelScore() const
+{
+    GameConfig::gotoxy(GameConfig::WIN_SCORE_POS_X, GameConfig::WIN_SCORE_POS_Y);
+    std::cout << "Your score: " << legend.score << " !";
+}
+
 void Board::setLegend(int score, int life, char hammer)
 {
     setScoreLegend(score);

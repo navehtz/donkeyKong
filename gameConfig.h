@@ -52,6 +52,8 @@ public:
     // Position constants for printing elements on the screen
     static constexpr int POS_X_PRINT_SCREEN = 30; // X-coordinate for print position
     static constexpr int POS_Y_PRINT_SCREEN = 10; // Y-coordinate for print position
+    static constexpr int WIN_SCORE_POS_X = 31; // X-coordinate for print score when winning
+    static constexpr int WIN_SCORE_POS_Y = 4;  // X-coordinate for print score when winning
 
     // Struct representing a position with x and y coordinates
     struct Position {
