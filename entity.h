@@ -3,6 +3,8 @@
 #include "point.h"
 #include "gameConfig.h"
 
+#include <random>
+
 class Entity
 {
 protected:
@@ -16,6 +18,8 @@ protected:
 
 	// Flags indicating Entity's interaction with his surroundings
 	bool res_is_on_floor = false, res_is_wall_on_left = false, res_is_wall_on_right = false;
+	bool is_activated;
+
 
 public:			
 	Entity(char _ch) : point(_ch) {}															  // Constructor initializing the entity with a character
@@ -48,5 +52,9 @@ public:
 	void updatePreviousDir() { point.setPreviousDir(point.getDir()); }										 // Function to update the entity's previous direction to become the current (similar to previous_dir = dir)
 	void updatePreviousChar() { point.setPreviousChar(getCharFromBoard(point.getPosition().x, point.getPosition().y)); } // Update the previous character of the entity based on its current position on the board
 
+	bool const IsActivated() const { return is_activated; };	// The function returns true if the entity is activated(rolling/falling etc.) and false otherwise
+	void activate() { is_activated = true; }					// Function to activate the entity
+	void deactivate() { is_activated = false; }					// Function to deactivate the entity
+	virtual int myRandom();												// Function to raffle a number ( 1 or 0 )
 };
 

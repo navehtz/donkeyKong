@@ -169,6 +169,8 @@ bool Board::handleUnvalidFile(const std::string& filename) const
 
     if (count_errors > 0)
     {
+        std::cout << std::endl;
+        std::cerr << "loading next screen ..." << std::endl;
         Sleep(GameConfig::SCREEN_EXIT);
 
         return false;
