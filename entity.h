@@ -18,10 +18,10 @@ protected:
 
 	// Flags indicating Entity's interaction with his surroundings
 	bool res_is_on_floor = false, res_is_wall_on_left = false, res_is_wall_on_right = false;
-	bool is_activated;
+	bool is_activated = false;
 
 
-public:			
+public:
 	Entity(char _ch) : point(_ch) {}															  // Constructor initializing the entity with a character
 	Entity(int x, int y, char _ch) : point(_ch) { point.setPositionX(x); point.setPositionY(y); } // Constructor initializing the entity with a position (x, y) and a character
 
@@ -34,7 +34,7 @@ public:
 	}
 	virtual void erase() {															// Erase the entity from the screen and update the board
 		point.erase();
-		pBoard->updateBoard(point.getPosition(), point.getPreviousChar());	
+		pBoard->updateBoard(point.getPosition(), point.getPreviousChar());
 	}
 	virtual void checkWhatState() = 0;			// Pure virtual function to check the entity's current state
 	virtual void updateState() = 0;				// Pure virtual function to update the entity's state											
@@ -55,6 +55,12 @@ public:
 	bool const IsActivated() const { return is_activated; };	// The function returns true if the entity is activated(rolling/falling etc.) and false otherwise
 	void activate() { is_activated = true; }					// Function to activate the entity
 	void deactivate() { is_activated = false; }					// Function to deactivate the entity
-	virtual int myRandom();												// Function to raffle a number ( 1 or 0 )
+	virtual int myRandom();										// Function to raffle a number ( 1 or 0 )
+
+	void setPositionOfEntity(const GameConfig::Position& _pos) { point.setPosition(_pos); }
 };
+
+
+
+
 

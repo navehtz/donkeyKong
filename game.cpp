@@ -265,7 +265,7 @@ void Game::updateIfMarioHitBarrelOrGhost() {
 		{
 			barrels.deactivate_barrel(i);								// Deactivate the barrel
 			barrels.setPreviousCharOfBarrel(i, mario.getHammerChar());	// To print the hammer on board
-			barrels.eraseASpecificBarrel(i);							// Remove the barrel from the board
+			//barrels.eraseASpecificBarrel(i);							// Remove the barrel from the board
 			barrels.setStartingBarrel(i);								// Reset the barrel's position
 			board.addScore(GameConfig::KILL_BARREL);					// Add score for destroying a barrel
 			break;
@@ -280,7 +280,8 @@ void Game::updateIfMarioHitBarrelOrGhost() {
 		{
 			ghosts.deactivate_ghost(i);									// Deactivate the ghost
 			ghosts.setPreviousCharOfGhost(i, mario.getHammerChar());	// To print the hammer on board
-			ghosts.eraseASpecificGhost(i);								// Remove the ghost from the board
+			//ghosts.eraseASpecificGhost(i);							// Remove the ghost from the board
+			ghosts.kickBarrelOfBoard(i);
 			board.addScore(GameConfig::KILL_GHOST);						// Add score for destroying a ghost
 			break;
 		}

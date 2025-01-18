@@ -318,6 +318,23 @@ void Mario::printHammerOnBoard() const
 	std::cout << hammer.ch;
 }
 
+bool Mario::validHit()
+{
+	char ch_covered_by_hammer = pBoard->getCharFromBoard(hammer.pos);
+	int dirX_before_stay = point.getDirBeforeStay().x;
+
+	if (point.getDir().y == GameConfig::DOWN || point.getDir().y == GameConfig::UP)	// If the mario is jumping / climbing or falling he can't use the hammer
+		return false;
+	else if (ch_covered_by_hammer == GameConfig::FLOOR || ch_covered_by_hammer == GameConfig::FLOOR_LEFT || ch_covered_by_hammer == GameConfig::FLOOR_RIGHT) // If the possion of the hammer is on a wall we dont want that the hammer will hit
+		return false;
+	else if (dirX_before_stay == GameConfig::LEFT && (res_is_wall_on_left || res_ch_wall_on_two_left))	// Mario can't hit through the wall
+		return false;
+	else if (dirX_before_stay == GameConfig::RIGHT && (res_is_wall_on_right || res_ch_wall_on_two_right))		// Mario can't hit through the wall
+		return false;
+	else
+		return true;
+}
+
 // Handle Mario's lives (when hit or falling)
 void Mario::life()
 {
