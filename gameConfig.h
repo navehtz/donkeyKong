@@ -65,6 +65,8 @@ public:
         int x, y;
     };
    
+    static constexpr Position NOT_RELEVET_POS = {0,0};  // X-coordinate for print score when winning
+
     // Move the cursor to the specified (x, y) position in the console
     static void gotoxy(int x, int y);
 

@@ -114,8 +114,5 @@ public:
 	void setIfHammerActive(bool b) { hammer.active = b; }                         // Set hammer active status
 	void setCharBehindHammer(char _ch) { ch_behind_hammer = _ch; }                // Set character behind hammer
 	void setPosHitHammer(GameConfig::Position _pos) { pos_hit_hammer = _pos; }    // Set hammer hit position
-	bool validHit() {                                                             // Validate hammer hit
-		return (!(point.getDir().y == GameConfig::DOWN || point.getDir().y == GameConfig::UP
-			|| res_is_on_ladder || res_is_wall_on_left || res_is_wall_on_right || res_ch_wall_on_two_left || res_ch_wall_on_two_right));
-	}
+	bool validHit();															  // Validate hammer hit
 };
