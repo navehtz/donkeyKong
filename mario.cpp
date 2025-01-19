@@ -272,11 +272,13 @@ void Mario::updateHammerPos()
 	switch (dir.y)
 	{
 	case(GameConfig::UP):
-		hammer.pos.y = pos.y - HAMMER_DISTANCE;
+		//hammer.pos.y = pos.y - HAMMER_DISTANCE;
+		hammer.pos.y = pos.y;
 		jumping_or_falling = true;
 		break;
 	case(GameConfig::DOWN):
-		hammer.pos.y = pos.y + HAMMER_DISTANCE;
+		//hammer.pos.y = pos.y + HAMMER_DISTANCE;
+		hammer.pos.y = pos.y;
 		jumping_or_falling = true;
 		break;
 	case(GameConfig::STAY):
