@@ -15,6 +15,9 @@ Notes:
 11. If there are no Mario/Pauline/donkeyKong, the board is invalid.
 12. Mario gets score when he kill a ghost/ destroy a barrel or moving to the next the stage.
 13. Mario loses points when dying.
+14. If there is no floor (all or part of it) and Mario stands on there he will die ("The floor is lava").
+15. Please run with compilier C++20.
+16. Please set the compiler to "build only" and not "build+intellisense" (Amir told us to do that, otherwise it shows uncorrect errors).
 
 Asks for bonuses:
 1. ASCII art.

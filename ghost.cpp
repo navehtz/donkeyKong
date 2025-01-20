@@ -115,10 +115,10 @@ void Ghost::updateNextMove()
 	int newX = point.getPosition().x + point.getDir().x;
 	int newY = point.getPosition().y + point.getDir().y;
 
-	if (newX < 0 || newX >= pBoard->get_board_width()) {  // Ensure position is within board bounds
+	if (newX < 0 || newX >= GameConfig::BOARD_WIDTH) {  // Ensure position is within board bounds
 		newX = point.getPosition().x;
 	}
-	if (newY < 0 || newY >= pBoard->get_board_height()) {
+	if (newY < 0 || newY >= GameConfig::BOARD_HEIGHT) {
 		newY = point.getPosition().y;
 	}
 
