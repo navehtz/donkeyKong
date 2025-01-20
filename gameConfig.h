@@ -55,6 +55,12 @@ public:
     static constexpr int WIN_SCORE_POS_X = 31; // X-coordinate for print score when winning
     static constexpr int WIN_SCORE_POS_Y = 4;  // X-coordinate for print score when winning
 
+
+    // Board size
+    static constexpr int BOARD_HEIGHT = 25;  // X-coordinate for print score when winning
+    static constexpr int BOARD_WIDTH = 80;  // X-coordinate for print score when winning
+    
+     
     // Struct representing a position with x and y coordinates
     struct Position {
         int x, y;

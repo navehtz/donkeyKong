@@ -13,9 +13,6 @@
 
 
 class Board {
-	static constexpr size_t MAX_X = 80;			// Board width
-	static constexpr size_t MAX_Y = 25;			// Board Height
-
 	static constexpr int LIFE_POS_X = 11  ;		// Position in the board that hold the number lives of mario
 	static constexpr int LIFE_POS_Y = 1;
 
@@ -23,8 +20,8 @@ class Board {
 	std::string directory = ".";				// Directory path for file operations (default is current directory)
 
 
-	char originalBoard[MAX_Y][MAX_X + 1];		// The board that we will load from the file
-	char start_screen[MAX_Y][MAX_X + 1] = {
+	char originalBoard[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1];		// The board that we will load from the file
+	char start_screen[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************", //0
 		 "*                                                                              *", //1
@@ -53,7 +50,7 @@ class Board {
 		 "********************************************************************************"  //24
 	};
 	
-	char instruction_screen[MAX_Y][MAX_X + 1] = {
+	char instruction_screen[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
 		 "*                                                                              *",//1
@@ -82,7 +79,7 @@ class Board {
 		 "********************************************************************************" //24
 	};
 
-	char losing_screen[MAX_Y][MAX_X + 1] = {
+	char losing_screen[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
 		 "*                                                                              *",//1
@@ -112,7 +109,7 @@ class Board {
 	};
 
 
-	char winning_screen[MAX_Y][MAX_X + 1] = {
+	char winning_screen[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
 		 "*                                                                              *",//1
@@ -141,7 +138,7 @@ class Board {
 		 "********************************************************************************" //24
 	};
 
-	char next_stage_screen[MAX_Y][MAX_X + 1] = {
+	char next_stage_screen[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
 		 "*                                                                              *",//1
@@ -170,7 +167,7 @@ class Board {
 		 "********************************************************************************" //24
 	};                    
 
-	char goodBye_screen[MAX_Y][MAX_X + 1] = {
+	char goodBye_screen[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
 		 "*                                                                              *",//1
@@ -199,7 +196,7 @@ class Board {
 		 "********************************************************************************" //24
 	};
 
-	char chooseBoard_screen[MAX_Y][MAX_X + 1] = {
+	char chooseBoard_screen[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1] = {
 		//01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		 "********************************************************************************",//0
 		 "*                                                                              *",//1
@@ -227,7 +224,7 @@ class Board {
 		 "*                                                                              *",//23 
 		 "********************************************************************************" //24
 	};
-	char currentBoard[MAX_Y][MAX_X + 1]; // +1 for null terminator
+	char currentBoard[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1]; // +1 for null terminator
 
 	// Starting position for Mario, gorilla, princess and hammer
 	GameConfig::Position start_pos_mario{ 0,0 };
@@ -262,22 +259,19 @@ class Board {
 
 public:
 	void reset();																				// This function resets the board to its original state
-	void printScreen(const char screen[][MAX_X + 1]) const;										// This function prints the input board to the screen
+	void printScreen(const char screen[][GameConfig::BOARD_WIDTH + 1]) const;										// This function prints the input board to the screen
 	char getCharFromBoard(const GameConfig::Position& _pos) const { return currentBoard[_pos.y][_pos.x]; }	// This function retrieves a specific character from the board at position (x, y)
 	char getCharFromBoard(int x, int y) const { return currentBoard[y][x]; }					// This function retrieves a specific character from the board at position (x, y)
 	void updateBoard(const GameConfig::Position& pos, char newChar) { currentBoard[pos.y][pos.x] = newChar; }	// This function updates the board by replacing the character at position (x, y) with a new character
 	void updateBoardOriginal(const GameConfig::Position& pos, char newChar) { originalBoard[pos.y][pos.x] = newChar; }	// This function updates the board by replacing the character at position (x, y) with a new character
 
-	const char(&getCurrentBoard() const)[MAX_Y][MAX_X + 1]{ return currentBoard; }				// Returns a const reference to the current board's array
-	const char(&getStartBoard() const)[MAX_Y][MAX_X + 1]{ return start_screen; }				// Returns a const reference to the initial state of the board (start screen)
-	const char(&getInstructionBoard() const)[MAX_Y][MAX_X + 1]{ return instruction_screen; }	// Returns a const reference to the board with instructions (instruction screen)
-	const char(&getLosingBoard() const)[MAX_Y][MAX_X + 1]{ return losing_screen; }				// Returns a const reference to the board shown when the player loses (losing screen)
-	const char(&getWinningBoard() const)[MAX_Y][MAX_X + 1]{ return winning_screen; }			// Returns a const reference to the board shown when the player wins (winning screen)
-	const char(&getNextStageBoard() const)[MAX_Y][MAX_X + 1]{ return next_stage_screen; }			// Returns a const reference to the board shown when the player wins (winning screen)
-	const char(&getGoodByeBoard() const)[MAX_Y][MAX_X + 1]{ return goodBye_screen; }			// Returns a const reference to the board shown when the player wins (goodBye screen)
-
-	const int get_board_width() const { return MAX_X; }			// Returns the width of the board
-	const int get_board_height() const { return MAX_Y; }		// Returns the height of the board
+	const char(&getCurrentBoard() const)[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1]{ return currentBoard; }				// Returns a const reference to the current board's array
+	const char(&getStartBoard() const)[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1]{ return start_screen; }				// Returns a const reference to the initial state of the board (start screen)
+	const char(&getInstructionBoard() const)[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1]{ return instruction_screen; }	// Returns a const reference to the board with instructions (instruction screen)
+	const char(&getLosingBoard() const)[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1]{ return losing_screen; }				// Returns a const reference to the board shown when the player loses (losing screen)
+	const char(&getWinningBoard() const)[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1]{ return winning_screen; }			// Returns a const reference to the board shown when the player wins (winning screen)
+	const char(&getNextStageBoard() const)[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1]{ return next_stage_screen; }			// Returns a const reference to the board shown when the player wins (winning screen)
+	const char(&getGoodByeBoard() const)[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1]{ return goodBye_screen; }			// Returns a const reference to the board shown when the player wins (goodBye screen)
 
 	const int getLifePosX() const { return LIFE_POS_X; }		// Returns the X position in the board that hold the number lives of mario
 	const int getLifePosY() const { return LIFE_POS_Y; }		// Returns the Y position in the board that hold the number lives of mario
@@ -286,7 +280,7 @@ public:
 	void getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const;			// Retrieve all board file names and store them in the provided vector
 	bool load(const std::string& filename);											// Load the specified board file
 	bool handleReadFileErrors(const std::ifstream& _file);							// Handle errors encountered while reading a file
-	bool handleUnvalidFile(const std::string& filename) const;						// Handle cases where the given file is invalid
+	bool handleUnvalidFile(const std::string& filename, int rows_number) const;						// Handle cases where the given file is invalid
 	void manageChar(char& ch, bool& already_readen, GameConfig::Position& pos, int curr_col, int curr_row);	// Process a specific character from the board file, updating its state and position
 	const GameConfig::Position& getStartPosMario() const { return start_pos_mario; }						// Get the starting position of Mario
 	const GameConfig::Position& getStartPosGorilla() const { return start_pos_gorilla; }					// Get the starting position of Gorilla
