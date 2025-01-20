@@ -5,31 +5,31 @@
 
 // This function resets the board to its original state
 void Board::reset() {
-	for (int i = 0; i < MAX_Y; i++) {
-		memcpy(currentBoard[i], originalBoard[i], MAX_X + 1);
+	for (int i = 0; i < GameConfig::BOARD_HEIGHT; i++) {
+		memcpy(currentBoard[i], originalBoard[i], GameConfig::BOARD_WIDTH + 1);
 	}
 }
 
 // This function prints the input board to the screen
-void Board::printScreen(const char screen[][MAX_X + 1]) const 
+void Board::printScreen(const char screen[][GameConfig::BOARD_WIDTH + 1]) const 
 {
     GameConfig::clrscr();														// Clears the console screen before printing the new board
 
-	for (int i = 0; i < MAX_Y - 1; i++) {
+	for (int i = 0; i < GameConfig::BOARD_HEIGHT - 1; i++) {
 		std::cout << screen[i] << '\n';
 	}
-	std::cout << screen[MAX_Y - 1];									// Print the last row without a newline to avoid an extra blank line
+	std::cout << screen[GameConfig::BOARD_HEIGHT - 1];									// Print the last row without a newline to avoid an extra blank line
 }
 
 // Function made by the lecturer and chatGPT 
 void Board::getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const {
     if (!std::filesystem::exists(directory)) {
-        std::cerr << "Directory does not exist: " << directory << std::endl;
+        std::cout << "Directory does not exist: " << directory << std::endl;
         return;
     }
 
     if (!std::filesystem::is_directory(directory)) {
-        std::cerr << "Path is not a directory: " << directory << std::endl;
+        std::cout << "Path is not a directory: " << directory << std::endl;
         return;
     }
     try {
@@ -42,10 +42,10 @@ void Board::getAllBoardFileNames(std::vector<std::string>& vec_to_fill) const {
         std::sort(vec_to_fill.begin(), vec_to_fill.end());
     }
     catch (const std::filesystem::filesystem_error& e) {
-        std::cerr << "Filesystem error: " << e.what() << std::endl;
+        std::cout << "Filesystem error: " << e.what() << std::endl;
     }
     catch (const std::exception& e) {
-        std::cerr << "Error reading directory: " << e.what() << std::endl;
+        std::cout << "Error reading directory: " << e.what() << std::endl;
     }
 }
 
@@ -60,18 +60,18 @@ bool Board::load(const std::string& filename) {
     int curr_row = 0;
     int curr_col = 0;
     char c;
-    while (!screen_file.get(c).eof() && curr_row < MAX_Y) {
+    while (!screen_file.get(c).eof() && curr_row < GameConfig::BOARD_HEIGHT) {
         if (c == '\n') {
-            if (curr_col < MAX_X) {
+            if (curr_col < GameConfig::BOARD_WIDTH) {
                 // add spaces for missing cols
                 #pragma warning(suppress : 4996) // to allow strcpy
-                strcpy(originalBoard[curr_row] + curr_col, std::string(MAX_X - curr_col, GameConfig::SPACE).c_str());
+                strcpy(originalBoard[curr_row] + curr_col, std::string(GameConfig::BOARD_WIDTH - curr_col, GameConfig::SPACE).c_str());
             }
             ++curr_row;
             curr_col = 0;
             continue;
         }
-        if (curr_col < MAX_X) {                           
+        if (curr_col < GameConfig::BOARD_WIDTH) {                           
             switch (c)
             {
             case GameConfig::MARIO:
@@ -104,7 +104,7 @@ bool Board::load(const std::string& filename) {
     }
     screen_file.close();
 
-    return handleUnvalidFile(filename);
+    return handleUnvalidFile(filename, curr_row);
 }
 
 void Board::manageChar(char& ch, bool& already_readen_char, GameConfig::Position& pos, int curr_col, int curr_row)
@@ -121,57 +121,63 @@ bool Board::handleReadFileErrors(const std::ifstream& _file)
 {
     GameConfig::clrscr();														// Clears the console screen before printing the new board
     if (_file.eof()) {
-        std::cerr << "End of file reached." << std::endl;
+        std::cout << "End of file reached." << std::endl;
     }
     else if (_file.fail()) {
-        std::cerr << "Read error (failbit)." << std::endl;
+        std::cout << "Read error (failbit)." << std::endl;
     }
     else if (_file.bad()) {
-        std::cerr << "Critical error (badbit)." << std::endl;
+        std::cout << "Critical error (badbit)." << std::endl;
     }
     else {
-        std::cerr << "Unknown error." << std::endl;
+        std::cout << "Unknown error." << std::endl;
     }
     std::cout << "Returning to menu" << std::endl;
     Sleep(GameConfig::SCREEN_EXIT);
     return false;
 }
 
-bool Board::handleUnvalidFile(const std::string& filename) const
+bool Board::handleUnvalidFile(const std::string& filename, int rows_number) const
 {
     int count_errors = 0;
     GameConfig::clrscr();
+    if (rows_number < GameConfig::BOARD_HEIGHT)     // The board's rows isn't match the norma
+    {
+        std::cout << filename << ": Not enough rows" << std::endl;
+        std::cout << "the valid rows in the screen should be : " << GameConfig::BOARD_HEIGHT << std::endl;
+        count_errors++;
+    }
     if (!readen_mario)
     {
-        std::cerr << filename << ": no mario in file" << std::endl;
+        std::cout << filename << ": no mario in file" << std::endl;
         count_errors++;
     }
     if (!readen_princess)
     {
-        std::cerr << filename << ": no princess in file" << std::endl;
+        std::cout << filename << ": no princess in file" << std::endl;
         count_errors++;
     }
     if (!readen_gorilla) 
     {
-        std::cerr << filename << ": no gorilla in file" << std::endl;
+        std::cout << filename << ": no gorilla in file" << std::endl;
         count_errors++;
     }
     if (readen_legend < 1)
     {
-        std::cerr << filename << ": no legend in file" << std::endl;
+        std::cout << filename << ": no legend in file" << std::endl;
         count_errors++;
     }
     else if (readen_legend > 1)
     {
-        std::cerr << filename << ": too many legends in file" << std::endl;
+        std::cout << filename << ": too many legends in file" << std::endl;
         count_errors++;
     }
 
     if (count_errors > 0)
     {
         std::cout << std::endl;
-        std::cerr << "loading next screen ..." << std::endl;
-        Sleep(GameConfig::SCREEN_EXIT);
+        std::cout << "loading next screen ..." << std::endl;
+        Sleep(GameConfig::SCREEN_EXIT * 2);
 
         return false;
     }

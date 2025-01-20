@@ -32,6 +32,9 @@ void Mario::keyPressed(char key)
 // Handle Mario's movement
 void Mario::move()
 {
+	if (point.getPosition().y == GameConfig::BOARD_HEIGHT - 1)	// No floor - is like the game "the floor is laba"
+		life();
+
 	updateCharParameters();     // Update all the character data members around Mario
 	amendNextMove();            // Neutralize illegal movements
 	checkWhatState();           // Check the state of Mario
@@ -235,10 +238,10 @@ void Mario::updateNextMove()
 	int newX = point.getPosition().x + point.getDir().x;
 	int newY = point.getPosition().y + point.getDir().y;
 
-	if (newX < 0 || newX >= pBoard->get_board_width())
+	if (newX < 0 || newX >= GameConfig::BOARD_WIDTH)
 		newX = point.getPosition().x;
 
-	if (newY < 0 || newY >= pBoard->get_board_height())
+	if (newY < 0 || newY >= GameConfig::BOARD_HEIGHT)
 		newY = point.getPosition().y;
 
 	if (pBoard->getCharFromBoard(newX, newY) == GameConfig::PRINCESS || ch_below == GameConfig::PRINCESS) {
@@ -311,8 +314,8 @@ void Mario::updateHammerPos()
 // Print the hammer on the board
 void Mario::printHammerOnBoard() const
 {
-	if (hammer.pos.x < 0 || hammer.pos.x >= pBoard->get_board_width() ||
-		hammer.pos.y < 0 || hammer.pos.y >= pBoard->get_board_height())
+	if (hammer.pos.x < 0 || hammer.pos.x >= GameConfig::BOARD_WIDTH ||
+		hammer.pos.y < 0 || hammer.pos.y >= GameConfig::BOARD_HEIGHT)
 		return; // Handle if the hammer's hit is beyond the board
 	GameConfig::gotoxy(hammer.pos.x, hammer.pos.y);
 	std::cout << hammer.ch;

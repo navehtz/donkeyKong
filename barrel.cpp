@@ -103,7 +103,7 @@ bool Barrel::explosionCases()
 		return true;
 	}
 
-	if (point.getPosition().x < 1 || point.getPosition().x >= pBoard->get_board_width() - 1) { // 1 less than the board width from both sides	
+	if (point.getPosition().x < 1 || point.getPosition().x >= GameConfig::BOARD_WIDTH - 1) { // 1 less than the board width from both sides	
 		explode();
 		return true;
 	}
@@ -152,9 +152,9 @@ void Barrel::updateNextMove()
 	int newX = point.getPosition().x + point.getDir().x;
 	int newY = point.getPosition().y + point.getDir().y;
 
-	if (newX < 0 || newX >= pBoard->get_board_width())				// Update the next move by the board size	
+	if (newX < 0 || newX >= GameConfig::BOARD_WIDTH)				// Update the next move by the board size	
 		newX = point.getPosition().x;
-	if (newY < 0 || newY >= pBoard->get_board_height())				// Update the next move by the board size	
+	if (newY < 0 || newY >= GameConfig::BOARD_HEIGHT)				// Update the next move by the board size	
 		newY = point.getPosition().y;
 
 	point.setPositionX(newX);
