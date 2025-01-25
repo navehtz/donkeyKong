@@ -36,3 +36,12 @@ int Entity::myRandom()
 	std::uniform_int_distribution<> dist(0, 1);
 	return dist(gen);
 }
+
+//int Entity::myRandom() {
+//	static bool seeded = false;
+//	if (!seeded) {
+//		srand(time(0));
+//		seeded = true;
+//	}
+//	return rand() % 2;
+//}

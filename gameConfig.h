@@ -3,7 +3,12 @@
 // Class representing configuration settings and constants for the game
 class GameConfig
 {
+    inline static long random_seed;
 public:
+    GameConfig(long _random_seed) { random_seed = _random_seed; }
+    static const long getRandomSeed() { return random_seed; }
+    static void setRandomSeed(long curr_random_seed) { random_seed = curr_random_seed; }
+
     // Constants representing movement directions
     static constexpr int UP = -1;       // Move up
     static constexpr int DOWN = 1;     // Move down

@@ -5,7 +5,7 @@
 #include "ghosts.h"
 #include "entity.h"
 #include "gameConfig.h"
-
+#include "results.h"
 #include <Windows.h>    // For Sleep
 #include <stdbool.h>
 #include <cstdlib>
@@ -28,6 +28,7 @@ class Mario : public Entity
 	bool got_hammer = false;
 	int fall_count = 0;
 	int lives = GameConfig::FULL_LIVES;
+	size_t iteration = 0;
 
 	// Constants
 	static constexpr int FALL_FROM_TOO_HIGH = 5;
@@ -55,6 +56,7 @@ class Mario : public Entity
 
 	Barrels* pBarrels = nullptr;
 	Ghosts* pGhosts = nullptr;
+	Results* ptr_results = nullptr;
 
 public:
 	Mario() : Entity(GameConfig::MARIO) {}                                        // Constructor initializing Mario's starting position
@@ -115,4 +117,7 @@ public:
 	void setCharBehindHammer(char _ch) { ch_behind_hammer = _ch; }                // Set character behind hammer
 	void setPosHitHammer(GameConfig::Position _pos) { pos_hit_hammer = _pos; }    // Set hammer hit position
 	bool validHit();															  // Validate hammer hit
+
+	void setPointerResults(Results &results) { ptr_results = &results; }
+	void setIteration(size_t curr_iteration) { iteration = curr_iteration; } 
 };

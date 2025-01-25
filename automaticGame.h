@@ -1,5 +1,5 @@
+/*
 #pragma once
-
 #include <iostream>		//for cout
 #include <conio.h>		//for _kbhit(), _getch()
 #include <Windows.h>	//for Sleep and colors
@@ -12,10 +12,9 @@
 #include "board.h"
 #include "barrels.h"
 #include "ghosts.h"
-#include "steps.h"
-#include "results.h"
 
-class Game {
+
+class AutomaticGame {
 	static constexpr int START_NEW_GAME = 49;			// The key - 1
 	static constexpr int INSTRUCTIONS_AND_KEYS = 56;	//The key - 8
 	static constexpr int EXIT_GAME = 57;				//The key - 9
@@ -27,7 +26,6 @@ class Game {
 	bool playing_mario = true;							// True = while mario has more than 0 lives
 	bool exit_game = false;								// False = while EXIT_GAME hasn't been pressed
 	bool last_screen = false;							// False = while it isn't the last screen
-	size_t iteration = 0;
 
 	Mario mario;
 	Board board;
@@ -36,8 +34,6 @@ class Game {
 
 	std::vector<std::string> files_names_vec;
 
-	Steps steps;
-	Results results;
 public:
 
 	void showInstructions();									// Displays the game instructions screen to the player
@@ -62,7 +58,9 @@ public:
 	bool wonTheLevel();																							// Checks if Mario successfully completed the level
 	int chooseGameScreen();																						// Allow the user to choose a game screen and return the selected screen index
 
-	void manageInput();
-	void saveManualGame(const std::string& stepsFilename, const std::string& resultsFilename) const;
 };
 
+
+
+
+*/

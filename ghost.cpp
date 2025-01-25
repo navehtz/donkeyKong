@@ -82,6 +82,8 @@ void Ghost::fall()
 // Manage the ghost's direction while wandering on the floor
 void Ghost::manageDirection()
 {
+	srand(GameConfig::getRandomSeed());
+
 	int dirX = point.getDir().x;
 
 	if (dirX == GameConfig::STAY) {  // If just finished falling, set initial direction
