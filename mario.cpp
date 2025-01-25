@@ -359,6 +359,7 @@ void Mario::life()
 		pBoard->printScreen(pBoard->getLosingBoard());
 		Sleep(GameConfig::SCREEN_EXIT);
 	}
+	ptr_results->addResult(iteration, ptr_results->died);
 }
 
 // Reset the game after Mario dies but still has lives
