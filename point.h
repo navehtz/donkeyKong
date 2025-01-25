@@ -1,77 +1,55 @@
 #pragma once
 
 #include <iostream>
-using namespace std;
 #include <locale>
 #include <codecvt>
 #include <string>
 
-#include "general.h"
+#include "gameConfig.h"
 #include "board.h"
-
 
 class Point {
 
-	char ch = ' ';
-	char  previous_char = ' ';
+	char ch = ' ';													// Character represented by this point
+	char previous_char = ' ';										// Character previously at this point
 
-	static constexpr int DOWN = 1;
-	static constexpr int RIGHT = 1;
-	static constexpr int LEFT = -1;
-	static constexpr int STAY = 0;
+	GameConfig::Position pos{ 0, 0 };								// Current position of the point
 
-	struct Direction {																				// Direction structure for handling movement	
-		int x, y;
-	};
-	int x=0, y=0;
+	GameConfig::Direction previous_dir{ GameConfig::STAY, GameConfig::STAY };               // Last direction before the current movement
+	GameConfig::Direction dir_before_stay{ GameConfig::STAY, GameConfig::STAY };            // Direction before staying
+	GameConfig::Direction dir_before_falling{ GameConfig::LEFT, GameConfig::STAY };         // Direction before a fall
 
-	struct Position {
-		int x, y;
-	};
-	Position pos{ 0,0 };
-
-	Direction previous_dir{ STAY,STAY };															// Last direction before the current movement
-	Direction dir_before_falling{ LEFT,STAY };														// Direction prior to a fall
-
-	static constexpr Direction directions[] = { {0, -1}, {-1, 0}, {0, 1}, {1, 0}, {0, 0} };			// Movement options: UP, LEFT, DOWN, RIGHT, STAY
-	Direction dir{ 0, 0 }; 
-
+	static constexpr GameConfig::Direction directions[] = { {0, -1}, {-1, 0}, {0, 1}, {1, 0}, {0, 0} }; // Movement options: UP, LEFT, DOWN, RIGHT, STAY
+	GameConfig::Direction dir{ 0, 0 };								// Current movement direction
 
 public:
-	Point(int _x, int _y, char _ch) : x(_x), y(_y), ch(_ch) {}						// For Mario (initial position and character)
-	Point(char _ch) : ch(_ch) {}													// For barrels (character only)
-	
+	Point(char _ch) : ch(_ch) {}									// Constructor initializing the point with a character
 
-	Position getPosition() const { return pos; }									// Get the member 'pos'
-	void setPosition(int _x, int _y) { x = _x; y = _y; }							// Set the (x,y) position
+	char getChar() const { return ch; }								// Get the character represented by the point
+	GameConfig::Position getPosition() const { return pos; }		// Get the current position of the point
+	void setPosition(GameConfig::Position _pos) { pos = _pos; }		// Set the position of the point using Position
+	void setPosition(int _x, int _y) { pos.x = _x; pos.y = _y; }	// Set the position of the point using x and y coordinates
+	void setPositionX(int _x) { pos.x = _x; }						// Set the x-coordinate of the position
+	void setPositionY(int _y) { pos.y = _y; }						// Set the y-coordinate of the position
 
-	int getX() const { return x; }													// Get the data member 'x'
-	int getY() const { return y; }													// Get the data member 'y'
-	void setX(int _x) { x = _x; }													// Set the data member 'x'
-	void setY(int _y) { y = _y; }													// Set the data member 'y'
+	char getPreviousChar() const { return previous_char; }			// Get the previous character at this point
+	void setPreviousChar(char _ch) { previous_char = _ch; }			// Set the previous character at this point
 
-	char getPreviousChar() const { return previous_char; }							// Get the previous char data memeber
-	void setPreviousChar(char _ch) { previous_char = _ch; }							// Set the previous char data memeber
+	void draw() const { GameConfig::gotoxy(pos.x, pos.y); std::cout << ch; }               // Draw the current character at the point's position
+	void erase() const { GameConfig::gotoxy(pos.x, pos.y); std::cout << previous_char; }   // Erase the current character by drawing the previous character
 
-	void draw(char _ch) const {														// Draw the current character on the board
-		gotoxy(x, y);
-		cout << _ch;
-	}
-	void erase() const {															// Erase the character by redrawing the previous character
-		gotoxy(x, y);
-		cout << previous_char;
-	}
+	GameConfig::Direction getDir() const { return dir; }			// Get the current movement direction
+	void setDir(GameConfig::Direction _dir) { dir = _dir; }			// Set the current movement direction
+	void setDirX(int _x) { dir.x = _x; }							// Set the x component of the current direction
+	void setDirY(int _y) { dir.y = _y; }							// Set the y component of the current direction
 
-	Direction getDir() const { return dir; }										// Get the current movement direction (x,y)
-	void setDir(Direction _dir) { dir = _dir; }										// Set the current movement direction (x,y)
-	void setDirX(int _x) { dir.x = _x; }											// Set the current movement direction (only x-axis)
-	void setDirY(int _y) { dir.y = _y; }                                            // Set the current movement direction (only y-axis)
+	GameConfig::Direction getPreviousDir() const { return previous_dir; }                   // Get the previous movement direction
+	GameConfig::Direction getDirBeforeFalling() const { return dir_before_falling; }        // Get the direction before falling
+	void setPreviousDir(GameConfig::Direction _previous_dir) { previous_dir = _previous_dir; } // Set the previous direction
+	void setDirBeforeFalling(GameConfig::Direction _dir_before_falling) { dir_before_falling = _dir_before_falling; } // Set the direction before falling
 
-	Direction getPreviousDir() const { return previous_dir; }						// Get the previous movement direction (x,y)
-	Direction getDirBeforeFalling() const { return dir_before_falling; }			// Get the previous movement direction before falling (function for barrels
-	void setPreviousDir(Direction _previous_dir) { previous_dir = _previous_dir; }						  // Set the previous direction
-	void setDirBeforeFalling(Direction _dir_before_falling) { dir_before_falling = _dir_before_falling; } // Set the direction before falling
+	GameConfig::Direction getDirFromDirectionsArray(int i) { return directions[i]; }        // Get a direction from the directions array
+	GameConfig::Direction getDirBeforeStay() { return dir_before_stay; }                    // Get the direction before staying
+	void setDirBeforeStay(GameConfig::Direction _dir_before_stay) { dir_before_stay = _dir_before_stay; } // Set the direction before staying
 
-	Direction getDirFromDirectionsArray(int i) { return directions[i]; }			// Get the current the direction 
 };
-

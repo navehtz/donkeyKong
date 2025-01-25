@@ -18,7 +18,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="general.cpp">
+    <ClCompile Include="gameConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mario.cpp">
@@ -36,9 +36,18 @@
     <ClCompile Include="barrel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ghost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ghosts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="general.h">
+    <ClInclude Include="gameConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="point.h">
@@ -57,6 +66,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="barrel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ghost.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ghosts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
