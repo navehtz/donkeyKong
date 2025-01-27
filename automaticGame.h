@@ -31,7 +31,7 @@ public:
 
 	//void showInstructions();									// Displays the game instructions screen to the player
 	void run() override;//!!!!													// Manages the overall flow of the game
-
+	void stagesLoop(int screen_index) override;
 	//void setStartingGame();//SSS										// Initializes the game to its starting state
 	void updateActionByKeys() override;									// Updates Mario's actions based on key presses from the user
 	//bool isAlive(int lives) { return lives > GameConfig::DEAD_MARIO; }		// Returns true if Mario is alive (has more lives than DEAD_MARIO), otherwise false
@@ -54,7 +54,11 @@ public:
 	void reportFileError(const std::string& message, const std::string& filename);
 	// TODO:: write this like: 
 
+	bool loadAutoGame();
 	void gameLoop() override;
+	bool handleResultsError(size_t diedNextIteration);
+	void handleResultsErrorAfterLoop();
+	
 
 	//bool checkIfResultFileMatch(const std::string& filename) {
 	//	if (mario_died_this_iteration) {

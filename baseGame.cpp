@@ -22,6 +22,14 @@ void BaseGame::setStartingGame()
 	board.printLegend();
 }
 
+void BaseGame::setFilesNames(int i)
+{
+	screenFileName = files_names_vec[i];
+	filename_prefix = files_names_vec[i].substr(0, files_names_vec[i].find_last_of('.'));
+	stepsFilename = filename_prefix + ".steps";
+	resultsFilename = filename_prefix + ".result";
+}
+
 // Draws Mario and barrels on the screen
 void BaseGame::draw()
 {

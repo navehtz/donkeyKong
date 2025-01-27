@@ -23,7 +23,6 @@ void AutomaticGame::run()
 // Starts the game loop and handles gameplay logic
 void AutomaticGame::startGame(int screen_index)
 {
-	bool valid_file;
 	playing_mario = true;							    // Indicates that the Mario gameplay loop is active
 	last_screen = false;								// Indicates that it isn't the last screen
 
@@ -32,7 +31,17 @@ void AutomaticGame::startGame(int screen_index)
 
 	unmatching_result_found = false;
 
-	for (int i = screen_index; (i < files_names_vec.size()) && playing_mario /* && exit_game */ ; i++)
+	stagesLoop(screen_index);
+	
+	GameConfig::clrscr();
+	board.printScreen(board.getStartBoard());
+}
+
+void AutomaticGame::stagesLoop(int screen_index)
+{
+	bool valid_file;
+
+	for (int i = screen_index; (i < files_names_vec.size()) && playing_mario /* && exit_game */; i++)
 	{
 		//std::string filename_prefix, stepsFilename, resultsFilename;
 
@@ -43,68 +52,24 @@ void AutomaticGame::startGame(int screen_index)
 
 		if (i == files_names_vec.size() - 1) { last_screen = true; }
 
-		screenFileName = files_names_vec[i];
-		filename_prefix = files_names_vec[i].substr(0, files_names_vec[i].find_last_of('.'));
-		stepsFilename = filename_prefix + ".steps";
-		resultsFilename = filename_prefix + ".result";
+		setFilesNames(i);
 
-		std::filesystem::path stepsFilePath = std::filesystem::path(".") / stepsFilename;
-		std::filesystem::path resultsFilePath = std::filesystem::path(".") / resultsFilename;
-
-		if (!std::filesystem::exists(stepsFilePath)) {
-			reportFileError("File doesn't exist", stepsFilename);
+		if (!loadAutoGame())
 			continue;
-		}
-
-		if (!std::filesystem::exists(resultsFilePath)) {
-			reportFileError("File doesn't exist", resultsFilename);
-			continue;
-		}
-
-		steps = Steps::loadSteps(stepsFilename); //HAVE TO BE BEFORE STARTING THE BARRELS AND GHOSTS - TO SET THE RANDOM SEED
-		srand(GameConfig::getRandomSeed());
-
-		results = Results::loadResults(resultsFilename);
 
 		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
 		playing_mario = true;							// Indicates that the Mario gameplay loop is active
 
 		iteration = 0; // we need iteration to be outside the loop
-		//while (playing_mario)							// Main game loop: continues as long as Mario is playing and has lives
-		
-		gameLoop();
+		gameLoop(); //while (playing_mario)							// Main game loop: continues as long as Mario is playing and has lives
 		// FINISH GAME LOOP
 
 
-		if (!unmatching_result_found)	// == If matching result
-		{
-			auto last_result = results.popResult();
-			if (last_result != Results::ResultEntry{ iteration, Results::ResultValue::finished }) {
-				reportResultError("Results file doesn't match finished event!", files_names_vec[i], iteration);
-				unmatching_result_found = true;
-			}
-			//else if	(last_result != Results::ResultEntry{ iteration - 1, Results::ResultValue::finished_dead }) {
-			//	reportResultError("Results file doesn't match finished event!", files_names_vec[i], iteration);
-			//	unmatching_result_found = true;
-			//}
-			if (results.popResult().result != Results::ResultValue::noResult) {
-				reportResultError("Results file has additional events after finish event!", files_names_vec[i], iteration);
-				unmatching_result_found = true;
-			}
-		}
 
-		// //checkIfResultFileMatch(files_names_vec[i])
-		//if (mario_died_this_iteration) {
-		//	auto curr_result_from_file = results.popResult();
-		//	if (curr_result_from_file.iteration != iteration && curr_result_from_file.result != Results::ResultValue::died) {
-		//		reportResultError("Results file doesn't match hit bomb event!", files_names_vec[i], iteration);
-		//		unmatching_result_found = true;
-		//	}
-		//}
+		handleResultsErrorAfterLoop();
 	}
-	GameConfig::clrscr();
-	board.printScreen(board.getStartBoard());
 }
+
 
 void AutomaticGame::reportResultError(const std::string& message, const std::string& filename, size_t _iteration)
 {	
@@ -123,6 +88,28 @@ void AutomaticGame::reportFileError(const std::string& message, const std::strin
 	std::cout << "Press any key to continue to next screens (if any)" << std::endl;
 	int zevel = _getch(); // To continue
 	zevel = 0; // For the warning of not referenced
+}
+
+bool AutomaticGame::loadAutoGame()
+{
+	std::filesystem::path stepsFilePath = std::filesystem::path(".") / stepsFilename;
+	std::filesystem::path resultsFilePath = std::filesystem::path(".") / resultsFilename;
+
+	if (!std::filesystem::exists(stepsFilePath)) {
+		reportFileError("File doesn't exist", stepsFilename);
+		return false;
+	}
+
+	if (!std::filesystem::exists(resultsFilePath)) {
+		reportFileError("File doesn't exist", resultsFilename);
+		return false;
+	}
+
+	steps = Steps::loadSteps(stepsFilename); //HAVE TO BE BEFORE STARTING THE BARRELS AND GHOSTS - TO SET THE RANDOM SEED
+	srand(GameConfig::getRandomSeed());
+
+	results = Results::loadResults(resultsFilename);
+	return true;
 }
 
 void AutomaticGame::gameLoop()
@@ -161,30 +148,60 @@ void AutomaticGame::gameLoop()
 		playing_mario = isAlive(mario.getLives());	// Determine if Mario is still alive based on his remaining lives (if lives > 0, the game continues)
 
 
-		if (mario_died_this_iteration) {
-			if (mario.getLives() > 0) {
-				if (results.popResult() != Results::ResultEntry{ iteration, Results::ResultValue::died }) {
-					reportResultError("Results file doesn't match the died mario!", screenFileName, iteration);
-					unmatching_result_found = true;
-					break;
-				}
-			}
-			else {
-				if (results.myFront() != Results::ResultEntry{ iteration, Results::ResultValue::finished }) {
-					reportResultError("Results file doesn't match the died mario!", screenFileName, iteration);
-					unmatching_result_found = true;
-				}
-				iteration--;
-			}
-		}
-		else if (iteration == diedNextIteration && iteration > 0) {
-			reportResultError("Results file has a dead Mario event that didn't happen!", screenFileName, iteration);
-			unmatching_result_found = true;
+		if (!handleResultsError(diedNextIteration))
 			break;
-		}
+
 		mario_died_this_iteration = false; // Reset for the next iteration
 	}
 }
+
+bool AutomaticGame::handleResultsError(size_t diedNextIteration)
+{
+	if (mario_died_this_iteration) {
+		if (mario.getLives() > 0) {
+			if (results.popResult() != Results::ResultEntry{ iteration, Results::ResultValue::died }) {
+				reportResultError("Results file doesn't match the died mario!", screenFileName, iteration);
+				unmatching_result_found = true;
+				return false;
+			}
+		}
+		else {
+			if (results.myFront() != Results::ResultEntry{ iteration, Results::ResultValue::finished }) {
+				reportResultError("Results file doesn't match the died mario!", screenFileName, iteration);
+				unmatching_result_found = true;
+				return false;
+			}
+			iteration--;
+		}
+	}
+	else if (iteration == diedNextIteration && iteration > 0) {
+		reportResultError("Results file has a dead Mario event that didn't happen!", screenFileName, iteration);
+		unmatching_result_found = true;
+		return false;
+	}
+	return true;
+}
+
+void AutomaticGame::handleResultsErrorAfterLoop()
+{
+	if (!unmatching_result_found)	// == If matching result
+	{
+		auto last_result = results.popResult();
+		if (last_result != Results::ResultEntry{ iteration, Results::ResultValue::finished }) {
+			reportResultError("Results file doesn't match finished event!", screenFileName, iteration);
+			unmatching_result_found = true;
+		}
+		//else if	(last_result != Results::ResultEntry{ iteration - 1, Results::ResultValue::finished_dead }) {
+		//	reportResultError("Results file doesn't match finished event!", files_names_vec[i], iteration);
+		//	unmatching_result_found = true;
+		//}
+		if (results.popResult().result != Results::ResultValue::noResult) {
+			reportResultError("Results file has additional events after finish event!", screenFileName, iteration);
+			unmatching_result_found = true;
+		}
+	}
+}
+
 
 //// Initializes the game to its starting state
 //void AutomaticGame::setStartingGame()

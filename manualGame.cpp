@@ -18,6 +18,40 @@ void ManualGame::run()
 	GameConfig::clrscr();
 }
 
+void ManualGame::stagesLoop(int screen_index)
+{
+	bool valid_file;
+
+	for (int i = screen_index; (i < files_names_vec.size() && playing_mario && !exit_game); i++)
+	{
+		//std::string filename_prefix, stepsFilename, resultsFilename;
+
+		valid_file = board.load(files_names_vec[i]);
+		if (!valid_file) {	// If the file isnt valid: continue to the next file
+			continue;
+		}
+
+		if (i == files_names_vec.size() - 1) { last_screen = true; }
+
+		GameConfig::setRandomSeed(static_cast<long>(std::chrono::system_clock::now().time_since_epoch().count()));
+		srand(GameConfig::getRandomSeed());
+
+		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
+		playing_mario = true;							// Indicates that the Mario gameplay loop is active
+		exit_game = false;								// Indicates that the Mario gameplay loop is active
+
+		setFilesNames(i);
+
+		iteration = 0; // we need iteration to be outside the loop
+		gameLoop();		// Main game loop: continues as long as Mario is playing and has lives
+
+
+
+		if (!exit_game)
+			saveManualGame();
+	}
+}
+
 // Displays the game menu and handles user input to start or quit the game
 bool ManualGame::menu()
 {
@@ -68,7 +102,6 @@ int ManualGame::chooseGameScreen()
 // Starts the game loop and handles gameplay logic
 void ManualGame::startGame(int screen_index)
 {
-	bool valid_file;
 	playing_mario = true;							    // Indicates that the Mario gameplay loop is active
 	last_screen = false;								// Indicates that it isn't the last screen
 
@@ -77,36 +110,8 @@ void ManualGame::startGame(int screen_index)
 
 	exit_game = false;								    // Indicates that the Mario gameplay loop is active
 
-	for (int i = screen_index; (i < files_names_vec.size() && playing_mario && !exit_game); i++)
-	{
-		//std::string filename_prefix, stepsFilename, resultsFilename;
-
-		valid_file = board.load(files_names_vec[i]);
-		if (!valid_file) {	// If the file isnt valid: continue to the next file
-			continue;
-		}
-
-		if (i == files_names_vec.size() - 1) { last_screen = true; }
-
-		GameConfig::setRandomSeed(static_cast<long>(std::chrono::system_clock::now().time_since_epoch().count()));
-		srand(GameConfig::getRandomSeed());
-
-		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
-		playing_mario = true;							// Indicates that the Mario gameplay loop is active
-		exit_game = false;								// Indicates that the Mario gameplay loop is active
-
-		filename_prefix = files_names_vec[i].substr(0, files_names_vec[i].find_last_of('.'));
-		stepsFilename = filename_prefix + ".steps";
-		resultsFilename = filename_prefix + ".result";
-
-		iteration = 0; // we need iteration to be outside the loop
-		//while (playing_mario && !exit_game)				// Main game loop: continues as long as Mario is playing and has lives
-		
-		gameLoop();
-
-		if(!exit_game)
-			saveManualGame();
-	}
+	stagesLoop(screen_index);
+	
 	GameConfig::clrscr();
 	board.printScreen(board.getStartBoard());
 }
