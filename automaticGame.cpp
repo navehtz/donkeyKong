@@ -95,15 +95,15 @@ void AutomaticGame::startGame(int screen_index)
 		resultsFilename = filename_prefix + ".result";
 
 		std::filesystem::path stepsFilePath = std::filesystem::path(".") / stepsFilename;
-		std::filesystem::path stepsFilePath = std::filesystem::path(".") / resultsFilename;
+		std::filesystem::path resultsFilePath = std::filesystem::path(".") / resultsFilename;
 
 		if (!std::filesystem::exists(stepsFilePath)) {
 			reportFileError("File doesn't exist", stepsFilename);
 			continue;
 		}
 
-		if (!std::filesystem::exists(resultsFilename)) {
-			reportFileError("File doesn't exist", stepsFilename);
+		if (!std::filesystem::exists(resultsFilePath)) {
+			reportFileError("File doesn't exist", resultsFilename);
 			continue;
 		}
 

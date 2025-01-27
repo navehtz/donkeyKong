@@ -27,7 +27,7 @@
     <ClCompile Include="board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game.cpp">
+    <ClCompile Include="manualGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="barrels.cpp">
@@ -68,7 +68,7 @@
     <ClInclude Include="board.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game.h">
+    <ClInclude Include="manualGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="barrels.h">

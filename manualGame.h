@@ -15,7 +15,7 @@
 #include "steps.h"
 #include "results.h"
 
-class Game {
+class ManualGame {
 	static constexpr int START_NEW_GAME = 49;			// The key - 1
 	static constexpr int INSTRUCTIONS_AND_KEYS = 56;	//The key - 8
 	static constexpr int EXIT_GAME = 57;				//The key - 9

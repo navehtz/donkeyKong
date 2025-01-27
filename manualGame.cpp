@@ -1,9 +1,9 @@
-#include "game.h"
+#include "manualGame.h"
 #include "gameConfig.h"
 #include <Windows.h>
 
 // Manages the overall flow of the game
-void Game::run()
+void ManualGame::run()
 {
 	system("mode con cols=80 lines=25");			// Set the console size to be 80X25
 	GameConfig::ShowConsoleCursor(false);						// Hides the console cursor to improve visual appearance during the game
@@ -19,7 +19,7 @@ void Game::run()
 }
 
 // Displays the game menu and handles user input to start or quit the game
-bool Game::menu()
+bool ManualGame::menu()
 {
 	if (_kbhit())									// Checks if a key has been pressed
 	{
@@ -45,7 +45,7 @@ bool Game::menu()
 	return true;
 }
 
-int Game::chooseGameScreen()
+int ManualGame::chooseGameScreen()
 {
 	while (true)										// Checks if a key has been pressed
 	{
@@ -66,7 +66,7 @@ int Game::chooseGameScreen()
 }
 
 // Starts the game loop and handles gameplay logic
-void Game::startGame(int screen_index)
+void ManualGame::startGame(int screen_index)
 {
 	std::string filename_prefix, stepsFilename, resultsFilename;
 
@@ -133,7 +133,7 @@ void Game::startGame(int screen_index)
 }
 
 // Initializes the game to its starting state
-void Game::setStartingGame()
+void ManualGame::setStartingGame()
 {
 	GameConfig::clrscr();
 
@@ -155,7 +155,7 @@ void Game::setStartingGame()
 	board.printLegend();
 }
 
-void Game::manageInput()
+void ManualGame::manageInput()
 {
 	for (int j = 0; j < GameConfig::POSSIBLE_INPUT; j++)	// Able to get some input from the user at the same game loop
 	{
@@ -168,7 +168,7 @@ void Game::manageInput()
 }
 
 // Updates Mario's actions based on key presses from the user
-void Game::updateActionByKeys()
+void ManualGame::updateActionByKeys()
 {
 	int key = _getch();
 	if (key == EXIT_GAME)					// If the key corresponds to the "Exit Game" action
@@ -201,7 +201,7 @@ void Game::updateActionByKeys()
 }
 
 // Draws Mario and barrels on the screen
-void Game::draw()
+void ManualGame::draw()
 {
 	mario.draw();
 	barrels.timing();						// Updates the barrels' timing to manage their movement and state
@@ -210,7 +210,7 @@ void Game::draw()
 }
 
 // Erases Mario's, barrels and ghosts previous position from the screen
-void Game::erase()
+void ManualGame::erase()
 {
 	mario.erase();
 	barrels.erase();
@@ -218,7 +218,7 @@ void Game::erase()
 }
 
 // Moves Mario, barrels and ghosts to a new position based on user input or game logic
-void Game::move()
+void ManualGame::move()
 {
 	mario.move();
 	if (mario.getjust_died())
@@ -232,7 +232,7 @@ void Game::move()
 }
 
 // Pauses the game when a specific key is pressed (PAUSE)
-void Game::pauseGame()
+void ManualGame::pauseGame()
 {
 	bool pause_on = true;
 	int key;
@@ -250,7 +250,7 @@ void Game::pauseGame()
 }
 
 // Displays the game instructions screen to the player
-void Game::showInstructions()
+void ManualGame::showInstructions()
 {
 	GameConfig::clrscr();
 	board.printScreen(board.getInstructionBoard());
@@ -270,7 +270,7 @@ void Game::showInstructions()
 	board.printScreen(board.getStartBoard());
 }
 
-void Game::updateIfMarioHitBarrelOrGhost() {
+void ManualGame::updateIfMarioHitBarrelOrGhost() {
 	// Variables to store the positions of the barrels and Mario
 	GameConfig::Position barrel_pos, ghost_pos, hammer_pos;
 
@@ -313,7 +313,7 @@ void Game::updateIfMarioHitBarrelOrGhost() {
 	board.printScoreLegend();									// Update the score display
 }
 
-bool Game::hitTheEnemy(GameConfig::Position enemy_pos, GameConfig::Position hammer_pos)
+bool ManualGame::hitTheEnemy(GameConfig::Position enemy_pos, GameConfig::Position hammer_pos)
 {
 	if (hammer_pos.x == enemy_pos.x && hammer_pos.y == enemy_pos.y)		// When mario and the enemy at the same place
 		return true;
@@ -322,7 +322,7 @@ bool Game::hitTheEnemy(GameConfig::Position enemy_pos, GameConfig::Position hamm
 }
 
 // Checks if Mario died from a barrel or ghost
-void Game::updateIfDiedByBarrelOrGhost()
+void ManualGame::updateIfDiedByBarrelOrGhost()
 {
 	// Variables to store the positions of the barrels and Mario
 	GameConfig::Position mario_pos, barrel_pos, ghost_pos;
@@ -352,7 +352,7 @@ void Game::updateIfDiedByBarrelOrGhost()
 }
 
 // Handles the logic when Mario is hit by an enemy (barrel or ghost)
-bool Game::hitByEnemy(GameConfig::Position enemy_pos, GameConfig::Position mario_pos)
+bool ManualGame::hitByEnemy(GameConfig::Position enemy_pos, GameConfig::Position mario_pos)
 {
 	if (mario_pos.x == enemy_pos.x && mario_pos.y == enemy_pos.y) {												// When mario and the barrel at the same place
 		mario.life();
@@ -374,7 +374,7 @@ bool Game::hitByEnemy(GameConfig::Position enemy_pos, GameConfig::Position mario
 }
 
 // Handles the logic when Mario dies due to an exploded barrel
-void Game::diedFromExplodedBarrel(GameConfig::Position barrel_pos, GameConfig::Position mario_pos, int i)
+void ManualGame::diedFromExplodedBarrel(GameConfig::Position barrel_pos, GameConfig::Position mario_pos, int i)
 {
 	bool is_exploded = barrels.getIfBarrelExploded(i);			// Check if the specified i barrel has exploded
 	if (is_exploded)
@@ -384,7 +384,7 @@ void Game::diedFromExplodedBarrel(GameConfig::Position barrel_pos, GameConfig::P
 }
 
 // Checks if Mario successfully completed the level
-bool Game::wonTheLevel()
+bool ManualGame::wonTheLevel()
 {
 	if (mario.getIfWon())
 	{
@@ -397,7 +397,7 @@ bool Game::wonTheLevel()
 		return false;
 }
 
-void Game::saveManualGame(const std::string & stepsFilename, const std::string& resultsFilename)
+void ManualGame::saveManualGame(const std::string & stepsFilename, const std::string& resultsFilename)
 {
 	steps.saveSteps(stepsFilename);
 	results.saveResults(resultsFilename);

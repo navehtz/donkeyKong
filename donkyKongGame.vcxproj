@@ -133,7 +133,7 @@
     <ClCompile Include="barrels.cpp" />
     <ClCompile Include="board.cpp" />
     <ClCompile Include="entity.cpp" />
-    <ClCompile Include="game.cpp" />
+    <ClCompile Include="manualGame.cpp" />
     <ClCompile Include="gameConfig.cpp" />
     <ClCompile Include="ghost.cpp" />
     <ClCompile Include="ghosts.cpp" />
@@ -148,7 +148,7 @@
     <ClInclude Include="barrels.h" />
     <ClInclude Include="board.h" />
     <ClInclude Include="entity.h" />
-    <ClInclude Include="game.h" />
+    <ClInclude Include="manualGame.h" />
     <ClInclude Include="gameConfig.h" />
     <ClInclude Include="ghost.h" />
     <ClInclude Include="ghosts.h" />

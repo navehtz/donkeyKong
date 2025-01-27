@@ -44,7 +44,7 @@ public:
 	//void showInstructions();									// Displays the game instructions screen to the player
 	void run();//!!!!													// Manages the overall flow of the game
 
-	void setStartingGame();										// Initializes the game to its starting state
+	void setStartingGame();//SSS										// Initializes the game to its starting state
 	void updateActionByKeys();									// Updates Mario's actions based on key presses from the user
 	bool isAlive(int lives) { return lives > GameConfig::DEAD_MARIO; }		// Returns true if Mario is alive (has more lives than DEAD_MARIO), otherwise false
 	void startGame(int screen_index);							// Starts the game loop and handles gameplay logic

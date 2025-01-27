@@ -1,5 +1,5 @@
 
-#include "game.h"
+#include "manualGame.h"
 #include "automaticGame.h"
 
 int main(int argc, char** argv) 
@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 		auto_game.run();
 	}
 	else {
-		Game manual_game;
+		ManualGame manual_game;
 		manual_game.run();
 	}
 }
