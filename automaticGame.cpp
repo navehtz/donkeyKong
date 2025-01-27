@@ -18,52 +18,6 @@ void AutomaticGame::run()
 	GameConfig::clrscr();
 }
 
-// Displays the game menu and handles user input to start or quit the game
-//bool AutomaticGame::menu()
-//{
-//	if (_kbhit())									// Checks if a key has been pressed
-//	{
-//		int key = _getch();							// Reads the key that was pressed
-//		int screen_index;
-//		switch (key) {
-//		case(START_NEW_GAME):						// User pressed the key to start a new game
-//			board.printScreenOptions(files_names_vec);
-//			screen_index = chooseGameScreen();
-//			if (screen_index == -1)
-//				break;
-//			startGame(screen_index);
-//			break;
-//		case(INSTRUCTIONS_AND_KEYS):				// User pressed the key to view instructions
-//			showInstructions();
-//			break;
-//		case(EXIT_GAME):							// User pressed the key to exit the game
-//			board.printScreen(board.getGoodByeBoard());
-//			Sleep(GameConfig::SCREEN_EXIT);
-//			return false;							// Exit the menu loop and terminate the game
-//		}
-//	}
-//	return true;
-//}
-
-//int AutomaticGame::chooseGameScreen()
-//{
-//	while (true)										// Checks if a key has been pressed
-//	{
-//		if (_kbhit())
-//		{
-//			int key = _getch() - '0';													// Reads the key that was pressed
-//			if (!files_names_vec.empty() && key > 0 && key <= files_names_vec.size())	// Valid key
-//			{
-//				key--;																	// The array start from zero
-//				return key;
-//			}
-//			else if (key == EXIT_GAME) {
-//				return -1;
-//			}
-//		}
-//	}
-//	return -1;													// Prevent warnings
-//}
 
 
 // Starts the game loop and handles gameplay logic
