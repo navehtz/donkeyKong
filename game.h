@@ -25,9 +25,10 @@ class Game {
 	static constexpr int RIGHT = 1;
 
 	bool playing_mario = true;							// True = while mario has more than 0 lives
-	bool exit_game = false;								// False = while EXIT_GAME hasn't been pressed
+	bool exit_game = false;//!!!!						// False = while EXIT_GAME hasn't been pressed
 	bool last_screen = false;							// False = while it isn't the last screen
 	size_t iteration = 0;
+	bool mario_died_this_iteration = false;
 
 	Mario mario;
 	Board board;
@@ -40,8 +41,8 @@ class Game {
 	Results results;
 public:
 
-	void showInstructions();									// Displays the game instructions screen to the player
-	void run();													// Manages the overall flow of the game
+	void showInstructions();//!!!!								// Displays the game instructions screen to the player
+	void run();//!!!													// Manages the overall flow of the game
 
 	void setStartingGame();										// Initializes the game to its starting state
 	void updateActionByKeys();									// Updates Mario's actions based on key presses from the user
@@ -63,6 +64,16 @@ public:
 	int chooseGameScreen();																						// Allow the user to choose a game screen and return the selected screen index
 
 	void manageInput();
-	void saveManualGame(const std::string& stepsFilename, const std::string& resultsFilename) const;
+	void saveManualGame(const std::string& stepsFilename, const std::string& resultsFilename);
+	void setResult() { 
+		if(mario_died_this_iteration) {	
+			if(mario.getLives() > 0)
+				results.addResult(iteration, results.died);
+			else {
+				results.addResult(iteration, results.finished);
+			}
+		}
+		mario_died_this_iteration = false;
+	}
 };
 

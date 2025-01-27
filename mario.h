@@ -28,7 +28,6 @@ class Mario : public Entity
 	bool got_hammer = false;
 	int fall_count = 0;
 	int lives = GameConfig::FULL_LIVES;
-	size_t iteration = 0;
 
 	// Constants
 	static constexpr int FALL_FROM_TOO_HIGH = 5;
@@ -93,7 +92,8 @@ public:
 	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); } // Get the char in the (x,y) position on board
 	char getHammerChar() const { return hammer.ch; }                              // Get the hammer character
 
-	int getLives() const { return lives; }                                        // Get Mario's lives
+	int getLives() const {
+		return lives; }                                        // Get Mario's lives
 	void setLives(int _lives) { lives = _lives; }                                 // Set Mario's lives
 	bool getIfWon() const { return won_level; }                                   // Check if Mario finished the level (reached Pauline)
 	bool getjust_died() const { return just_died; }                               // Check if Mario just died
@@ -119,5 +119,5 @@ public:
 	bool validHit();															  // Validate hammer hit
 
 	void setPointerResults(Results &results) { ptr_results = &results; }
-	void setIteration(size_t curr_iteration) { iteration = curr_iteration; } 
+	//void setIteration(size_t curr_iteration) { iteration = curr_iteration; } 
 };

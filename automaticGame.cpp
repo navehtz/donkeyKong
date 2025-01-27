@@ -1,4 +1,3 @@
-/*
 #include "automaticGame.h"
 
 #include "gameConfig.h"
@@ -10,61 +9,61 @@ void AutomaticGame::run()
 	GameConfig::ShowConsoleCursor(false);						// Hides the console cursor to improve visual appearance during the game
 
 	board.getAllBoardFileNames(files_names_vec);
-	board.printScreen(board.getStartBoard());		// Displays the starting board on the screen
-	bool in_game = true;
+	//board.printScreen(board.getStartBoard());		// Displays the starting board on the screen
+	//bool in_game = true;
 
-	while (in_game)									// Main game loop: keeps running while the game is active
-		in_game = menu();
+	startGame(0);
+	//TODO: try catch if we start saving from the second screen !!!!!!!!!!!!
 
 	GameConfig::clrscr();
 }
 
 // Displays the game menu and handles user input to start or quit the game
-bool AutomaticGame::menu()
-{
-	if (_kbhit())									// Checks if a key has been pressed
-	{
-		int key = _getch();							// Reads the key that was pressed
-		int screen_index;
-		switch (key) {
-		case(START_NEW_GAME):						// User pressed the key to start a new game
-			board.printScreenOptions(files_names_vec);
-			screen_index = chooseGameScreen();
-			if (screen_index == -1)
-				break;
-			startGame(screen_index);
-			break;
-		case(INSTRUCTIONS_AND_KEYS):				// User pressed the key to view instructions
-			showInstructions();
-			break;
-		case(EXIT_GAME):							// User pressed the key to exit the game
-			board.printScreen(board.getGoodByeBoard());
-			Sleep(GameConfig::SCREEN_EXIT);
-			return false;							// Exit the menu loop and terminate the game
-		}
-	}
-	return true;
-}
+//bool AutomaticGame::menu()
+//{
+//	if (_kbhit())									// Checks if a key has been pressed
+//	{
+//		int key = _getch();							// Reads the key that was pressed
+//		int screen_index;
+//		switch (key) {
+//		case(START_NEW_GAME):						// User pressed the key to start a new game
+//			board.printScreenOptions(files_names_vec);
+//			screen_index = chooseGameScreen();
+//			if (screen_index == -1)
+//				break;
+//			startGame(screen_index);
+//			break;
+//		case(INSTRUCTIONS_AND_KEYS):				// User pressed the key to view instructions
+//			showInstructions();
+//			break;
+//		case(EXIT_GAME):							// User pressed the key to exit the game
+//			board.printScreen(board.getGoodByeBoard());
+//			Sleep(GameConfig::SCREEN_EXIT);
+//			return false;							// Exit the menu loop and terminate the game
+//		}
+//	}
+//	return true;
+//}
 
-int AutomaticGame::chooseGameScreen()
-{
-	while (true)										// Checks if a key has been pressed
-	{
-		if (_kbhit())
-		{
-			int key = _getch() - '0';													// Reads the key that was pressed
-			if (!files_names_vec.empty() && key > 0 && key <= files_names_vec.size())	// Valid key
-			{
-				key--;																	// The array start from zero
-				return key;
-			}
-			else if (key == EXIT_GAME) {
-				return -1;
-			}
-		}
-	}
-	return -1;													// Prevent warnings
-}
+//int AutomaticGame::chooseGameScreen()
+//{
+//	while (true)										// Checks if a key has been pressed
+//	{
+//		if (_kbhit())
+//		{
+//			int key = _getch() - '0';													// Reads the key that was pressed
+//			if (!files_names_vec.empty() && key > 0 && key <= files_names_vec.size())	// Valid key
+//			{
+//				key--;																	// The array start from zero
+//				return key;
+//			}
+//			else if (key == EXIT_GAME) {
+//				return -1;
+//			}
+//		}
+//	}
+//	return -1;													// Prevent warnings
+//}
 
 
 
@@ -73,14 +72,18 @@ void AutomaticGame::startGame(int screen_index)
 {
 	bool valid_file;
 	playing_mario = true;							    // Indicates that the Mario gameplay loop is active
-	exit_game = false;								    // Indicates that the Mario gameplay loop is active
 	last_screen = false;								// Indicates that it isn't the last screen
 
 	mario.setLives(GameConfig::FULL_LIVES);
 	board.resetScore();
 
-	for (int i = screen_index; (i < files_names_vec.size()) && (playing_mario && !exit_game); i++)
+
+	bool unmatching_result_found = false;
+
+	for (int i = screen_index; (i < files_names_vec.size()) /* && playing_mario exit_game */ ; i++)
 	{
+		std::string filename_prefix, stepsFilename, resultsFilename;
+
 		valid_file = board.load(files_names_vec[i]);
 		if (!valid_file) {	// If the file isnt valid: continue to the next file
 			continue;
@@ -88,13 +91,35 @@ void AutomaticGame::startGame(int screen_index)
 
 		if (i == files_names_vec.size() - 1) { last_screen = true; }
 
+		filename_prefix = files_names_vec[i].substr(0, files_names_vec[i].find_last_of('.'));
+		stepsFilename = filename_prefix + ".steps";
+		resultsFilename = filename_prefix + ".result";
+
+
+		steps = Steps::loadSteps(stepsFilename); //HAVE TO BE BEFORE STARTING THE BARRELS AND GHOSTS - TO SET THE RANDOM SEED
+		//GameConfig::setRandomSeed(steps.getRandomSeed());
+
+		results = Results::loadResults(resultsFilename);
+
 		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
 		playing_mario = true;							// Indicates that the Mario gameplay loop is active
-		exit_game = false;								// Indicates that the Mario gameplay loop is active
 
-
-		while (playing_mario && !exit_game)				// Main game loop: continues as long as Mario is playing and has lives
+		iteration = 0; // we need iteration to be outside the loop
+		//while (playing_mario)							// Main game loop: continues as long as Mario is playing and has lives
+		for (; playing_mario; ++iteration)
 		{
+			//mario.setIteration(++iteration);
+
+			size_t diedNextIteration = 0;
+			if (results.isFinishedBy(iteration)) {
+				reportResultError("Results file reached finish while game hadn't!", files_names_vec[i], iteration);
+				unmatching_result_found = true;
+				break;
+			}
+			else {
+				diedNextIteration = results.getDiedNextIteration();
+			}
+
 			if (wonTheLevel())
 			{
 				board.addScore(GameConfig::END_LEVEL);
@@ -105,20 +130,68 @@ void AutomaticGame::startGame(int screen_index)
 			draw();										// Draws the current state of the game (Mario, barrels)
 			updateIfDiedByBarrelOrGhost();						// Checks if Mario collided with a barrel and updates his state if he has died
 
-			for (int j = 0; j < GameConfig::POSSIBLE_INPUT; j++)	// Able to get some input from the user at the same game loop
-			{
-				if (_kbhit())
-				{
-					updateActionByKeys();
-				}
-				Sleep(GameConfig::SCREEN_TIME);
-			}
+			//manageInput();
+			updateActionByKeys();
+
 			barrels.updateBarrelsCharParameters();
 			erase();
 			move();
 			updateIfDiedByBarrelOrGhost();				// Checks if Mario collided with a barrel and updates his state if he has died
 			playing_mario = isAlive(mario.getLives());	// Determine if Mario is still alive based on his remaining lives (if lives > 0, the game continues)
+
+
+			//checkIfResultFileMatch(files_names_vec[i])
+
+			if (mario_died_this_iteration) {
+				if (mario.getLives() > 0) {
+					if (results.popResult() != Results::ResultEntry{ iteration, Results::ResultValue::died }) {
+						reportResultError("Results file doesn't match the died mario!", files_names_vec[i], iteration);
+						unmatching_result_found = true;
+					}
+				}
+				else {
+					if (results.myFront() != Results::ResultEntry{ iteration, Results::ResultValue::finished }) {
+						reportResultError("Results file doesn't match the died mario!", files_names_vec[i], iteration);
+						unmatching_result_found = true;
+					}
+					iteration--;
+				}
+			}
+			else if (iteration == diedNextIteration && iteration > 0) {
+				reportResultError("Results file has a hit bomb event that didn't happen!", files_names_vec[i], iteration);
+				unmatching_result_found = true;
+				break;
+			}
+			mario_died_this_iteration = false; // Reset for the next iteration
 		}
+		// FINISH GAME LOOP
+
+
+		if (!unmatching_result_found)	// == If matching result
+		{
+			auto last_result = results.popResult();
+			if (last_result != Results::ResultEntry{ iteration, Results::ResultValue::finished }) {
+				reportResultError("Results file doesn't match finished event!", files_names_vec[i], iteration);
+				unmatching_result_found = true;
+			}
+			//else if	(last_result != Results::ResultEntry{ iteration - 1, Results::ResultValue::finished_dead }) {
+			//	reportResultError("Results file doesn't match finished event!", files_names_vec[i], iteration);
+			//	unmatching_result_found = true;
+			//}
+			if (results.popResult().result != Results::ResultValue::noResult) {
+				reportResultError("Results file has additional events after finish event!", files_names_vec[i], iteration);
+				unmatching_result_found = true;
+			}
+		}
+
+		// //checkIfResultFileMatch(files_names_vec[i])
+		//if (mario_died_this_iteration) {
+		//	auto curr_result_from_file = results.popResult();
+		//	if (curr_result_from_file.iteration != iteration && curr_result_from_file.result != Results::ResultValue::died) {
+		//		reportResultError("Results file doesn't match hit bomb event!", files_names_vec[i], iteration);
+		//		unmatching_result_found = true;
+		//	}
+		//}
 	}
 	GameConfig::clrscr();
 	board.printScreen(board.getStartBoard());
@@ -146,36 +219,47 @@ void AutomaticGame::setStartingGame()
 	board.printLegend();
 }
 
+void AutomaticGame::manageInput()
+{
+	//for (int j = 0; j < GameConfig::POSSIBLE_INPUT; j++)	// Able to get some input from the user at the same game loop
+	//{
+	//	if (_kbhit())
+	//	{
+	//		updateActionByKeys();
+	//	}
+	//	Sleep(GameConfig::SCREEN_TIME);
+	//}
+
+}
 
 // Updates Mario's actions based on key presses from the user
 void AutomaticGame::updateActionByKeys()
 {
-	int key = _getch();
-	if (key == EXIT_GAME)					// If the key corresponds to the "Exit Game" action
+	if (steps.isNextStepOnIteration(iteration))
 	{
-		exit_game = true;
-	}
-	else if (key == PAUSE)					// If the key corresponds to "Pause Game"
-	{
-		pauseGame();
-	}
-	else if (key == GameConfig::HAMMER && mario.getIfGotHammer())
-	{
-		if (mario.validHit())
+		while (!steps.isStepEmpty() && iteration >= steps.frontIteration())
 		{
-			GameConfig::Position hammer_pos = mario.getHammerPos();			// Get the current hammer position from Mario
-			char ch = board.getCharFromBoard(hammer_pos.x, hammer_pos.y);	// Retrieve the character at the hammer's position on the board
-			mario.setPosHitHammer(hammer_pos);								// Update Mario's internal state with the hammer's position
-			mario.printHammerOnBoard();										// Print the hammer on the game board
-			if (ch != GameConfig::BARREL && ch != GameConfig::GHOST)		// If the hammer's position does not overlap with a barrel or ghost, update the character behind the hammer
-				mario.setCharBehindHammer(ch);
-			mario.setIfHammerActive(true);									// Activate the hammer
-			updateIfMarioHitBarrelOrGhost();								// Check if Mario hits a barrel or a ghost while the hammer is active
+			char key = steps.popStep();
+			if (key == GameConfig::HAMMER && mario.getIfGotHammer())
+			{
+				if (mario.validHit())
+				{
+					GameConfig::Position hammer_pos = mario.getHammerPos();			// Get the current hammer position from Mario
+					char ch = board.getCharFromBoard(hammer_pos.x, hammer_pos.y);	// Retrieve the character at the hammer's position on the board
+					mario.setPosHitHammer(hammer_pos);								// Update Mario's internal state with the hammer's position
+					mario.printHammerOnBoard();										// Print the hammer on the game board
+					if (ch != GameConfig::BARREL && ch != GameConfig::GHOST)		// If the hammer's position does not overlap with a barrel or ghost, update the character behind the hammer
+						mario.setCharBehindHammer(ch);
+					mario.setIfHammerActive(true);									// Activate the hammer
+					updateIfMarioHitBarrelOrGhost();								// Check if Mario hits a barrel or a ghost while the hammer is active
+				}
+			}
+			else {									// For all other keys, pass the key to Mario's keyPressed handler
+				mario.keyPressed((char)key);
+			}
 		}
 	}
-	else {									// For all other keys, pass the key to Mario's keyPressed handler
-		mario.keyPressed((char)key);
-	}
+	Sleep(150); // MAGIC NUMBER !!!!!!!
 }
 
 // Draws Mario and barrels on the screen
@@ -201,6 +285,7 @@ void AutomaticGame::move()
 	mario.move();
 	if (mario.getjust_died())
 	{
+		mario_died_this_iteration = true;
 		mario.setJust_died();
 		return;
 	}
@@ -209,43 +294,43 @@ void AutomaticGame::move()
 }
 
 // Pauses the game when a specific key is pressed (PAUSE)
-void AutomaticGame::pauseGame()
-{
-	bool pause_on = true;
-	int key;
-
-	while (pause_on == true)
-	{
-		if (_kbhit())
-		{
-			key = _getch();
-			if (key == PAUSE)
-				pause_on = false;
-		}
-	}
-	Sleep(GameConfig::SCREEN_PAUSE_GAME);
-}
+//void AutomaticGame::pauseGame()
+//{
+//	bool pause_on = true;
+//	int key;
+//
+//	while (pause_on == true)
+//	{
+//		if (_kbhit())
+//		{
+//			key = _getch();
+//			if (key == PAUSE)
+//				pause_on = false;
+//		}
+//	}
+//	Sleep(GameConfig::SCREEN_PAUSE_GAME);
+//}
 
 // Displays the game instructions screen to the player
-void AutomaticGame::showInstructions()
-{
-	GameConfig::clrscr();
-	board.printScreen(board.getInstructionBoard());
-	bool in_instruction_screen = true;								 // Flag to keep the instruction screen active until the user decides to exit
-
-	while (in_instruction_screen)									 // Loop to wait for user input while on the instruction scree
-	{
-		if (_kbhit())
-		{
-			int key = _getch();
-			key = tolower(key);
-			if (key == RETURN_BACK)
-				in_instruction_screen = false;
-		}
-	}
-	GameConfig::clrscr();
-	board.printScreen(board.getStartBoard());
-}
+//void AutomaticGame::showInstructions()
+//{
+//	GameConfig::clrscr();
+//	board.printScreen(board.getInstructionBoard());
+//	bool in_instruction_screen = true;								 // Flag to keep the instruction screen active until the user decides to exit
+//
+//	while (in_instruction_screen)									 // Loop to wait for user input while on the instruction scree
+//	{
+//		if (_kbhit())
+//		{
+//			int key = _getch();
+//			key = tolower(key);
+//			if (key == RETURN_BACK)
+//				in_instruction_screen = false;
+//		}
+//	}
+//	GameConfig::clrscr();
+//	board.printScreen(board.getStartBoard());
+//}
 
 void AutomaticGame::updateIfMarioHitBarrelOrGhost() {
 	// Variables to store the positions of the barrels and Mario
@@ -282,7 +367,7 @@ void AutomaticGame::updateIfMarioHitBarrelOrGhost() {
 			ghosts.deactivate_ghost(i);									// Deactivate the ghost
 			ghosts.setPreviousCharOfGhost(i, mario.getHammerChar());	// To print the hammer on board
 			//ghosts.eraseASpecificGhost(i);							// Remove the ghost from the board
-			ghosts.kickBarrelOfBoard(i);
+			ghosts.kickGhostFromBoard(i);
 			board.addScore(GameConfig::KILL_GHOST);						// Add score for destroying a ghost
 			break;
 		}
@@ -374,4 +459,3 @@ bool AutomaticGame::wonTheLevel()
 }
 
 
-*/

@@ -78,7 +78,7 @@ void Game::startGame(int screen_index)
 	mario.setLives(GameConfig::FULL_LIVES);
 	board.resetScore();
 
-	for (int i = screen_index; (i < files_names_vec.size()) && (playing_mario && !exit_game); i++)
+	for (int i = screen_index; (i < files_names_vec.size() && !exit_game); i++)
 	{
 		valid_file = board.load(files_names_vec[i]);
 		if (!valid_file) {	// If the file isnt valid: continue to the next file
@@ -87,6 +87,7 @@ void Game::startGame(int screen_index)
 
 		if (i == files_names_vec.size() - 1) { last_screen = true; }
 
+		GameConfig::setRandomSeed(static_cast<long>(std::chrono::system_clock::now().time_since_epoch().count()));
 		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
 		playing_mario = true;							// Indicates that the Mario gameplay loop is active
 		exit_game = false;								// Indicates that the Mario gameplay loop is active
@@ -96,9 +97,10 @@ void Game::startGame(int screen_index)
 		resultsFilename = filename_prefix + ".result";
 
 		iteration = 0; // we need iteration to be outside the loop
-		while (playing_mario && !exit_game)				// Main game loop: continues as long as Mario is playing and has lives
+		//while (playing_mario && !exit_game)				// Main game loop: continues as long as Mario is playing and has lives
+		for(; playing_mario && !exit_game; ++iteration)
 		{
-			mario.setIteration(++iteration);
+			//mario.setIteration(++iteration);
 
 			if (wonTheLevel())
 			{
@@ -109,16 +111,17 @@ void Game::startGame(int screen_index)
 
 			barrels.bringBackExplodedBarrels();			// Reset the state of barrels that have exploded
 			draw();										// Draws the current state of the game (Mario, barrels)
-			updateIfDiedByBarrelOrGhost();						// Checks if Mario collided with a barrel and updates his state if he has died
+			updateIfDiedByBarrelOrGhost();			// Checks if Mario collided with a barrel and updates his state if he has died
 
 			manageInput();
 
 			barrels.updateBarrelsCharParameters();		
 			erase();
 			move();
-			updateIfDiedByBarrelOrGhost();				// Checks if Mario collided with a barrel and updates his state if he has died
+			//updateIfDiedByBarrelOrGhost();				// Checks if Mario collided with a barrel and updates his state if he has died
 			playing_mario = isAlive(mario.getLives());	// Determine if Mario is still alive based on his remaining lives (if lives > 0, the game continues)
 
+			setResult();
 		}
 		saveManualGame(stepsFilename, resultsFilename);
 	}
@@ -130,8 +133,6 @@ void Game::startGame(int screen_index)
 void Game::setStartingGame()
 {
 	GameConfig::clrscr();
-
-	GameConfig::setRandomSeed(static_cast<long>(std::chrono::system_clock::now().time_since_epoch().count()));
 
 	board.reset();										// Update current board
 	mario.setpBoard(board);								// Links Mario to the game board, so he can interact with it
@@ -162,6 +163,7 @@ void Game::manageInput()
 		Sleep(GameConfig::SCREEN_TIME);
 	}
 }
+
 // Updates Mario's actions based on key presses from the user
 void Game::updateActionByKeys()
 {
@@ -218,6 +220,7 @@ void Game::move()
 	mario.move();
 	if (mario.getjust_died())
 	{
+		mario_died_this_iteration = true;
 		mario.setJust_died();
 		return;
 	}
@@ -299,7 +302,7 @@ void Game::updateIfMarioHitBarrelOrGhost() {
 			ghosts.deactivate_ghost(i);									// Deactivate the ghost
 			ghosts.setPreviousCharOfGhost(i, mario.getHammerChar());	// To print the hammer on board
 			//ghosts.eraseASpecificGhost(i);							// Remove the ghost from the board
-			ghosts.kickBarrelOfBoard(i);
+			ghosts.kickGhostFromBoard(i);
 			board.addScore(GameConfig::KILL_GHOST);						// Add score for destroying a ghost
 			break;
 		}
@@ -350,14 +353,17 @@ bool Game::hitByEnemy(GameConfig::Position enemy_pos, GameConfig::Position mario
 {
 	if (mario_pos.x == enemy_pos.x && mario_pos.y == enemy_pos.y) {												// When mario and the barrel at the same place
 		mario.life();
+		mario_died_this_iteration = true;
 		return true;
 	}
 	else if (mario_pos.x - 1 == enemy_pos.x && mario_pos.x == enemy_pos.x + 1 && mario_pos.y == enemy_pos.y) {	// When Mario and the barrel move toward each other, we need to check their previous positions
 		mario.life();
+		mario_died_this_iteration = true;
 		return true;
 	}
 	else if (mario_pos.x + 1 == enemy_pos.x && mario_pos.x == enemy_pos.x - 1 && mario_pos.y == enemy_pos.y) {	// When Mario and the barrel move toward each other, we need to check their previous positions
 		mario.life();
+		mario_died_this_iteration = true;
 		return true;
 	}
 	else
@@ -388,7 +394,7 @@ bool Game::wonTheLevel()
 		return false;
 }
 
-void Game::saveManualGame(const std::string & stepsFilename, const std::string& resultsFilename) const
+void Game::saveManualGame(const std::string & stepsFilename, const std::string& resultsFilename)
 {
 	steps.saveSteps(stepsFilename);
 	results.saveResults(resultsFilename);

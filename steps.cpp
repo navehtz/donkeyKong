@@ -21,11 +21,12 @@ Steps Steps::loadSteps(const std::string& filename) {
 	return steps;
 }
 
-void Steps::saveSteps(const std::string& filename) const {
+void Steps::saveSteps(const std::string& filename) {
 	std::ofstream steps_file(filename);
 	steps_file << GameConfig::getRandomSeed() << '\n' << steps.size();		// First row of the file will be the random seed
 	for (const auto& step : steps) {
 		steps_file << '\n' << step.first << ' ' << step.second;
 	}
 	steps_file.close();
+	steps.clear();
 }

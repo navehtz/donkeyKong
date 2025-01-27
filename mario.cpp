@@ -351,23 +351,21 @@ void Mario::life()
 	pBoard->setLifeLegend(lives);
 	pBoard->printLifeLegend();
 
+	flashingMario();
+	just_died = true;
 	if (lives > DEAD_MARIO) {
 		startOver();
 	}
 	else if (lives == DEAD_MARIO) {
-		flashingMario();
 		pBoard->printScreen(pBoard->getLosingBoard());
 		Sleep(GameConfig::SCREEN_EXIT);
 	}
-	ptr_results->addResult(iteration, ptr_results->died);
+	//ptr_results->addResult(iteration, ptr_results->died);
 }
 
 // Reset the game after Mario dies but still has lives
 void Mario::startOver()
 {
-	just_died = true;
-	flashingMario();
-
 	pBoard->reset();
 	setStartingMario();
 	pBarrels->setStartingBarrels();

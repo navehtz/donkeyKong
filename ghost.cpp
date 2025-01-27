@@ -6,7 +6,8 @@ void Ghost::setStartingGhost(Board* _pBoard, GameConfig::Position pos)
 	pBoard = _pBoard;
 	point.setPosition(pos);         // Set the initial position of the ghost
 
-	if (myRandom() == 0)            // Randomly decide initial direction (left or right)
+	srand(GameConfig::getRandomSeed());
+	if (rand() % 2 == 0)            // Randomly decide initial direction (left or right)
 	{
 		point.setDirX(GameConfig::LEFT);
 	}
@@ -82,14 +83,14 @@ void Ghost::fall()
 // Manage the ghost's direction while wandering on the floor
 void Ghost::manageDirection()
 {
-	srand(GameConfig::getRandomSeed());
-
 	int dirX = point.getDir().x;
 
 	if (dirX == GameConfig::STAY) {  // If just finished falling, set initial direction
 		dirX = GameConfig::LEFT;
 		point.setDirX(dirX);
 	}
+
+	srand(GameConfig::getRandomSeed());
 	if ((rand() % 100) < (CHANGE_DIR_PROB * 100)) {  // Randomly change direction
 		point.setDirX(dirX * -1);
 		dirX *= -1;

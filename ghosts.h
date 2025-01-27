@@ -33,6 +33,6 @@ public:
 	void setPreviousCharOfGhost(int i, char _ch) { ghosts_vec[i].point.setPreviousChar(_ch); }  // Set the previous character of the ghost at index 'i'									
 	void eraseASpecificGhost(int i) { ghosts_vec[i].erase(); }									// Erase the ghost at index 'i' FROM THE BOARD
 
-	void kickBarrelOfBoard(int i) { ghosts_vec[i].setPositionOfEntity(GameConfig::NOT_RELEVET_POS); }
+	void kickGhostFromBoard(int i) { ghosts_vec[i].setPositionOfEntity(GameConfig::NOT_RELEVET_POS); }
 
 };
