@@ -66,7 +66,6 @@ void AutomaticGame::run()
 //}
 
 
-
 // Starts the game loop and handles gameplay logic
 void AutomaticGame::startGame(int screen_index)
 {
@@ -80,7 +79,7 @@ void AutomaticGame::startGame(int screen_index)
 
 	bool unmatching_result_found = false;
 
-	for (int i = screen_index; (i < files_names_vec.size()) /* && playing_mario exit_game */ ; i++)
+	for (int i = screen_index; (i < files_names_vec.size()) && playing_mario /* && exit_game */ ; i++)
 	{
 		std::string filename_prefix, stepsFilename, resultsFilename;
 
@@ -95,9 +94,21 @@ void AutomaticGame::startGame(int screen_index)
 		stepsFilename = filename_prefix + ".steps";
 		resultsFilename = filename_prefix + ".result";
 
+		std::filesystem::path stepsFilePath = std::filesystem::path(".") / stepsFilename;
+		std::filesystem::path stepsFilePath = std::filesystem::path(".") / resultsFilename;
+
+		if (!std::filesystem::exists(stepsFilePath)) {
+			reportFileError("File doesn't exist", stepsFilename);
+			continue;
+		}
+
+		if (!std::filesystem::exists(resultsFilename)) {
+			reportFileError("File doesn't exist", stepsFilename);
+			continue;
+		}
 
 		steps = Steps::loadSteps(stepsFilename); //HAVE TO BE BEFORE STARTING THE BARRELS AND GHOSTS - TO SET THE RANDOM SEED
-		//GameConfig::setRandomSeed(steps.getRandomSeed());
+		srand(GameConfig::getRandomSeed());
 
 		results = Results::loadResults(resultsFilename);
 

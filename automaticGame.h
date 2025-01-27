@@ -73,6 +73,13 @@ public:
 		zevel = 0; // For the warning of not referenced
 	}
 
+	void reportFileError(const std::string& message, const std::string& filename) {
+		system("cls");
+		std::cout << filename << " - " << message << '\n';
+		std::cout << "Press any key to continue to next screens (if any)" << std::endl;
+		int zevel = _getch(); // To continue
+		zevel = 0; // For the warning of not referenced
+	}
 	// TODO:: write this like: 
 
 
