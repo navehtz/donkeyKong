@@ -26,11 +26,13 @@ class AutomaticGame : public BaseGame {
 	//Steps steps;
 	//Results results;
 	bool unmatching_result_found = false;
+	bool is_silent;
 
 public:
-
+	AutomaticGame(bool silent_flag) : is_silent(silent_flag) {}
 	//void showInstructions();									// Displays the game instructions screen to the player
 	void run() override;//!!!!													// Manages the overall flow of the game
+	void setStartingGame();
 	void stagesLoop(int screen_index) override;
 	//void setStartingGame();//SSS										// Initializes the game to its starting state
 	void updateActionByKeys() override;									// Updates Mario's actions based on key presses from the user

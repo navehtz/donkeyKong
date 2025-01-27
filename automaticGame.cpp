@@ -18,6 +18,30 @@ void AutomaticGame::run()
 	GameConfig::clrscr();
 }
 
+void AutomaticGame::setStartingGame()
+{
+	if(!is_silent)
+		GameConfig::clrscr();
+
+	board.reset();										// Update current board
+	mario.setpBoard(board);								// Links Mario to the game board, so he can interact with it
+	mario.setStartingMario();							// Initializes Mario to his starting position and state
+	mario.setpBarrels(barrels);							// Links Mario to the barrels, allowing interactions between them
+	mario.setpGhosts(ghosts);
+
+	barrels.setpBoard(board);							// Links the barrels to the game board, enabling their interaction with it
+	barrels.setStartingBarrels();						// Initializes the barrels to their starting positions and states
+
+	ghosts.setpBoard(board);								// Set the board pointer for the ghosts manager
+	ghosts.setStartingGhosts(board.getGhostVectorSize());	// Initialize the starting positions and count of ghosts
+
+	board.setLegend(board.getScore(), mario.getLives(), GameConfig::SPACE); // Update the legend with the current score, Mario's remaining lives, and hammer status
+	if (!is_silent) {
+		board.printScreen(board.getCurrentBoard());
+		board.printLegend();
+	}
+}
+
 
 
 // Starts the game loop and handles gameplay logic
@@ -33,9 +57,12 @@ void AutomaticGame::startGame(int screen_index)
 
 	stagesLoop(screen_index);
 	
-	GameConfig::clrscr();
-	board.printScreen(board.getStartBoard());
+	if (!is_silent) {
+		GameConfig::clrscr();
+		board.printScreen(board.getStartBoard());
+	}
 }
+
 
 void AutomaticGame::stagesLoop(int screen_index)
 {

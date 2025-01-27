@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 	bool is_silent = is_load && argc > 2 && std::string(argv[2]) == "-silent";
 
 	if (is_load) {
-		AutomaticGame auto_game;
+		AutomaticGame auto_game(is_silent);
 		auto_game.run();
 	}
 	else{

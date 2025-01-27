@@ -46,7 +46,7 @@ protected:
 public:
 	virtual void run() = 0;
 	virtual void stagesLoop(int screen_index) = 0;
-	void setStartingGame();//SSS											// Initializes the game to its starting state
+	virtual void setStartingGame();//SSS											// Initializes the game to its starting state
 	void setFilesNames(int i);
 	virtual void updateActionByKeys() = 0;											// Updates Mario's actions based on key presses from the user
 	bool isAlive(int lives) { return lives > GameConfig::DEAD_MARIO; }		// Returns true if Mario is alive (has more lives than DEAD_MARIO), otherwise false
