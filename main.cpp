@@ -1,6 +1,7 @@
 
 #include "manualGame.h"
 #include "automaticGame.h"
+#include "baseGame.h"
 
 int main(int argc, char** argv) 
 {

@@ -54,6 +54,9 @@
     <ClCompile Include="results.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="baseGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameConfig.h">
@@ -93,6 +96,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="results.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
