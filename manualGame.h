@@ -13,6 +13,7 @@ class ManualGame : public BaseGame {
 
 	//bool playing_mario = true;							// True = while mario has more than 0 lives
 	bool exit_game = false;//!!!!						// False = while EXIT_GAME hasn't been pressed
+	bool is_save;
 	//bool last_screen = false;							// False = while it isn't the last screen
 	//size_t iteration = 0;
 	//bool mario_died_this_iteration = false;
@@ -27,7 +28,7 @@ class ManualGame : public BaseGame {
 	//Steps steps;
 	//Results results;
 public:
-
+	ManualGame(bool save_mode_flag) : is_save(save_mode_flag) {}
 	void showInstructions();//!!!!								// Displays the game instructions screen to the player
 	void run() override;//!!!													// Manages the overall flow of the game
 	void stagesLoop(int screen_index) override;

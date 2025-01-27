@@ -62,9 +62,6 @@ void AutomaticGame::stagesLoop(int screen_index)
 
 		iteration = 0; // we need iteration to be outside the loop
 		gameLoop(); //while (playing_mario)							// Main game loop: continues as long as Mario is playing and has lives
-		// FINISH GAME LOOP
-
-
 
 		handleResultsErrorAfterLoop();
 	}
@@ -114,7 +111,7 @@ bool AutomaticGame::loadAutoGame()
 
 void AutomaticGame::gameLoop()
 {
-	for (; playing_mario; ++iteration)
+	for (; playing_mario; iteration++)
 	{
 		//mario.setIteration(++iteration);
 
@@ -157,19 +154,20 @@ void AutomaticGame::gameLoop()
 
 bool AutomaticGame::handleResultsError(size_t diedNextIteration)
 {
+	bool res = true;
 	if (mario_died_this_iteration) {
 		if (mario.getLives() > 0) {
 			if (results.popResult() != Results::ResultEntry{ iteration, Results::ResultValue::died }) {
 				reportResultError("Results file doesn't match the died mario!", screenFileName, iteration);
 				unmatching_result_found = true;
-				return false;
+				res = false;
 			}
 		}
 		else {
 			if (results.myFront() != Results::ResultEntry{ iteration, Results::ResultValue::finished }) {
 				reportResultError("Results file doesn't match the died mario!", screenFileName, iteration);
 				unmatching_result_found = true;
-				return false;
+				res = false;
 			}
 			iteration--;
 		}
@@ -177,9 +175,9 @@ bool AutomaticGame::handleResultsError(size_t diedNextIteration)
 	else if (iteration == diedNextIteration && iteration > 0) {
 		reportResultError("Results file has a dead Mario event that didn't happen!", screenFileName, iteration);
 		unmatching_result_found = true;
-		return false;
+		res = false;
 	}
-	return true;
+	return res;
 }
 
 void AutomaticGame::handleResultsErrorAfterLoop()

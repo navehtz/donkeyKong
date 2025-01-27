@@ -18,39 +18,7 @@ void ManualGame::run()
 	GameConfig::clrscr();
 }
 
-void ManualGame::stagesLoop(int screen_index)
-{
-	bool valid_file;
 
-	for (int i = screen_index; (i < files_names_vec.size() && playing_mario && !exit_game); i++)
-	{
-		//std::string filename_prefix, stepsFilename, resultsFilename;
-
-		valid_file = board.load(files_names_vec[i]);
-		if (!valid_file) {	// If the file isnt valid: continue to the next file
-			continue;
-		}
-
-		if (i == files_names_vec.size() - 1) { last_screen = true; }
-
-		GameConfig::setRandomSeed(static_cast<long>(std::chrono::system_clock::now().time_since_epoch().count()));
-		srand(GameConfig::getRandomSeed());
-
-		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
-		playing_mario = true;							// Indicates that the Mario gameplay loop is active
-		exit_game = false;								// Indicates that the Mario gameplay loop is active
-
-		setFilesNames(i);
-
-		iteration = 0; // we need iteration to be outside the loop
-		gameLoop();		// Main game loop: continues as long as Mario is playing and has lives
-
-
-
-		if (!exit_game)
-			saveManualGame();
-	}
-}
 
 // Displays the game menu and handles user input to start or quit the game
 bool ManualGame::menu()
@@ -99,6 +67,39 @@ int ManualGame::chooseGameScreen()
 	return -1;													// Prevent warnings
 }
 
+void ManualGame::stagesLoop(int screen_index)
+{
+	bool valid_file;
+
+	for (int i = screen_index; (i < files_names_vec.size() && playing_mario && !exit_game); i++)
+	{
+		//std::string filename_prefix, stepsFilename, resultsFilename;
+
+		valid_file = board.load(files_names_vec[i]);
+		if (!valid_file) {	// If the file isnt valid: continue to the next file
+			continue;
+		}
+
+		if (i == files_names_vec.size() - 1) { last_screen = true; }
+
+		if (is_save) {
+			GameConfig::setRandomSeed(static_cast<long>(std::chrono::system_clock::now().time_since_epoch().count()));
+			srand(GameConfig::getRandomSeed());
+			setFilesNames(i);
+		}
+
+		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
+		playing_mario = true;							// Indicates that the Mario gameplay loop is active
+		exit_game = false;								// Indicates that the Mario gameplay loop is active
+
+		iteration = 0; // we need iteration to be outside the loop
+		gameLoop();		// Main game loop: continues as long as Mario is playing and has lives
+
+		if (!exit_game && is_save)
+			saveManualGame();
+	}
+}
+
 // Starts the game loop and handles gameplay logic
 void ManualGame::startGame(int screen_index)
 {
@@ -109,6 +110,7 @@ void ManualGame::startGame(int screen_index)
 	board.resetScore();
 
 	exit_game = false;								    // Indicates that the Mario gameplay loop is active
+
 
 	stagesLoop(screen_index);
 	
@@ -175,12 +177,14 @@ void ManualGame::updateActionByKeys()
 				mario.setCharBehindHammer(ch);
 			mario.setIfHammerActive(true);									// Activate the hammer
 			updateIfMarioHitBarrelOrGhost();								// Check if Mario hits a barrel or a ghost while the hammer is active
-			steps.addStep(iteration, (char)key); // NEW
+			if(is_save)
+				steps.addStep(iteration, (char)key); // NEW
 		}	
 	}
 	else {									// For all other keys, pass the key to Mario's keyPressed handler
 		mario.keyPressed((char)key);
-		steps.addStep(iteration, (char)key);	// NEW
+		if (is_save)
+			steps.addStep(iteration, (char)key);	// NEW
 	}
 }
 
@@ -401,14 +405,15 @@ void ManualGame::setResult()
 
 void ManualGame::gameLoop()
 {
-	for (; playing_mario && !exit_game; ++iteration)
+	for (; playing_mario && !exit_game; iteration++)
 	{
 		//mario.setIteration(++iteration);
 
 		if (wonTheLevel())
 		{
 			board.addScore(GameConfig::END_LEVEL);
-			results.addResult(iteration, results.finished);
+			if(is_save)
+				results.addResult(iteration, results.finished);
 			break;
 		}
 
@@ -424,7 +429,8 @@ void ManualGame::gameLoop()
 		//updateIfDiedByBarrelOrGhost();				// Checks if Mario collided with a barrel and updates his state if he has died
 		playing_mario = isAlive(mario.getLives());	// Determine if Mario is still alive based on his remaining lives (if lives > 0, the game continues)
 
-		setResult();
+		if(is_save)
+			setResult();
 	}
 }
 
