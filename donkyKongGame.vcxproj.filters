@@ -36,7 +36,7 @@
     <ClCompile Include="barrel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ghost.cpp">
+    <ClCompile Include="regularGhost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ghosts.cpp">
@@ -57,7 +57,10 @@
     <ClCompile Include="baseGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="specialGost.cpp">
+    <ClCompile Include="specialGhost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="baseGhost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,7 +86,7 @@
     <ClInclude Include="barrel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ghost.h">
+    <ClInclude Include="regularGhost.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ghosts.h">
@@ -104,7 +107,10 @@
     <ClInclude Include="baseGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="specialGost.h">
+    <ClInclude Include="specialGhost.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseGhost.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

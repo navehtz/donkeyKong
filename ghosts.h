@@ -1,13 +1,13 @@
 #pragma once
 
-#include "ghost.h"
+#include "regularGhost.h"
 #include "board.h"
 #include "gameConfig.h"
 
 
 class Ghosts
 {
-	std::vector <Ghost> ghosts_vec;                                    // Vector containing all ghosts
+	std::vector <BaseGhost> ghosts_vec;                                    // Vector containing all ghosts
 	Board* pBoard = nullptr;                                           // Pointer to the game board
 	int num_of_ghosts = 0;                                             // Number of ghosts in the game
 

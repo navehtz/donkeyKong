@@ -132,16 +132,17 @@
     <ClCompile Include="barrel.cpp" />
     <ClCompile Include="barrels.cpp" />
     <ClCompile Include="baseGame.cpp" />
+    <ClCompile Include="baseGhost.cpp" />
     <ClCompile Include="board.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="manualGame.cpp" />
     <ClCompile Include="gameConfig.cpp" />
-    <ClCompile Include="ghost.cpp" />
+    <ClCompile Include="regularGhost.cpp" />
     <ClCompile Include="ghosts.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mario.cpp" />
     <ClCompile Include="results.cpp" />
-    <ClCompile Include="specialGost.cpp" />
+    <ClCompile Include="specialGhost.cpp" />
     <ClCompile Include="steps.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,16 +150,17 @@
     <ClInclude Include="barrel.h" />
     <ClInclude Include="barrels.h" />
     <ClInclude Include="baseGame.h" />
+    <ClInclude Include="baseGhost.h" />
     <ClInclude Include="board.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="manualGame.h" />
     <ClInclude Include="gameConfig.h" />
-    <ClInclude Include="ghost.h" />
+    <ClInclude Include="regularGhost.h" />
     <ClInclude Include="ghosts.h" />
     <ClInclude Include="mario.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="results.h" />
-    <ClInclude Include="specialGost.h" />
+    <ClInclude Include="specialGhost.h" />
     <ClInclude Include="steps.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

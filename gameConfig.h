@@ -46,7 +46,7 @@ public:
     static constexpr char SPACE = ' ';       // Character for empty space
     static constexpr char HAMMER = 'p';      // Character for hammer
     static constexpr char BARREL = 'O';      // Character for barrel
-    static constexpr char GHOST = 'x';       // Character for ghost
+    static constexpr char REGULAR_GHOST = 'x';       // Character for ghost
     static constexpr char SPECIAL_GHOST = 'X';       // Character for ghost
     static constexpr char LEGEND = 'L';      // Character for legend or key point
 

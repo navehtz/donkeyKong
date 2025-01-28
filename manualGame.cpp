@@ -173,7 +173,7 @@ void ManualGame::updateActionByKeys()
 			char ch = board.getCharFromBoard(hammer_pos.x, hammer_pos.y);	// Retrieve the character at the hammer's position on the board
 			mario.setPosHitHammer(hammer_pos);								// Update Mario's internal state with the hammer's position
 			mario.printHammerOnBoard();										// Print the hammer on the game board
-			if (ch != GameConfig::BARREL && ch != GameConfig::GHOST)		// If the hammer's position does not overlap with a barrel or ghost, update the character behind the hammer
+			if (ch != GameConfig::BARREL && ch != GameConfig::REGULAR_GHOST && ch != GameConfig::SPECIAL_GHOST)	// If the hammer's position does not overlap with a barrel or ghost, update the character behind the hammer
 				mario.setCharBehindHammer(ch);
 			mario.setIfHammerActive(true);									// Activate the hammer
 			updateIfMarioHitBarrelOrGhost();								// Check if Mario hits a barrel or a ghost while the hammer is active

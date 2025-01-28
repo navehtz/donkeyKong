@@ -5,12 +5,18 @@ void Ghosts::setStartingGhosts(int size)
 {
 	num_of_ghosts = size;
 	ghosts_vec.clear();
-	ghosts_vec.resize(num_of_ghosts);
+	ghosts_vec.resize(num_of_ghosts);// CHANGE !!! PUSH BACK BY THE TYPE OF THE GHOST
 
 	for (int i = 0; i < size; i++)
 	{
-		GameConfig::Position pos = pBoard->getStartPosOfGhost(i);
-		ghosts_vec[i].setStartingGhost(pBoard, pos);
+		// להכניס לוקטור את סוג הרוח ואז לעשות תנאים איזה סוג רוח אנחנו מאתחלים - מיוחדת או רגילה
+		char type  = pBoard->getStartPosAndTypeOfGhost(i).type;
+		GameConfig::Position pos = pBoard->getStartPosAndTypeOfGhost(i).pos;
+		
+		if(type == GameConfig::REGULAR_GHOST)
+			ghosts_vec[i].setStartingGhost(pBoard, pos);
+		else if(type == GameConfig::SPECIAL_GHOST)
+			ghosts_vec[i].setStartingGhost(pBoard, pos);
 	}
 }
 
