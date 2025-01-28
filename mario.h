@@ -28,7 +28,6 @@ class Mario : public Entity
 	bool got_hammer = false;
 	int fall_count = 0;
 	int lives = GameConfig::FULL_LIVES;
-	size_t iteration = 0;
 
 	// Constants
 	static constexpr int FALL_FROM_TOO_HIGH = 5;
@@ -64,11 +63,7 @@ public:
 	void setStartingMario();                                                      // Initialize Mario
 	void keyPressed(char key);                                                    // Handle key press input
 
-	void erase() override {                                                       // Erase Mario's current position from the screen and update the board
-		point.erase();
-		pBoard->updateBoard(point.getPosition(), point.getPreviousChar());
-		if (hammer.active) { eraseHammer(); hammer.active = false; } // Erase hammer if active
-	}
+	void erase() override;
 
 	void setpBarrels(Barrels& _barrels) { pBarrels = &_barrels; }                 // Set the barrels object pointer
 	void setpGhosts(Ghosts& _ghosts) { pGhosts = &_ghosts; }                      // Set the ghosts object pointer
@@ -92,8 +87,10 @@ public:
 
 	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); } // Get the char in the (x,y) position on board
 	char getHammerChar() const { return hammer.ch; }                              // Get the hammer character
+	char getMarioChar() const { return point.getChar(); }                              // Get the hammer character
 
-	int getLives() const { return lives; }                                        // Get Mario's lives
+	int getLives() const {
+		return lives; }                                        // Get Mario's lives
 	void setLives(int _lives) { lives = _lives; }                                 // Set Mario's lives
 	bool getIfWon() const { return won_level; }                                   // Check if Mario finished the level (reached Pauline)
 	bool getjust_died() const { return just_died; }                               // Check if Mario just died
@@ -109,8 +106,10 @@ public:
 	void printHammerOnBoard() const;                                              // Print the hammer on the board
 
 	void eraseHammer() {
-		GameConfig::gotoxy(pos_hit_hammer.x, pos_hit_hammer.y);
-		std::cout << ch_behind_hammer;
+		if (!pBoard->getIsSilent()) {
+			GameConfig::gotoxy(pos_hit_hammer.x, pos_hit_hammer.y);
+			std::cout << ch_behind_hammer;
+		}
 		pBoard->updateBoard(pos_hit_hammer, ch_behind_hammer);
 	}
 	void setIfHammerActive(bool b) { hammer.active = b; }                         // Set hammer active status
@@ -119,5 +118,5 @@ public:
 	bool validHit();															  // Validate hammer hit
 
 	void setPointerResults(Results &results) { ptr_results = &results; }
-	void setIteration(size_t curr_iteration) { iteration = curr_iteration; } 
+	//void setIteration(size_t curr_iteration) { iteration = curr_iteration; } 
 };

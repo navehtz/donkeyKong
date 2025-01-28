@@ -3,11 +3,11 @@
 // Initialize barrel
 void Barrel::setStartingBarrel(Board* _pBoard)
 {	
-	srand(GameConfig::getRandomSeed());
 
 	pBoard = _pBoard;
 	point.setPositionY(pBoard->getStartPosGorilla().y);         // Same y-axis starting position for both cases
 
+	//srand(GameConfig::getRandomSeed());
 	if (rand() % 2 == 0)										// Start from the left side
 	{
 		point.setPositionX(pBoard->getStartPosGorilla().x - 1);

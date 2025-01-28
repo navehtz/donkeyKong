@@ -42,6 +42,7 @@ public:
 	void updateBarrelsCharParameters();								// Update the character-related parameters of all barrels
 	int getBarrelDirX(int i) { return barrels[i].getDirX(); }		// Get the x-direction of the barrel at index 'i'
 
-	void deactivate_barrel(int i) { barrels[i].deactivate(); }		// Deactivate the barrel at index 'i'
+	bool isactivateBarrel(int i) { barrels[i].activate(); }		// Deactivate the barrel at index 'i'
+	void deactivateBarrel(int i) { barrels[i].deactivate(); }		// Deactivate the barrel at index 'i'
 };
 

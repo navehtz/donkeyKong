@@ -3,7 +3,6 @@
 #include <list>
 #include <string>
 #include "gameConfig.h"
-#include <iostream>		//for cout
 
 class Results 
 {
@@ -13,6 +12,10 @@ public:
 	struct ResultEntry {
 		size_t iteration;
 		ResultValue result;
+
+		bool operator!=(const ResultEntry& other) const {
+			return (iteration != other.iteration || result != other.result);
+		}
 	};
 
 private:
@@ -20,23 +23,28 @@ private:
 	std::list<ResultEntry> results;
 public:
 	static Results loadResults(const std::string& filename);
-	void saveResults(const std::string& filename) const;
+	void saveResults(const std::string& filename, int score);
 	void addResult(size_t iteration, ResultValue result) {
 		results.push_back({ iteration, result });
 	}
 	//std::pair<size_t, ResultValue> popResult() {
 	ResultEntry popResult() {
-		if (results.empty()) return { 0, Results::noResult };
+		if (results.empty()) return { 0, ResultValue::noResult };
 		auto result = results.front();
 		results.pop_front();
 		return result;
 	}
+
+	ResultEntry myFront() { return results.front(); }
 	bool isFinishedBy(size_t iteration) const {
 		//return results.empty() || results.back().first <= iteration;
-		return results.empty() || results.back().iteration <= iteration;
+		return results.empty() || results.back().iteration < iteration;
 	}
-	size_t getNextBombIteration() const;
+	//size_t getNextBombIteration() const;
+	size_t getDiedNextIteration() const;
 };
+
+
 
 /*
 #pragma once
