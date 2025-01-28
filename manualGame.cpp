@@ -388,7 +388,7 @@ void ManualGame::showInstructions()
 void ManualGame::saveManualGame()
 {
 	steps.saveSteps(stepsFilename);
-	results.saveResults(resultsFilename);
+	results.saveResults(resultsFilename, board.getScore());
 }
 void ManualGame::setResult()
 {

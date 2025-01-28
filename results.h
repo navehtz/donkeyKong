@@ -23,7 +23,7 @@ private:
 	std::list<ResultEntry> results;
 public:
 	static Results loadResults(const std::string& filename);
-	void saveResults(const std::string& filename);
+	void saveResults(const std::string& filename, int score);
 	void addResult(size_t iteration, ResultValue result) {
 		results.push_back({ iteration, result });
 	}

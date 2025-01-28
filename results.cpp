@@ -16,7 +16,7 @@ Results Results::loadResults(const std::string& filename) {
 	return results;  
 }
 
-void Results::saveResults(const std::string& filename) {
+void Results::saveResults(const std::string& filename, int score) {
 
 	std::ofstream results_file(filename);
 	results_file << results.size();
@@ -30,6 +30,8 @@ void Results::saveResults(const std::string& filename) {
 		ResultEntry result = popResult();
 		results_file << '\n' << result.iteration << ' ' << result.result;
 	}
+	results_file << '\n' << "Score gained in this stage: " << score;
+
 	results_file.close();
 }
 
