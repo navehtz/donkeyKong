@@ -141,6 +141,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mario.cpp" />
     <ClCompile Include="results.cpp" />
+    <ClCompile Include="specialGost.cpp" />
     <ClCompile Include="steps.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +158,7 @@
     <ClInclude Include="mario.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="results.h" />
+    <ClInclude Include="specialGost.h" />
     <ClInclude Include="steps.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
