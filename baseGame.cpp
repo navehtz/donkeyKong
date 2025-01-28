@@ -78,7 +78,7 @@ void BaseGame::updateIfMarioHitBarrelOrGhost() {
 		barrel_pos = barrels.getPos(i);								    // Get the current barrel's position
 		if (hitTheEnemy(barrel_pos, hammer_pos))						// Check for collision
 		{
-			barrels.deactivate_barrel(i);								// Deactivate the barrel
+			barrels.deactivateBarrel(i);								// Deactivate the barrel
 			barrels.setPreviousCharOfBarrel(i, mario.getHammerChar());	// To print the hammer on board
 			//barrels.eraseASpecificBarrel(i);							// Remove the barrel from the board
 			barrels.setStartingBarrel(i);								// Reset the barrel's position
@@ -101,7 +101,8 @@ void BaseGame::updateIfMarioHitBarrelOrGhost() {
 			break;
 		}
 	}
-	board.printScoreLegend();									// Update the score display
+	if(!board.getIsSilent())
+		board.printScoreLegend();									// Update the score display
 }
 
 bool BaseGame::hitTheEnemy(GameConfig::Position enemy_pos, GameConfig::Position hammer_pos)
@@ -179,9 +180,11 @@ bool BaseGame::wonTheLevel()
 {
 	if (mario.getIfWon())
 	{
-		board.printScreen(last_screen ? board.getWinningBoard() : board.getNextStageBoard()); // Printing next stage screen unless it is the last one and then printing winning screen
-		board.printEndLevelScore();
-		Sleep(GameConfig::SCREEN_WIN);
+		if (!board.getIsSilent()) {
+			board.printScreen(last_screen ? board.getWinningBoard() : board.getNextStageBoard()); // Printing next stage screen unless it is the last one and then printing winning screen
+			board.printEndLevelScore();
+			Sleep(GameConfig::SCREEN_WIN);
+		}
 		return true;
 	}
 	else

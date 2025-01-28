@@ -70,8 +70,6 @@ void AutomaticGame::stagesLoop(int screen_index)
 
 	for (int i = screen_index; (i < files_names_vec.size()) && playing_mario /* && exit_game */; i++)
 	{
-		//std::string filename_prefix, stepsFilename, resultsFilename;
-
 		valid_file = board.load(files_names_vec[i]);
 		if (!valid_file) {	// If the file isnt valid: continue to the next file
 			continue;
@@ -88,12 +86,52 @@ void AutomaticGame::stagesLoop(int screen_index)
 		playing_mario = true;							// Indicates that the Mario gameplay loop is active
 
 		iteration = 0; // we need iteration to be outside the loop
-		gameLoop(); //while (playing_mario)							// Main game loop: continues as long as Mario is playing and has lives
+		gameLoop(); 							// Main game loop: continues as long as Mario is playing and has lives
 
 		handleResultsErrorAfterLoop();
+
+		printSuccessfulRunIfSilent();
 	}
 }
 
+void AutomaticGame::gameLoop()
+{
+	for (; playing_mario; iteration++)
+	{
+		size_t diedNextIteration = 0;
+		if (results.isFinishedBy(iteration)) {
+			reportResultError("Results file reached finish while game hadn't!", screenFileName, iteration);
+			unmatching_result_found = true;
+			break;
+		}
+		else {
+			diedNextIteration = results.getDiedNextIteration();
+		}
+
+		if (wonTheLevel())
+		{
+			board.addScore(GameConfig::END_LEVEL);
+			break;
+		}
+
+		barrels.bringBackExplodedBarrels();			// Reset the state of barrels that have exploded
+		draw();										// Draws the current state of the game (Mario, barrels)
+		updateIfDiedByBarrelOrGhost();						// Checks if Mario collided with a barrel and updates his state if he has died
+
+		updateActionByKeys();
+
+		barrels.updateBarrelsCharParameters();
+		erase();
+		move();
+		//updateIfDiedByBarrelOrGhost();				// Checks if Mario collided with a barrel and updates his state if he has died
+		playing_mario = isAlive(mario.getLives());	// Determine if Mario is still alive based on his remaining lives (if lives > 0, the game continues)
+
+		if (!handleResultsError(diedNextIteration))
+			break;
+
+		mario_died_this_iteration = false; // Reset for the next iteration
+	}
+}
 
 void AutomaticGame::reportResultError(const std::string& message, const std::string& filename, size_t _iteration)
 {	
@@ -134,49 +172,6 @@ bool AutomaticGame::loadAutoGame()
 
 	results = Results::loadResults(resultsFilename);
 	return true;
-}
-
-void AutomaticGame::gameLoop()
-{
-	for (; playing_mario; iteration++)
-	{
-		//mario.setIteration(++iteration);
-
-		size_t diedNextIteration = 0;
-		if (results.isFinishedBy(iteration)) {
-			reportResultError("Results file reached finish while game hadn't!", screenFileName, iteration);
-			unmatching_result_found = true;
-			break;
-		}
-		else {
-			diedNextIteration = results.getDiedNextIteration();
-		}
-
-		if (wonTheLevel())
-		{
-			board.addScore(GameConfig::END_LEVEL);
-			break;
-		}
-
-		barrels.bringBackExplodedBarrels();			// Reset the state of barrels that have exploded
-		draw();										// Draws the current state of the game (Mario, barrels)
-		updateIfDiedByBarrelOrGhost();						// Checks if Mario collided with a barrel and updates his state if he has died
-
-		//manageInput();
-		updateActionByKeys();
-
-		barrels.updateBarrelsCharParameters();
-		erase();
-		move();
-		//updateIfDiedByBarrelOrGhost();				// Checks if Mario collided with a barrel and updates his state if he has died
-		playing_mario = isAlive(mario.getLives());	// Determine if Mario is still alive based on his remaining lives (if lives > 0, the game continues)
-
-
-		if (!handleResultsError(diedNextIteration))
-			break;
-
-		mario_died_this_iteration = false; // Reset for the next iteration
-	}
 }
 
 bool AutomaticGame::handleResultsError(size_t diedNextIteration)
@@ -224,6 +219,16 @@ void AutomaticGame::handleResultsErrorAfterLoop()
 			reportResultError("Results file has additional events after finish event!", screenFileName, iteration);
 			unmatching_result_found = true;
 		}
+	}
+}
+
+void AutomaticGame::printSuccessfulRunIfSilent() const
+{
+	if (is_silent && !unmatching_result_found)
+	{
+		system("cls");
+		std::cout << "Screen " << screenFileName << " : SUCCESSFULL RUN - test passed :)" << '\n';
+		Sleep(GameConfig::SCREEN_WIN);
 	}
 }
 
@@ -276,7 +281,8 @@ void AutomaticGame::updateActionByKeys()
 					GameConfig::Position hammer_pos = mario.getHammerPos();			// Get the current hammer position from Mario
 					char ch = board.getCharFromBoard(hammer_pos.x, hammer_pos.y);	// Retrieve the character at the hammer's position on the board
 					mario.setPosHitHammer(hammer_pos);								// Update Mario's internal state with the hammer's position
-					mario.printHammerOnBoard();										// Print the hammer on the game board
+					if(!is_silent)
+						mario.printHammerOnBoard();										// Print the hammer on the game board
 					if (ch != GameConfig::BARREL && ch != GameConfig::GHOST)		// If the hammer's position does not overlap with a barrel or ghost, update the character behind the hammer
 						mario.setCharBehindHammer(ch);
 					mario.setIfHammerActive(true);									// Activate the hammer
@@ -288,16 +294,35 @@ void AutomaticGame::updateActionByKeys()
 			}
 		}
 	}
-	Sleep(150); // MAGIC NUMBER !!!!!!!
+	if (!is_silent)
+		Sleep(GameConfig::SCREEN_AUTO_TIME);
 }
 
-//// Draws Mario and barrels on the screen
+// Draws Mario and barrels on the screen
 //void AutomaticGame::draw()
 //{
-//	mario.draw();
+//	board.updateBoard(mario.getPosition(), mario.getMarioChar());
+//
+//	//mario.draw();
 //	barrels.timing();						// Updates the barrels' timing to manage their movement and state
-//	barrels.draw();
-//	ghosts.draw();
+//
+//	for (int i = 0; i < GameConfig::MAX_BARRELS; i++)
+//	{
+//		if (barrels.[i].IsActivated())
+//		{
+//			pBoard->updateBoard(point.getPosition(), point.getChar());
+//		}
+//	}
+//	for (int i = 0; i < num_of_ghosts; i++)
+//	{
+//		if (ghosts_vec[i].IsActivated())
+//		{
+//			pBoard->updateBoard(point.getPosition(), point.getChar());
+//		}
+//	}
+//
+//	//barrels.draw();
+//	//ghosts.draw();
 //}
 
 // Erases Mario's, barrels and ghosts previous position from the screen

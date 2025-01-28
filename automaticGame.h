@@ -29,17 +29,18 @@ class AutomaticGame : public BaseGame {
 	bool is_silent;
 
 public:
-	AutomaticGame(bool silent_flag) : is_silent(silent_flag) {}
+	AutomaticGame(bool silent_flag) : is_silent(silent_flag) { board.setIsSilent(is_silent); }
 	//void showInstructions();									// Displays the game instructions screen to the player
 	void run() override;//!!!!													// Manages the overall flow of the game
-	void setStartingGame();
+	void setStartingGame() override;
 	void stagesLoop(int screen_index) override;
 	//void setStartingGame();//SSS										// Initializes the game to its starting state
 	void updateActionByKeys() override;									// Updates Mario's actions based on key presses from the user
 	//bool isAlive(int lives) { return lives > GameConfig::DEAD_MARIO; }		// Returns true if Mario is alive (has more lives than DEAD_MARIO), otherwise false
 	void startGame(int screen_index) override;							// Starts the game loop and handles gameplay logic
+	void gameLoop() override;
 
-	//void draw();												// Draws Mario and barrels on the screen
+	//void draw() override;												// Draws Mario and barrels on the screen
 	//void erase();												// Erases Mario's and barrels previous position from the screen
 	//void move();												// Moves Mario and barrels to a new position based on user input or game logic
 
@@ -57,10 +58,9 @@ public:
 	// TODO:: write this like: 
 
 	bool loadAutoGame();
-	void gameLoop() override;
 	bool handleResultsError(size_t diedNextIteration);
 	void handleResultsErrorAfterLoop();
-	
+	void printSuccessfulRunIfSilent() const;
 
 	//bool checkIfResultFileMatch(const std::string& filename) {
 	//	if (mario_died_this_iteration) {

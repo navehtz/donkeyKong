@@ -91,10 +91,10 @@ void ManualGame::stagesLoop(int screen_index)
 		setStartingGame();								// Initializes the game state and Mario's starting position and attributes
 		playing_mario = true;							// Indicates that the Mario gameplay loop is active
 		exit_game = false;								// Indicates that the Mario gameplay loop is active
+		iteration = 0;									// We need iteration to be outside the loop
+		gameLoop();										// Main game loop: continues as long as Mario is playing and has lives
 
-		iteration = 0; // we need iteration to be outside the loop
-		gameLoop();		// Main game loop: continues as long as Mario is playing and has lives
-
+		
 		if (!exit_game && is_save)
 			saveManualGame();
 	}

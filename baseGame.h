@@ -53,6 +53,7 @@ public:
 	virtual void startGame(int screen_index) = 0;									// Starts the game loop and handles gameplay logic
 	virtual void gameLoop() = 0;
 	void draw();															// Draws Mario and barrels on the screen
+	//virtual void draw();															// Draws Mario and barrels on the screen
 	void erase();															// Erases Mario's and barrels previous position from the screen
 	void move();												// Moves Mario and barrels to a new position based on user input or game logic
 	void updateIfMarioHitBarrelOrGhost();
@@ -61,7 +62,5 @@ public:
 	bool hitByEnemy(GameConfig::Position enemy_pos, GameConfig::Position mario_pos);							// Handles the logic when Mario is hit by a barrel
 	void diedFromExplodedBarrel(GameConfig::Position barrel_pos, GameConfig::Position mario_pos, int index);	// Handles the logic when Mario dies due to an exploded barrel
 	bool wonTheLevel();																							// Checks if Mario successfully completed the level
-
-
 };
 

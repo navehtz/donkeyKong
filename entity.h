@@ -28,11 +28,13 @@ public:
 	const Point& getPoint() const { return point; }									// Get the member 'point'
 	GameConfig::Position getPosition() const { return point.getPosition(); }	// Get the current position of the entity as a constant reference
 	void draw() {																	// Draw the entity on the screen and update the board
-		point.draw();
+		if(!pBoard->getIsSilent())
+			point.draw();
 		pBoard->updateBoard(point.getPosition(), point.getChar());
 	}
 	virtual void erase() {															// Erase the entity from the screen and update the board
-		point.erase();
+		if (!pBoard->getIsSilent())
+			point.erase();
 		pBoard->updateBoard(point.getPosition(), point.getPreviousChar());
 	}
 	virtual void checkWhatState() = 0;			// Pure virtual function to check the entity's current state
