@@ -30,6 +30,10 @@ void Results::saveResults(const std::string& filename, int score)
 		ResultEntry result = popResult();
 		results_file << '\n' << result.iteration << ' ' << result.result;
 	}
+
+	if (score < 0)			// In case if mario loses life more he gained socres
+		score = 0;
+
 	results_file << '\n' << "Score gained in this stage: " << score;
 
 	results_file.close();

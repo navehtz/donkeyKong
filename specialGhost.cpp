@@ -1,28 +1,5 @@
 #include "specialGhost.h"
 
-//// Initialize a ghost based on starting position
-//void SpecialGhost::setStartingGhost(Board* _pBoard, GameConfig::Position pos)
-//{
-//	pBoard = _pBoard;
-//	point.setPosition(pos);         // Set the initial position of the ghost
-//
-//	//srand(GameConfig::getRandomSeed());
-//	if (rand() % 2 == 0)            // Randomly decide initial direction (left or right)
-//	{
-//		point.setDirX(GameConfig::LEFT);
-//	}
-//	else
-//	{
-//		point.setDirX(GameConfig::RIGHT);
-//	}
-//
-//	point.setPreviousChar(GameConfig::SPACE);
-//
-//	is_activated = true;
-//
-//	//point.setPreviousChar(GameConfig::SPACE);
-//}
-
 // Update the chars representing the tiles around the ghost
 void SpecialGhost::updateCharParameters()
 {
@@ -78,21 +55,6 @@ void SpecialGhost::updateState()
 	}
 }
 
-//// Handle the ghost's wandering behavior
-//void SpecialGhost::wander()
-//{
-//	manageDirection();
-//	blockedByWall();
-//	point.setDirY(GameConfig::STAY);
-//}
-
-//// Handle the ghost's falling behavior
-//void SpecialGhost::fall()
-//{
-//	point.setDirX(GameConfig::STAY);
-//	point.setDirY(GameConfig::DOWN);
-//}
-
 // Neutralize illegal movements (jumping under the ceiling, going through a wall, etc.)
 void SpecialGhost::amendNextMove()
 {
@@ -120,14 +82,6 @@ bool SpecialGhost::isClimbing()
 void SpecialGhost::climb()
 {
 	point.setDirX(GameConfig::STAY); // Hold ladder when jumping or falling
-	/*int previous_dir_x = point.getPreviousDir().x;
-
-	if (!res_is_on_floor && (previous_dir_x == GameConfig::LEFT || previous_dir_x == GameConfig::RIGHT)) {
-		if (point.getDir().y == GameConfig::UP) 
-			return;
-		else if (point.getDir().y == GameConfig::DOWN)
-			point.setDirY(GameConfig::STAY);
-	}*/
 }
 
 // Change Y direction in prob of 50% if Ghost is above ladder or at the bottom of the ladder

@@ -33,6 +33,7 @@ public:
 		results.pop_front();
 		return result;
 	}
+	void clearResultList() { results.clear(); }
 	bool isFinishedBy(size_t iteration) const {						// Checks if all results occurred before a given iteration
 		return results.empty() || results.back().iteration < iteration;
 	}
