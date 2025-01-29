@@ -1,5 +1,5 @@
 #pragma once
-//#include "point.h"
+
 #include "baseGhost.h"
 #include "gameConfig.h"
 
