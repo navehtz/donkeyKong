@@ -92,8 +92,12 @@ void AutomaticGame::stagesLoop(int screen_index)
 // Runs the main game loop
 void AutomaticGame::gameLoop()
 {
+	unmatching_result_found = false;
+
 	for (; playing_mario; iteration++)
 	{
+		mario_died_this_iteration = false;				// Reset for the this iteration
+
 		size_t diedNextIteration = 0;
 		if (results.isFinishedBy(iteration)) {			// When Results file reached finish while game hadn't
 			reportResultError("Results file reached finish while game hadn't!", screenFileName, iteration);
@@ -123,8 +127,6 @@ void AutomaticGame::gameLoop()
 
 		if (!handleResultsError(diedNextIteration))
 			break;
-
-		mario_died_this_iteration = false;				// Reset for the next iteration
 	}
 }
 
@@ -165,6 +167,9 @@ bool AutomaticGame::loadAutoGame()
 		reportFileError("File doesn't exist", resultsFilename);
 		return false;
 	}
+
+	results.clearResultList();					// Clear before load
+	steps.clearStepsList();						// Clear before load
 
 	steps = Steps::loadSteps(stepsFilename);
 
