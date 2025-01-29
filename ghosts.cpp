@@ -5,7 +5,6 @@ void Ghosts::setStartingGhosts(int size)
 {
 	num_of_ghosts = size;
 	ghosts_vec.clear();
-	//ghosts_vec.resize(num_of_ghosts);// CHANGE !!! PUSH BACK BY THE TYPE OF THE GHOST
 
 	for (int i = 0; i < size; i++)
 	{
@@ -14,7 +13,6 @@ void Ghosts::setStartingGhosts(int size)
 		
 		if (type == GameConfig::REGULAR_GHOST) {
 			addGhost(new RegularGhost(pos.x, pos.y));
-			//ghosts_vec.push_back(std::make_unique<RegularGhost>)
 			ghosts_vec[i]->setStartingGhost(pBoard, pos);
 		}
 		else if (type == GameConfig::SPECIAL_GHOST) {
@@ -59,17 +57,6 @@ void Ghosts::move()
 		}
 	}
 }
-
-// Remove a ghost by its index
-//void Ghosts::removeGhostByIndex(int index)
-//{
-//	if (index < ghosts_vec.size()) {
-//		ghosts_vec.erase(ghosts_vec.begin() + index);
-//	}
-//	else {
-//		std::cout << "Error: Invalid index!" << std::endl;
-//	}
-//}
 
 // Update the character parameters for all activated ghosts
 void Ghosts::updateGhostsCharParameters()

@@ -9,13 +9,13 @@
 
 class Ghosts
 {
-	std::vector<BaseGhost*> ghosts_vec;						// Vector containing all types of ghosts
+	std::vector<BaseGhost*> ghosts_vec;								   // Vector containing all types of ghosts
 	Board* pBoard = nullptr;                                           // Pointer to the game board
 	int num_of_ghosts = 0;                                             // Number of ghosts in the game
 
 public:
 	Ghosts() {}                                                        // Constructor for the Ghosts class
-	~Ghosts() {	clearGhosts(); }
+	~Ghosts() {	clearGhosts(); }									   // Destructor for the Ghosts class
 	void setpBoard(Board& _board) { pBoard = &_board; }                // Set the board pointer
 	void setStartingGhosts(int size);                                  // Initialize all ghosts
 	void draw();                                                       // Draw all activated ghosts
@@ -32,11 +32,11 @@ public:
 	void setPreviousCharOfGhost(int i, char _ch) { ghosts_vec[i]->point.setPreviousChar(_ch); }  // Set the previous character of the ghost at index 'i'									
 	void eraseASpecificGhost(int i) { ghosts_vec[i]->erase(); }									// Erase the ghost at index 'i' FROM THE BOARD
 
-	void kickGhostFromBoard(int i) { ghosts_vec[i]->setPositionOfEntity(GameConfig::NOT_RELEVET_POS); }
-	void addGhost(BaseGhost* ghost) {
+	void kickGhostFromBoard(int i) { ghosts_vec[i]->setPositionOfEntity(GameConfig::NOT_RELEVET_POS); } // Moves the ghost at index 'i' to a non-relevant position, effectively removing it from the board
+	void addGhost(BaseGhost* ghost) {																	// Adds a new ghost to the list of active ghosts  
 		ghosts_vec.push_back(ghost);
 	}
-	void clearGhosts() {
+	void clearGhosts() {																				// Deletes all ghosts from memory and clears the vector
 		for (BaseGhost* ghost : ghosts_vec) {
 			delete ghost; 
 		}

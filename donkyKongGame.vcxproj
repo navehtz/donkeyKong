@@ -138,6 +138,7 @@
     <ClCompile Include="baseGhost.cpp" />
     <ClCompile Include="board.cpp" />
     <ClCompile Include="entity.cpp" />
+    <ClCompile Include="mainHelper.cpp" />
     <ClCompile Include="manualGame.cpp" />
     <ClCompile Include="gameConfig.cpp" />
     <ClCompile Include="regularGhost.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="baseGhost.h" />
     <ClInclude Include="board.h" />
     <ClInclude Include="entity.h" />
+    <ClInclude Include="mainHelper.h" />
     <ClInclude Include="manualGame.h" />
     <ClInclude Include="gameConfig.h" />
     <ClInclude Include="regularGhost.h" />

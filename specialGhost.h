@@ -11,13 +11,13 @@ class SpecialGhost : public BaseGhost
 
 	enum class GhostState { 
 		Wander,                                                                 // The ghost is wandering on the floor
-		Climbing,
+		Climbing,																// The ghost is climbing on a ladder
 		Falling                                                                 // The ghost is falling
 	};
 	GhostState state = GhostState::Wander;                                      // Current state of the ghost
 
 public:
-	SpecialGhost() : BaseGhost(GameConfig::SPECIAL_GHOST) {}                                      // Default constructor initializing the ghost with the default char
+	SpecialGhost() : BaseGhost(GameConfig::SPECIAL_GHOST) {}                    // Default constructor initializing the ghost with the default char
 	SpecialGhost(int x, int y) : BaseGhost(x, y, GameConfig::SPECIAL_GHOST) {}
 	
 	int getDirY() const { return point.getDir().y; }                            // Get the ghost's current vertical direction
@@ -27,9 +27,8 @@ public:
 	void updateState() override;                                                // Update the ghost's state
 	void updateCharParameters() override;                                       // Update the chars representing the tiles around the ghost
 
-	bool isClimbing();                                                        // Check if Mario is climbing
-	void climb();                                                             // Handle Mario's climbing movement
-	void decideIfNeedToClimb();                                                     // Manage the ghost's direction while wandering on the floor
-	bool isOnLadder() const;                                                      // Check if Mario is on a ladder
-
+	bool isClimbing();															// Check if Mario is climbing
+	void climb();																// Handle Mario's climbing movement
+	void decideIfNeedToClimb();                                                 // Manage the ghost's direction while wandering on the floor
+	bool isOnLadder() const;                                                    // Check if Mario is on a ladder
 };

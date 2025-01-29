@@ -58,7 +58,7 @@ public:
 	void activate() { is_activated = true; }					// Function to activate the entity
 	void deactivate() { is_activated = false; }					// Function to deactivate the entity
 
-	void setPositionOfEntity(const GameConfig::Position& _pos) { point.setPosition(_pos); }
+	void setPositionOfEntity(const GameConfig::Position& _pos) { point.setPosition(_pos); }	// Sets the position of the entity on the board 
 };
 
 

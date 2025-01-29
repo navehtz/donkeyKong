@@ -63,6 +63,9 @@
     <ClCompile Include="baseGhost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mainHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameConfig.h">
@@ -111,6 +114,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="baseGhost.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mainHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

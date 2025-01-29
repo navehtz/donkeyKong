@@ -31,7 +31,7 @@ public:
     static constexpr int SCREEN_WIN = 2000;                     // Time to display the win screen
     static constexpr int SCREEN_EXIT = 2000;                    // Time to display the exit screen
     static constexpr int SCREEN_FLASH_MARIO = 200;              // Flash duration for Mario's appearance
-    static constexpr int SCREEN_AUTO_TIME = 150;              // Flash duration for Mario's appearance
+    static constexpr int SCREEN_AUTO_TIME = 150;                // Flash duration for Mario's appearance
 
     // File and game element configurations
     static constexpr int FILE_NAME_LENGTH = 6; // Length of the file name's start template
