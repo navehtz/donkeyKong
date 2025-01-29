@@ -20,6 +20,7 @@ protected:
 	bool res_is_on_floor = false, res_is_wall_on_left = false, res_is_wall_on_right = false;
 	bool is_activated = false;
 
+
 public:
 	Entity(char _ch) : point(_ch) {}															  // Constructor initializing the entity with a character
 	Entity(int x, int y, char _ch) : point(_ch) { point.setPositionX(x); point.setPositionY(y); } // Constructor initializing the entity with a position (x, y) and a character

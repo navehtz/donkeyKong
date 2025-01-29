@@ -1,11 +1,11 @@
 #include "entity.h"
 
-// Handle the ghost's movement
+// Handle the entity's movement
 void Entity::move()
 {
-	updateCharParameters();									// Update all the char data members around mario
-	checkWhatState();										// Check what is the ghost's state 
-	updateState();											// Update the moves that the ghost should do by the state
+	updateCharParameters();									// Update all the char data members around entity
+	checkWhatState();										// Check what is the entity's state 
+	updateState();											// Update the moves that the entity should do by the state
 
 	//update prameters
 	updateNextMove();
