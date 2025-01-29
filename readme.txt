@@ -1,5 +1,5 @@
-207080185
-316296839
+נווה צוויג - 207080185
+שון פבר - 316296839
 
 Notes:
 1. If Mario jumps and meet a ladder you will climb up.
