@@ -7,6 +7,7 @@ class ManualGame : public BaseGame
 	bool exit_game = false;									// False = game continues until EXIT_GAME is pressed
 	bool is_save;											// Determines whether game progress should be in save mode
 	int score_before_level = 0;								// Stores the player's score before starting a new level
+	std::string directory = ".";				// Directory path for file operations (default is current directory)
 
 public:
 	ManualGame(bool save_mode_flag) : is_save(save_mode_flag) {} // Constructor initializing save mode or not
@@ -23,5 +24,5 @@ public:
 	void updateActionByKeys() override;						// Updates Mario's actions based on key presses from the user
 	void saveManualGame();									// Saves the game state in manual mode
 	void setResult();										// Adding the game result to the results vector
-
+	void deleteFilesWithExtension(/*const std::string& directory,*/ const std::string& extension);
 };

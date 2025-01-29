@@ -5,6 +5,11 @@
 // Manages the overall flow of the game
 void ManualGame::run()
 {
+	if (is_save) {
+		deleteFilesWithExtension(".result");
+		deleteFilesWithExtension(".steps");
+	}
+
 	system("mode con cols=80 lines=25");			// Set the console size to be 80X25
 	GameConfig::ShowConsoleCursor(false);			// Hides the console cursor to improve visual appearance during the game
 
@@ -271,5 +276,15 @@ void ManualGame::setResult()
 	mario_died_this_iteration = false;
 }
 
-
+void ManualGame::deleteFilesWithExtension(/*const std::string& directory,*/ const std::string& extension) {
+	try {
+		for (const auto& entry : std::filesystem::directory_iterator(directory)) {
+			if (entry.is_regular_file() && entry.path().extension() == extension)
+				std::filesystem::remove(entry.path());
+		}
+	}
+	catch (const std::filesystem::filesystem_error& e) {
+		std::cout << "Error: " << e.what() << std::endl;
+	}
+}
 
