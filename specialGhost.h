@@ -1,12 +1,12 @@
 #pragma once
-#include "point.h"
+//#include "point.h"
 #include "baseGhost.h"
 #include "gameConfig.h"
 
 class SpecialGhost : public BaseGhost
 {
 	//static constexpr double CHANGE_DIR_PROB = 0.05;                             // Probability of changing direction while wandering
-	static constexpr double CHANGE_DIR_ON_LADDER = 0.5;                             // Probability of changing direction while wandering
+	static constexpr double CHANGE_DIR_ON_LADDER = 1;                             // Probability of changing direction while wandering
 
 	//// Characters surrounding special ghosts
 	//char ch_left_down = GameConfig::SPACE;                                      // Character below the left side of the ghost
@@ -54,7 +54,7 @@ public:
 
 	bool isClimbing();//!!!                                                          // Check if Mario is climbing
 	void climb();//!!!                                                               // Handle Mario's climbing movement
-	void manageClimbDirection();//!!!                                                     // Manage the ghost's direction while wandering on the floor
+	void decideIfNeedToClimb();//!!!                                                     // Manage the ghost's direction while wandering on the floor
 	bool isOnLadder() const;                                                      // Check if Mario is on a ladder
 
 	//void disappear() { is_activated = false; }                                  // Deactivate the ghost, making it disappear

@@ -52,7 +52,7 @@ void SpecialGhost::checkWhatState()
 		state = GhostState::Falling;
 	else 
 	{
-		manageClimbDirection();
+		decideIfNeedToClimb();
 		if (isClimbing())
 			state = GhostState::Climbing; 
 		else
@@ -111,27 +111,29 @@ bool SpecialGhost::isClimbing()
 // Handle Mario's climbing movement
 void SpecialGhost::climb()
 {
-	//int previous_dir_x = point.getPreviousDir().x;
+	point.setDirX(GameConfig::STAY); // Hold ladder when jumping or falling
+	/*int previous_dir_x = point.getPreviousDir().x;
 
-	//if (!res_is_on_floor && (previous_dir_x == GameConfig::LEFT || previous_dir_x == GameConfig::RIGHT)) {
-	//	point.setDirX(GameConfig::STAY); // Hold ladder when jumping or falling
-	//	if (point.getDir().y == GameConfig::UP) 
-	//		return;
-	//	else if (point.getDir().y == GameConfig::DOWN)
-	//		point.setDirY(GameConfig::STAY);
-	//}
+	if (!res_is_on_floor && (previous_dir_x == GameConfig::LEFT || previous_dir_x == GameConfig::RIGHT)) {
+		if (point.getDir().y == GameConfig::UP) 
+			return;
+		else if (point.getDir().y == GameConfig::DOWN)
+			point.setDirY(GameConfig::STAY);
+	}*/
 }
 
 // Change Y direction in prob of 50% if Ghost is above ladder or at the bottom of the ladder
-void SpecialGhost::manageClimbDirection()
+void SpecialGhost::decideIfNeedToClimb()
 {
-	if (ch_covered == GameConfig::LADDER)	// Ghost is at the bottom of the ladder
-	{
-		point.setDirY((rand() % 2) * -1); // Ghost climbs up
-	}
-	else if (two_chars_below == GameConfig::LADDER)
-	{
-		point.setDirY(rand() % 2); // Ghost climbs down
+	if (point.getDir().y == GameConfig::STAY) {
+		if (ch_covered == GameConfig::LADDER)	// Ghost is at the bottom of the ladder
+		{
+			point.setDirY((rand() % 2) * -1); // Ghost climbs up
+		}
+		else if (two_chars_below == GameConfig::LADDER && ch_covered != GameConfig::FLOOR)
+		{
+			point.setDirY(rand() % 2); // Ghost climbs down
+		}
 	}
 }
 

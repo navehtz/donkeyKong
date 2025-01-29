@@ -64,6 +64,8 @@ void BaseGhost::manageWanderDirection()
 {
 	int dirX = point.getDir().x;
 
+	point.setDirY(GameConfig::STAY);
+
 	if (dirX == GameConfig::STAY) {  // If just finished falling, set initial direction
 		dirX = GameConfig::LEFT;
 		point.setDirX(dirX);

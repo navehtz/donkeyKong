@@ -2,9 +2,9 @@
 
 #include <Windows.h>	//for Sleep and colors
 #include "gameConfig.h"
-#include "baseGhost.h"
-#include "regularGhost.h"
-#include "specialGhost.h"
+//#include "baseGhost.h"
+//#include "regularGhost.h"
+//#include "specialGhost.h"
 
 #include <iostream>
 #include <algorithm>
