@@ -309,9 +309,9 @@ public:
 	int getScore() const { return legend.score; }							// Get the current player's score
 	void addScore(int _score) { legend.score += _score; }					// Add the given value to the player's score
 
-	void setIsSilent(bool silent_flag) { is_silent = silent_flag; }
-	bool getIsSilent() { return is_silent; }
+	void setIsSilent(bool silent_flag) { is_silent = silent_flag; }			// Sets the silent mode flag 
+	bool getIsSilent() const { return is_silent; }								// Returns whether the game is running in silent mode 
 
-	GameConfig::Position getMarioPosition() const { return mario_pos; }
-	void setMarioPosition(GameConfig::Position _mario_pos) { mario_pos = _mario_pos; }
+	const GameConfig::Position& getMarioPosition() const { return mario_pos; }		// Returns Mario's current position on the board
+	void setMarioPosition(GameConfig::Position _mario_pos) { mario_pos = _mario_pos; }	// Updates Mario's position on the board
 };
