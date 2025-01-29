@@ -22,6 +22,8 @@ public:
     static constexpr int EXPLOSION_RADIUS = 2; // Radius of an explosion of a barrel
     static constexpr int MAX_BARRELS = 5;      // Number of barrels in the container
     static constexpr int POSSIBLE_INPUT = 3;   // Number of possible inputs for controls in one loop game
+    static constexpr int FIRST_SCREEN_INDEX = 0;   // The first index of the screens
+    static constexpr int EXIT_GAME_FLAG = -1;      // To know if exit the game
 
     // Constants for screen-related timings (in milliseconds)
     static constexpr int SCREEN_TIME = 150 / POSSIBLE_INPUT;    // Sleep between the game's loops based on input
