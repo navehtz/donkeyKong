@@ -14,13 +14,13 @@ void Ghosts::setStartingGhosts(int size)
 		GameConfig::Position pos = pBoard->getStartPosAndTypeOfGhost(i).pos;
 		
 		if (type == GameConfig::REGULAR_GHOST) {
-			ghosts_vec.push_back(std::make_unique<RegularGhost>());
+			addGhost(new RegularGhost(pos.x, pos.y));
 			//ghosts_vec.push_back(std::make_unique<RegularGhost>)
-			//ghosts_vec[i].setStartingGhost(pBoard, pos);
+			ghosts_vec[i]->setStartingGhost(pBoard, pos);
 		}
 		else if (type == GameConfig::SPECIAL_GHOST) {
-			ghosts_vec.push_back(std::make_unique<SpecialGhost>());
-			//ghosts_vec[i].setStartingGhost(pBoard, pos);
+			addGhost(new SpecialGhost(pos.x, pos.y));
+			ghosts_vec[i]->setStartingGhost(pBoard, pos);
 		}
 	}
 }

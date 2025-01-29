@@ -35,5 +35,7 @@ public:
 	void eraseASpecificGhost(int i) { ghosts_vec[i]->erase(); }									// Erase the ghost at index 'i' FROM THE BOARD
 
 	void kickGhostFromBoard(int i) { ghosts_vec[i]->setPositionOfEntity(GameConfig::NOT_RELEVET_POS); }
-
+	void addGhost(BaseGhost* ghost) {
+		ghosts_vec.push_back(ghost);
+	}
 };
