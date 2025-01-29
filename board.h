@@ -2,9 +2,6 @@
 
 #include <Windows.h>	//for Sleep and colors
 #include "gameConfig.h"
-//#include "baseGhost.h"
-//#include "regularGhost.h"
-//#include "specialGhost.h"
 
 #include <iostream>
 #include <algorithm>
@@ -240,8 +237,6 @@ class Board {
 	};
 	// Vector to store the starting positions of ghosts
 	std::vector<GhostTypeAndPosition> start_pos_and_type_ghosts_vec;
-
-
 
 	// Structure to represent the game legend displayed on the board
 	struct Legend {

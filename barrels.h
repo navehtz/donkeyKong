@@ -24,7 +24,6 @@ public:
 	int getMaxBarrels() { return GameConfig::MAX_BARRELS; }			// Get the member 'MAX_BARRELS'
 	void setpBoard(Board& _board) { pBoard = &_board; }				// Set pBoard to the board
 
-
 	void timing();													// Handle the entry of the barrels into the board
 	void setStartingBarrels();										// Inititialize all barrels
 	void setStartingBarrel(int i) { barrels[i].setStartingBarrel(pBoard); }	// Inititialize a specific barrel

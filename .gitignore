@@ -17,3 +17,10 @@ build/
 bin/
 Debug/
 Release/
+
+*.db
+*.ipch
+*.vsidx
+*.zip
+.vs/
+x64/

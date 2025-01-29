@@ -118,5 +118,4 @@ public:
 	bool validHit();															  // Validate hammer hit
 
 	void setPointerResults(Results &results) { ptr_results = &results; }
-	//void setIteration(size_t curr_iteration) { iteration = curr_iteration; } 
 };
