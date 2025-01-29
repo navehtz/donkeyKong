@@ -77,7 +77,7 @@ void ManualGame::stagesLoop(int screen_index)
 
 	for (int i = screen_index; (i < files_names_vec.size() && playing_mario && !exit_game); i++)
 	{
-
+		results.clearResultList();
 		valid_file = board.load(files_names_vec[i]);
 		if (!valid_file) {								// If the file isnt valid: continue to the next file
 			continue;
@@ -126,8 +126,6 @@ void ManualGame::gameLoop()
 {
 	for (; playing_mario && !exit_game; iteration++)
 	{
-		//mario.setIteration(++iteration);
-
 		if (wonTheLevel())
 		{
 			board.addScore(GameConfig::END_LEVEL);
@@ -141,6 +139,11 @@ void ManualGame::gameLoop()
 		updateIfDiedByBarrelOrGhost();				// Checks if Mario collided with a barrel and updates his state if he has died
 
 		manageInput();								// Manage the input
+		if (exit_game) {
+			results.clearResultList();
+			break;
+		}
+	
 
 		barrels.updateBarrelsCharParameters();
 		erase();									// Erases the current state of the game (Mario, barrels, ghosts etc.)
