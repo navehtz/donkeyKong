@@ -1,13 +1,16 @@
 #pragma once
 
+#include "baseGhost.h"
 #include "regularGhost.h"
+#include "specialGhost.h"
 #include "board.h"
 #include "gameConfig.h"
 
 
 class Ghosts
 {
-	std::vector <BaseGhost> ghosts_vec;                                    // Vector containing all ghosts
+	//std::vector <BaseGhost> ghosts_vec;                                    // Vector containing all ghosts
+	std::vector<BaseGhost*> ghosts_vec;						// Vector containing all types of ghosts
 	Board* pBoard = nullptr;                                           // Pointer to the game board
 	int num_of_ghosts = 0;                                             // Number of ghosts in the game
 
@@ -22,17 +25,15 @@ public:
 	void removeGhostByIndex(int index);                                // Remove a ghost by its index
 
 	void updateGhostsCharParameters();                                 // Update the character parameters for all activated ghosts
-	int getGhostDirX(int i) { return ghosts_vec[i].getDirX(); }        // Get the horizontal direction of a specific ghost
+	int getGhostDirX(int i) { return ghosts_vec[i]->getDirX(); }       // Get the horizontal direction of a specific ghost
 	int getNumOfGhosts() const { return num_of_ghosts; }               // Get the total number of ghosts
 	void setNumOfGhosts(int new_num) { num_of_ghosts = new_num; }      // Set the total number of ghosts
-	GameConfig::Position getGhostPosition(int i) const {               // Get the position of a specific ghost
-		return ghosts_vec[i].point.getPosition();
-}
+	GameConfig::Position getGhostPosition(int i) const { return ghosts_vec[i]->point.getPosition(); } // Get the position of a specific ghost
+		
+	void deactivate_ghost(int i) { ghosts_vec[i]->deactivate(); }								// Deactivate the ghost at index 'i'
+	void setPreviousCharOfGhost(int i, char _ch) { ghosts_vec[i]->point.setPreviousChar(_ch); }  // Set the previous character of the ghost at index 'i'									
+	void eraseASpecificGhost(int i) { ghosts_vec[i]->erase(); }									// Erase the ghost at index 'i' FROM THE BOARD
 
-	void deactivate_ghost(int i) { ghosts_vec[i].deactivate(); }								// Deactivate the ghost at index 'i'
-	void setPreviousCharOfGhost(int i, char _ch) { ghosts_vec[i].point.setPreviousChar(_ch); }  // Set the previous character of the ghost at index 'i'									
-	void eraseASpecificGhost(int i) { ghosts_vec[i].erase(); }									// Erase the ghost at index 'i' FROM THE BOARD
-
-	void kickGhostFromBoard(int i) { ghosts_vec[i].setPositionOfEntity(GameConfig::NOT_RELEVET_POS); }
+	void kickGhostFromBoard(int i) { ghosts_vec[i]->setPositionOfEntity(GameConfig::NOT_RELEVET_POS); }
 
 };

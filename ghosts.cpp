@@ -5,7 +5,7 @@ void Ghosts::setStartingGhosts(int size)
 {
 	num_of_ghosts = size;
 	ghosts_vec.clear();
-	ghosts_vec.resize(num_of_ghosts);// CHANGE !!! PUSH BACK BY THE TYPE OF THE GHOST
+	//ghosts_vec.resize(num_of_ghosts);// CHANGE !!! PUSH BACK BY THE TYPE OF THE GHOST
 
 	for (int i = 0; i < size; i++)
 	{
@@ -13,10 +13,15 @@ void Ghosts::setStartingGhosts(int size)
 		char type  = pBoard->getStartPosAndTypeOfGhost(i).type;
 		GameConfig::Position pos = pBoard->getStartPosAndTypeOfGhost(i).pos;
 		
-		if(type == GameConfig::REGULAR_GHOST)
-			ghosts_vec[i].setStartingGhost(pBoard, pos);
-		else if(type == GameConfig::SPECIAL_GHOST)
-			ghosts_vec[i].setStartingGhost(pBoard, pos);
+		if (type == GameConfig::REGULAR_GHOST) {
+			ghosts_vec.push_back(std::make_unique<RegularGhost>());
+			//ghosts_vec.push_back(std::make_unique<RegularGhost>)
+			//ghosts_vec[i].setStartingGhost(pBoard, pos);
+		}
+		else if (type == GameConfig::SPECIAL_GHOST) {
+			ghosts_vec.push_back(std::make_unique<SpecialGhost>());
+			//ghosts_vec[i].setStartingGhost(pBoard, pos);
+		}
 	}
 }
 
@@ -25,9 +30,9 @@ void Ghosts::draw()
 {
 	for (int i = 0; i < num_of_ghosts; i++)
 	{
-		if (ghosts_vec[i].IsActivated())
+		if (ghosts_vec[i]->IsActivated())
 		{
-			ghosts_vec[i].draw();
+			ghosts_vec[i]->draw();
 		}
 	}
 }
@@ -37,9 +42,9 @@ void Ghosts::erase()
 {
 	for (int i = 0; i < num_of_ghosts; i++)
 	{
-		if (ghosts_vec[i].IsActivated())
+		if (ghosts_vec[i]->IsActivated())
 		{
-			ghosts_vec[i].erase();
+			ghosts_vec[i]->erase();
 		}
 	}
 }
@@ -49,9 +54,9 @@ void Ghosts::move()
 {
 	for (int i = 0; i < num_of_ghosts; i++)
 	{
-		if (ghosts_vec[i].IsActivated())
+		if (ghosts_vec[i]->IsActivated())
 		{
-			ghosts_vec[i].move();
+			ghosts_vec[i]->move();
 		}
 	}
 }
@@ -72,9 +77,9 @@ void Ghosts::updateGhostsCharParameters()
 {
 	for (int i = 0; i < num_of_ghosts; i++)
 	{
-		if (ghosts_vec[i].IsActivated())
+		if (ghosts_vec[i]->IsActivated())
 		{
-			ghosts_vec[i].updateCharParameters();
+			ghosts_vec[i]->updateCharParameters();
 		}
 	}
 }
