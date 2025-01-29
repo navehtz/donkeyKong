@@ -51,8 +51,9 @@ void SpecialGhost::checkWhatState()
 	if (isFalling())
 		state = GhostState::Falling;
 	else 
-	{
-		decideIfNeedToClimb();
+	{				
+		decideIfNeedToClimb();				// THE order of function in lines 55 and 56 set if the ghost can start climbing on the same ladder just after it finished the climb
+		amendNextMove();
 		if (isClimbing())
 			state = GhostState::Climbing; 
 		else
@@ -91,6 +92,13 @@ void SpecialGhost::updateState()
 //	point.setDirX(GameConfig::STAY);
 //	point.setDirY(GameConfig::DOWN);
 //}
+
+// Neutralize illegal movements (jumping under the ceiling, going through a wall, etc.)
+void SpecialGhost::amendNextMove()
+{
+	if (res_is_on_floor && two_chars_below != GameConfig::LADDER && point.getDir().y == GameConfig::DOWN)
+		point.setDirY(GameConfig::STAY);
+}
 
 // Check if Mario is climbing
 bool SpecialGhost::isClimbing()

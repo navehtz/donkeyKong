@@ -9,7 +9,6 @@ void Ghosts::setStartingGhosts(int size)
 
 	for (int i = 0; i < size; i++)
 	{
-		// להכניס לוקטור את סוג הרוח ואז לעשות תנאים איזה סוג רוח אנחנו מאתחלים - מיוחדת או רגילה
 		char type  = pBoard->getStartPosAndTypeOfGhost(i).type;
 		GameConfig::Position pos = pBoard->getStartPosAndTypeOfGhost(i).pos;
 		

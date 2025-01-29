@@ -10,12 +10,13 @@
 class Ghosts
 {
 	//std::vector <BaseGhost> ghosts_vec;                                    // Vector containing all ghosts
-	std::vector<std::unique_ptr<BaseGhost>> ghosts_vec;						// Vector containing all types of ghosts
+	std::vector<BaseGhost*> ghosts_vec;						// Vector containing all types of ghosts
 	Board* pBoard = nullptr;                                           // Pointer to the game board
 	int num_of_ghosts = 0;                                             // Number of ghosts in the game
 
 public:
 	Ghosts() {}                                                        // Constructor for the Ghosts class
+	~Ghosts() {	clearGhosts(); }
 	void setpBoard(Board& _board) { pBoard = &_board; }                // Set the board pointer
 	void setStartingGhosts(int size);                                  // Initialize all ghosts
 	void draw();                                                       // Draw all activated ghosts
@@ -37,5 +38,11 @@ public:
 	void kickGhostFromBoard(int i) { ghosts_vec[i]->setPositionOfEntity(GameConfig::NOT_RELEVET_POS); }
 	void addGhost(BaseGhost* ghost) {
 		ghosts_vec.push_back(ghost);
+	}
+	void clearGhosts() {
+		for (BaseGhost* ghost : ghosts_vec) {
+			delete ghost; 
+		}
+		ghosts_vec.clear();
 	}
 };

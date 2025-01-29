@@ -6,7 +6,7 @@
 class SpecialGhost : public BaseGhost
 {
 	//static constexpr double CHANGE_DIR_PROB = 0.05;                             // Probability of changing direction while wandering
-	static constexpr double CHANGE_DIR_ON_LADDER = 1;                             // Probability of changing direction while wandering
+	//static constexpr double CHANGE_DIR_ON_LADDER = 1;                             // Probability of changing direction while wandering
 
 	//// Characters surrounding special ghosts
 	//char ch_left_down = GameConfig::SPACE;                                      // Character below the left side of the ghost
@@ -44,6 +44,7 @@ public:
 	int getDirY() const { return point.getDir().y; }                            // Get the ghost's current vertical direction
 
 	void checkWhatState() override;                                             // Check the ghost's current state
+	void amendNextMove();
 	void updateState() override;//!!!                                                // Update the ghost's state
 	//void updateNextMove() override;//!!!                                             // Update the ghost's movement for the next game loop
 	void updateCharParameters() override;                                       // Update the chars representing the tiles around the ghost

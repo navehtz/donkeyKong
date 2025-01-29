@@ -22,10 +22,11 @@ protected:
 public:
 	BaseGhost(char ghost_type) : Entity(ghost_type) {}
 	BaseGhost(int x, int y, char ghost_type) : Entity(x, y, ghost_type) {}
+	virtual ~BaseGhost() = default;
 
 	void setStartingGhost(Board* _pBoard, GameConfig::Position pos);            // Initialize a ghost based on starting position
 	int getDirX() const { return point.getDir().x; }                            // Get the ghost's current horizontal direction
-	
+
 	void disappear() { is_activated = false; }                                  // Deactivate the ghost, making it disappear
 	void blockedByWall();                                              // Stop the ghost's movement if it encounters a wall
 	void updateNextMove() override;                                             // Update the ghost's movement for the next game loop
@@ -33,6 +34,5 @@ public:
 	void wander();
 	void manageWanderDirection();                                                     // Manage the ghost's direction while wandering on the floor
 	void fall() override;                                                       // Handle the ghost's falling behavior
-
 };
 
