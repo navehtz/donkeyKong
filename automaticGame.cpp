@@ -12,7 +12,6 @@ void AutomaticGame::run()
 	board.getAllBoardFileNames(files_names_vec);
 
 	startGame(0);
-	//TODO: try catch if we start saving from the second screen !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	GameConfig::clrscr();
 }
