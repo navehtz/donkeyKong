@@ -10,7 +10,7 @@
 class Ghosts
 {
 	//std::vector <BaseGhost> ghosts_vec;                                    // Vector containing all ghosts
-	std::vector<BaseGhost*> ghosts_vec;						// Vector containing all types of ghosts
+	std::vector<std::unique_ptr<BaseGhost>> ghosts_vec;						// Vector containing all types of ghosts
 	Board* pBoard = nullptr;                                           // Pointer to the game board
 	int num_of_ghosts = 0;                                             // Number of ghosts in the game
 
@@ -22,7 +22,7 @@ public:
 	void erase();                                                      // Erase all activated ghosts
 	void move();                                                       // Move all activated ghosts
 
-	void removeGhostByIndex(int index);                                // Remove a ghost by its index
+	//void removeGhostByIndex(int index);                                // Remove a ghost by its index
 
 	void updateGhostsCharParameters();                                 // Update the character parameters for all activated ghosts
 	int getGhostDirX(int i) { return ghosts_vec[i]->getDirX(); }       // Get the horizontal direction of a specific ghost

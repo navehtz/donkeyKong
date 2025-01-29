@@ -62,15 +62,15 @@ void Ghosts::move()
 }
 
 // Remove a ghost by its index
-void Ghosts::removeGhostByIndex(int index)
-{
-	if (index < ghosts_vec.size()) {
-		ghosts_vec.erase(ghosts_vec.begin() + index);
-	}
-	else {
-		std::cout << "Error: Invalid index!" << std::endl;
-	}
-}
+//void Ghosts::removeGhostByIndex(int index)
+//{
+//	if (index < ghosts_vec.size()) {
+//		ghosts_vec.erase(ghosts_vec.begin() + index);
+//	}
+//	else {
+//		std::cout << "Error: Invalid index!" << std::endl;
+//	}
+//}
 
 // Update the character parameters for all activated ghosts
 void Ghosts::updateGhostsCharParameters()

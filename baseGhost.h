@@ -5,7 +5,6 @@
 class BaseGhost : public Entity
 {
 protected:
-
 	static constexpr double CHANGE_DIR_PROB = 0.05;                             // Probability of changing direction while wandering
 
 	// Characters surrounding special ghosts
