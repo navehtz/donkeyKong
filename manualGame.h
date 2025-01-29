@@ -24,5 +24,5 @@ public:
 	void updateActionByKeys() override;						// Updates Mario's actions based on key presses from the user
 	void saveManualGame();									// Saves the game state in manual mode
 	void setResult();										// Adding the game result to the results vector
-	void deleteFilesWithExtension(/*const std::string& directory,*/ const std::string& extension);
+	void deleteFilesWithExtension(const std::string& extension);  // Delete files from the directory 
 };
