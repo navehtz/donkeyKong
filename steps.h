@@ -21,6 +21,7 @@ public:
 		steps.pop_front();
 		return step;
 	}
+	void clearStepsList() { steps.clear(); }
 
 	size_t frontIteration() { return steps.front().first; }				// Returns the iteration number of the first step in the list
 	bool isStepEmpty() { return steps.empty(); }						// Checks if there are no remaining steps in the list 
