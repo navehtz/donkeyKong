@@ -29,7 +29,11 @@ public:
 
 	void disappear() { is_activated = false; }                                  // Deactivate the ghost, making it disappear
 	void blockedByWall();                                              // Stop the ghost's movement if it encounters a wall
+	
+	virtual void checkWhatState() = 0;
+	virtual void updateState() = 0;                                                // Update the ghost's state
 	void updateNextMove() override;                                             // Update the ghost's movement for the next game loop
+	virtual void updateCharParameters() = 0;                                       // Update the chars representing the tiles around the ghost
 
 	void wander();
 	void manageWanderDirection();                                                     // Manage the ghost's direction while wandering on the floor
