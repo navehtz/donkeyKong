@@ -57,9 +57,8 @@ public:
 	bool const IsActivated() const { return is_activated; };	// The function returns true if the entity is activated(rolling/falling etc.) and false otherwise
 	void activate() { is_activated = true; }					// Function to activate the entity
 	void deactivate() { is_activated = false; }					// Function to deactivate the entity
-	//virtual int myRandom();										// Function to raffle a number ( 1 or 0 )
 
-	void setPositionOfEntity(const GameConfig::Position& _pos) { point.setPosition(_pos); }
+	void setPositionOfEntity(const GameConfig::Position& _pos) { point.setPosition(_pos); }	// Sets the position of the entity on the board 
 };
 
 

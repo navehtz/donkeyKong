@@ -105,7 +105,7 @@ public:
 	GameConfig::Position getHammerPos() const { return hammer.pos; }              // Get hammer position
 	void printHammerOnBoard() const;                                              // Print the hammer on the board
 
-	void eraseHammer() {
+	void eraseHammer() {														  // Erases the hammer from the board  
 		if (!pBoard->getIsSilent()) {
 			GameConfig::gotoxy(pos_hit_hammer.x, pos_hit_hammer.y);
 			std::cout << ch_behind_hammer;
@@ -117,6 +117,5 @@ public:
 	void setPosHitHammer(GameConfig::Position _pos) { pos_hit_hammer = _pos; }    // Set hammer hit position
 	bool validHit();															  // Validate hammer hit
 
-	void setPointerResults(Results &results) { ptr_results = &results; }
-	//void setIteration(size_t curr_iteration) { iteration = curr_iteration; } 
+	void setPointerResults(Results &results) { ptr_results = &results; }		  // Sets a pointer to a Results object 	  
 };

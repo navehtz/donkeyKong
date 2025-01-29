@@ -23,5 +23,4 @@ public:
 	bool handleResultsError(size_t diedNextIteration);
 	void handleResultsErrorAfterLoop();
 	void printSuccessfulRunIfSilent() const;
-
 };

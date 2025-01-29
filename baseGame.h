@@ -53,7 +53,6 @@ public:
 	virtual void startGame(int screen_index) = 0;									// Starts the game loop and handles gameplay logic
 	virtual void gameLoop() = 0;
 	void draw();															// Draws Mario and barrels on the screen
-	//virtual void draw();															// Draws Mario and barrels on the screen
 	void erase();															// Erases Mario's and barrels previous position from the screen
 	void move();												// Moves Mario and barrels to a new position based on user input or game logic
 	void updateIfMarioHitBarrelOrGhost();

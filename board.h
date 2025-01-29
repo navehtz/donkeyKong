@@ -2,9 +2,6 @@
 
 #include <Windows.h>	//for Sleep and colors
 #include "gameConfig.h"
-//#include "baseGhost.h"
-//#include "regularGhost.h"
-//#include "specialGhost.h"
 
 #include <iostream>
 #include <algorithm>
@@ -241,8 +238,6 @@ class Board {
 	// Vector to store the starting positions of ghosts
 	std::vector<GhostTypeAndPosition> start_pos_and_type_ghosts_vec;
 
-
-
 	// Structure to represent the game legend displayed on the board
 	struct Legend {
 		int score = 0;
@@ -314,9 +309,9 @@ public:
 	int getScore() const { return legend.score; }							// Get the current player's score
 	void addScore(int _score) { legend.score += _score; }					// Add the given value to the player's score
 
-	void setIsSilent(bool silent_flag) { is_silent = silent_flag; }
-	bool getIsSilent() { return is_silent; }
+	void setIsSilent(bool silent_flag) { is_silent = silent_flag; }			// Sets the silent mode flag 
+	bool getIsSilent() const { return is_silent; }								// Returns whether the game is running in silent mode 
 
-	GameConfig::Position getMarioPosition() const { return mario_pos; }
-	void setMarioPosition(GameConfig::Position _mario_pos) { mario_pos = _mario_pos; }
+	const GameConfig::Position& getMarioPosition() const { return mario_pos; }		// Returns Mario's current position on the board
+	void setMarioPosition(GameConfig::Position _mario_pos) { mario_pos = _mario_pos; }	// Updates Mario's position on the board
 };

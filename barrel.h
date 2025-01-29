@@ -12,12 +12,8 @@ class Barrel : public Entity
 	static constexpr int EXPLODED_BARREL = 0;
 
 	// Members
-
 	int fall_count = 0;
-
 	char two_chars_below = GameConfig::SPACE;
-
-	//bool is_activated = false;
 	bool is_exploded = false;
 
 	// States of barrel

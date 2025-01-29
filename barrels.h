@@ -24,7 +24,6 @@ public:
 	int getMaxBarrels() { return GameConfig::MAX_BARRELS; }			// Get the member 'MAX_BARRELS'
 	void setpBoard(Board& _board) { pBoard = &_board; }				// Set pBoard to the board
 
-
 	void timing();													// Handle the entry of the barrels into the board
 	void setStartingBarrels();										// Inititialize all barrels
 	void setStartingBarrel(int i) { barrels[i].setStartingBarrel(pBoard); }	// Inititialize a specific barrel
@@ -42,7 +41,7 @@ public:
 	void updateBarrelsCharParameters();								// Update the character-related parameters of all barrels
 	int getBarrelDirX(int i) { return barrels[i].getDirX(); }		// Get the x-direction of the barrel at index 'i'
 
-	bool isactivateBarrel(int i) { barrels[i].activate(); }		// Deactivate the barrel at index 'i'
+	bool isactivateBarrel(int i) { barrels[i].activate(); }		    // Deactivate the barrel at index 'i'
 	void deactivateBarrel(int i) { barrels[i].deactivate(); }		// Deactivate the barrel at index 'i'
 };
 

@@ -133,14 +133,14 @@ void Mario::updateState()
 // Check if Mario is climbing
 bool Mario::isClimbing()
 {
-	if (res_is_on_ladder && point.getDir().y == GameConfig::UP && ch_covered != GameConfig::SPACE)
-		return true; // Climbing up
+	if (res_is_on_ladder && point.getDir().y == GameConfig::UP && ch_covered != GameConfig::SPACE)  // Climbing up
+		return true; 
 
-	if (res_is_on_floor && two_chars_below == GameConfig::LADDER && point.getDir().y == GameConfig::DOWN && point.getPreviousDir().y != GameConfig::DOWN)
-		return true; // Climbing down from above a ladder
+	if (res_is_on_floor && two_chars_below == GameConfig::LADDER && point.getDir().y == GameConfig::DOWN && point.getPreviousDir().y != GameConfig::DOWN) // Climbing down from above a ladder
+		return true; 
 
-	if (res_is_on_ladder && point.getDir().y == GameConfig::DOWN)
-		return true; // Climbing down while on a ladder
+	if (res_is_on_ladder && point.getDir().y == GameConfig::DOWN)  // Climbing down while on a ladder
+		return true; 
 
 	return false;
 }
@@ -162,8 +162,9 @@ bool Mario::isJumping()
 {
 	static int count_jump = 0;
 
+	// If Mario is on the floor and moving upwards
 	if (res_is_on_floor && point.getDir().y == GameConfig::UP) {
-		if (two_chars_below == GameConfig::LADDER && point.getPreviousDir().y == GameConfig::UP) {
+		if (two_chars_below == GameConfig::LADDER && point.getPreviousDir().y == GameConfig::UP) {		// If Mario is on a ladder and was already moving up, stop the jump
 			point.setDirY(GameConfig::STAY);
 			return false;
 		}
@@ -171,11 +172,11 @@ bool Mario::isJumping()
 		fall_count = 0;
 		return true;
 	}
-	else if (ch_below != GameConfig::LADDER && point.getDir().y == GameConfig::UP && count_jump == 1) {
+	else if (ch_below != GameConfig::LADDER && point.getDir().y == GameConfig::UP && count_jump == 1) {	// If Mario is mid-air (not on a ladder) and still moving upwards
 		count_jump += 1;
 		return true;
 	}
-	else {
+	else {																								// Mario is not jumping anymore, reset jump counter
 		count_jump = 0;
 		return false;
 	}
@@ -276,7 +277,7 @@ void Mario::handleHammer()
 		pBoard->printHammerLegend();
 	pBoard->updateBoard(getPosition(), GameConfig::SPACE);
 	point.setPreviousChar(GameConfig::SPACE);
-	erase(); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	erase();								// We need this "erase()" to erase the char of the hammer from the board when mario takes it
 	updateHammerPos();
 }
 
@@ -379,7 +380,6 @@ void Mario::life()
 		pBoard->printScreen(pBoard->getLosingBoard());
 		Sleep(GameConfig::SCREEN_EXIT);
 	}
-	//ptr_results->addResult(iteration, ptr_results->died);
 }
 
 // Reset the game after Mario dies but still has lives

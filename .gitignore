@@ -1,5 +1,23 @@
+#Ignore compiled binary files
 *.exe
+*.dll
+*.so
+*.out
+*.a
+*.lib
+
+#Ignore debugging files
 *.pdb
+*.obj
+*.idb
+*.ilk
+
+#Ignore build directories
+build/
+bin/
+Debug/
+Release/
+
 *.db
 *.ipch
 *.vsidx
