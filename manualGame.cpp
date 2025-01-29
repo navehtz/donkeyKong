@@ -141,6 +141,8 @@ void ManualGame::gameLoop()
 		updateIfDiedByBarrelOrGhost();				// Checks if Mario collided with a barrel and updates his state if he has died
 
 		manageInput();								// Manage the input
+		if (exit_game)
+			break;
 
 		barrels.updateBarrelsCharParameters();
 		erase();									// Erases the current state of the game (Mario, barrels, ghosts etc.)
@@ -258,7 +260,7 @@ void ManualGame::setResult()
 		if (mario.getLives() > 0)
 			results.addResult(iteration, results.died);
 		else {
-			results.addResult(iteration, results.finished);
+			results.addResult(iteration, results.finished_dead);
 		}
 	}
 	mario_died_this_iteration = false;

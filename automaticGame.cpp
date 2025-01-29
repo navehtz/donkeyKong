@@ -56,10 +56,6 @@ void AutomaticGame::startGame(int screen_index)
 
 	stagesLoop(screen_index);
 	
-	if (!is_silent) {
-		GameConfig::clrscr();
-		board.printScreen(board.getStartBoard());
-	}
 }
 
 // Handles the looping through game stages
@@ -195,7 +191,7 @@ bool AutomaticGame::handleResultsError(size_t diedNextIteration)
 		}
 		else {
 			// Validate that the results file correctly records the game ending
-			if (results.myFront() != Results::ResultEntry{ iteration, Results::ResultValue::finished }) {
+			if (results.myFront() != Results::ResultEntry{ iteration, Results::ResultValue::finished_dead }) {
 				reportResultError("Results file doesn't match the died Mario!", screenFileName, iteration);
 				unmatching_result_found = true;
 				res = false;
@@ -220,14 +216,15 @@ void AutomaticGame::handleResultsErrorAfterLoop()
 	{
 		// Check if the last result correctly indicates the game finished
 		auto last_result = results.popResult();
-		if (last_result != Results::ResultEntry{ iteration, Results::ResultValue::finished }) {
+		if (mario.getLives() > 0 && last_result != Results::ResultEntry{ iteration, Results::ResultValue::finished }) {
 			reportResultError("Results file doesn't match finished event!", screenFileName, iteration);
 			unmatching_result_found = true;
 		}
-		//else if	(last_result != Results::ResultEntry{ iteration - 1, Results::ResultValue::finished_dead }) {
-		//	reportResultError("Results file doesn't match finished event!", files_names_vec[i], iteration);
-		//	unmatching_result_found = true;
-		//}
+
+		else if (mario.getLives() <= 0 && last_result != Results::ResultEntry{ iteration, Results::ResultValue::finished_dead }) {
+			reportResultError("Results file doesn't match finished event!", screenFileName, iteration);
+			unmatching_result_found = true;
+		}
 		
 		 // Ensure no additional events exist after the finished event
 		if (results.popResult().result != Results::ResultValue::noResult) {
