@@ -259,6 +259,7 @@ class Board {
 	};
 	Legend legend;
 
+	GameConfig::Position mario_pos{ 0,0 };
 
 
 	bool is_silent = false;
@@ -315,4 +316,7 @@ public:
 
 	void setIsSilent(bool silent_flag) { is_silent = silent_flag; }
 	bool getIsSilent() { return is_silent; }
+
+	GameConfig::Position getMarioPosition() const { return mario_pos; }
+	void setMarioPosition(GameConfig::Position _mario_pos) { mario_pos = _mario_pos; }
 };

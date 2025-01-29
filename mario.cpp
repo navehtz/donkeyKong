@@ -63,6 +63,7 @@ void Mario::move()
 	updateNextMove();
 	updatePreviousChar();
 	updatePreviousDir();
+	pBoard->setMarioPosition(point.getPosition());
 	if (got_hammer) { updateHammerPos(); }
 }
 

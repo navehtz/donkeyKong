@@ -133,16 +133,30 @@ void SpecialGhost::climb()
 // Change Y direction in prob of 50% if Ghost is above ladder or at the bottom of the ladder
 void SpecialGhost::decideIfNeedToClimb()
 {
+	int mario_axis_y = pBoard->getMarioPosition().y;
+	int special_ghost_axis_y = point.getPosition().y;
+
 	if (point.getDir().y == GameConfig::STAY) {
-		if (ch_covered == GameConfig::LADDER)	// Ghost is at the bottom of the ladder
+		if (ch_covered == GameConfig::LADDER && (mario_axis_y < special_ghost_axis_y))	// Ghost is at the bottom of the ladder
 		{
-			point.setDirY((rand() % 2) * -1); // Ghost climbs up
+			point.setDirY(GameConfig::UP); // Ghost climbs up
 		}
-		else if (two_chars_below == GameConfig::LADDER && ch_covered != GameConfig::FLOOR)
+		else if (two_chars_below == GameConfig::LADDER && ch_covered != GameConfig::FLOOR && (mario_axis_y > special_ghost_axis_y))
 		{
-			point.setDirY(rand() % 2); // Ghost climbs down
+			point.setDirY(GameConfig::DOWN); // Ghost climbs down
 		}
 	}
+
+	//if (point.getDir().y == GameConfig::STAY) {
+	//	if (ch_covered == GameConfig::LADDER)	// Ghost is at the bottom of the ladder
+	//	{
+	//		point.setDirY((rand() % 2) * -1); // Ghost climbs up
+	//	}
+	//	else if (two_chars_below == GameConfig::LADDER && ch_covered != GameConfig::FLOOR)
+	//	{
+	//		point.setDirY(rand() % 2); // Ghost climbs down
+	//	}
+	//}
 }
 
 bool SpecialGhost::isOnLadder() const
