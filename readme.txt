@@ -18,8 +18,12 @@ Notes:
 14. If there is no floor (all or part of it) and Mario stands on there he will die ("The floor is lava").
 15. Please run with compilier C++20.
 16. Please set the compiler to "build only" and not "build+intellisense" (Amir told us to do that, otherwise it shows uncorrect errors).
+17. If you are in "save mode" you start from the first screen only.
+18. In the results file  0=died, 1=finished, 2=finished dead, 3=no result
+19. If you run the game without any flags your game won't be saved.
 
 Asks for bonuses:
 1. ASCII art.
 2. Score management: All the parts of the score- gain score, lose score and showing the player his score at the end of every
  stage make it a lot more fun to play.
+3. The special ghosts chase after Mario based on his place.

@@ -7,7 +7,7 @@
 class Results 
 {
 public:
-	enum ResultValue { died, finished, noResult };  // Enum representing possible results of an iteration
+	enum ResultValue { died, finished, finished_dead, noResult };  // Enum representing possible results of an iteration
 
 	struct ResultEntry {							// Structure to store an individual result entry 
 		size_t iteration;
