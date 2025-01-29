@@ -1,7 +1,7 @@
-#include "ghost.h"
+#include "specialGost.h"
 
 // Initialize a ghost based on starting position
-void Ghost::setStartingGhost(Board* _pBoard, GameConfig::Position pos)
+void SpecialGhost::setStartingGhost(Board* _pBoard, GameConfig::Position pos)
 {
 	pBoard = _pBoard;
 	point.setPosition(pos);         // Set the initial position of the ghost
@@ -24,7 +24,7 @@ void Ghost::setStartingGhost(Board* _pBoard, GameConfig::Position pos)
 }
 
 // Update the chars representing the tiles around the ghost
-void Ghost::updateCharParameters()
+void SpecialGhost::updateCharParameters()
 {
 	int _x = point.getPosition().x, _y = point.getPosition().y;
 
@@ -43,21 +43,26 @@ void Ghost::updateCharParameters()
 }
 
 // Check the ghost's current state
-void Ghost::checkWhatState()
+void SpecialGhost::checkWhatState()
 {
 	if (isFalling())
 		state = GhostState::Falling;
+	else if (isClimbing())
+		state = GhostState::Climbing;
 	else
 		state = GhostState::Wander;
 }
 
 // Update the ghost's state
-void Ghost::updateState()
+void SpecialGhost::updateState()
 {
 	switch (state)
 	{
 	case GhostState::Wander:
 		wander();
+		break;
+	case GhostState::Climbing:
+		climb();
 		break;
 	case GhostState::Falling:
 		fall();
@@ -66,7 +71,7 @@ void Ghost::updateState()
 }
 
 // Handle the ghost's wandering behavior
-void Ghost::wander()
+void SpecialGhost::wander()
 {
 	manageDirection();
 	blockedByWall();
@@ -74,14 +79,40 @@ void Ghost::wander()
 }
 
 // Handle the ghost's falling behavior
-void Ghost::fall()
+void SpecialGhost::fall()
 {
 	point.setDirX(GameConfig::STAY);
 	point.setDirY(GameConfig::DOWN);
 }
 
+// Check if Mario is climbing
+bool SpecialGhost::isClimbing()
+{
+	if (res_is_on_ladder && point.getDir().y == GameConfig::UP && ch_covered != GameConfig::SPACE)
+		return true; // Climbing up
+
+	if (res_is_on_floor && two_chars_below == GameConfig::LADDER && point.getDir().y == GameConfig::DOWN && point.getPreviousDir().y != GameConfig::DOWN)
+		return true; // Climbing down from above a ladder
+
+	if (res_is_on_ladder && point.getDir().y == GameConfig::DOWN)
+		return true; // Climbing down while on a ladder
+
+	return false;
+}
+
+// Handle Mario's climbing movement
+void SpecialGhost::climb()
+{
+	int previous_dir_x = point.getPreviousDir().x;
+
+	if (!res_is_on_floor && (previous_dir_x == GameConfig::LEFT || previous_dir_x == GameConfig::RIGHT)) {
+		point.setDirX(GameConfig::STAY); // Hold ladder when jumping or falling
+		if (point.getDir().y == GameConfig::UP) return;
+		else if (point.getDir().y == GameConfig::DOWN) point.setDirY(GameConfig::STAY);
+	}
+}
 // Manage the ghost's direction while wandering on the floor
-void Ghost::manageDirection()
+void SpecialGhost::manageDirection()
 {
 	int dirX = point.getDir().x;
 
@@ -101,7 +132,7 @@ void Ghost::manageDirection()
 }
 
 // Stop the ghost's movement if it encounters a wall
-void Ghost::blockedByWall()
+void SpecialGhost::blockedByWall()
 {
 	int dirX = point.getDir().x;
 	if (res_is_wall_on_left && dirX == GameConfig::LEFT) {
@@ -113,7 +144,7 @@ void Ghost::blockedByWall()
 }
 
 // Update the ghost's movement for the next game loop
-void Ghost::updateNextMove()
+void SpecialGhost::updateNextMove()
 {
 	int newX = point.getPosition().x + point.getDir().x;
 	int newY = point.getPosition().y + point.getDir().y;

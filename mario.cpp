@@ -29,6 +29,20 @@ void Mario::keyPressed(char key)
 	}
 }
 
+// Erase Mario's current position from the screen and update the board
+void Mario::erase()
+{                                                      
+	pBoard->updateBoard(point.getPosition(), point.getPreviousChar());
+	if (!pBoard->getIsSilent()) {		// If not in silent mood
+		point.erase();
+	}
+	if (hammer.active) {													// Erase hammer if active
+		eraseHammer();
+		hammer.active = false;
+	}
+}
+
+
 // Handle Mario's movement
 void Mario::move()
 {
@@ -257,10 +271,11 @@ void Mario::handleHammer()
 {
 	got_hammer = true;
 	pBoard->setHammerLegend(GameConfig::HAMMER);
-	pBoard->printHammerLegend();
+	if (!pBoard->getIsSilent()) 
+		pBoard->printHammerLegend();
 	pBoard->updateBoard(getPosition(), GameConfig::SPACE);
 	point.setPreviousChar(GameConfig::SPACE);
-	erase();
+	erase(); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	updateHammerPos();
 }
 
@@ -349,31 +364,36 @@ void Mario::life()
 		pBoard->resetScore(); // For not get to negative score
 
 	pBoard->setLifeLegend(lives);
-	pBoard->printLifeLegend();
 
+	if (!pBoard->getIsSilent()) {
+		pBoard->printLifeLegend();
+		flashingMario();
+	}
+
+	just_died = true;
 	if (lives > DEAD_MARIO) {
 		startOver();
 	}
-	else if (lives == DEAD_MARIO) {
-		flashingMario();
+	else if (lives == DEAD_MARIO && !pBoard->getIsSilent()) {
 		pBoard->printScreen(pBoard->getLosingBoard());
 		Sleep(GameConfig::SCREEN_EXIT);
 	}
+	//ptr_results->addResult(iteration, ptr_results->died);
 }
 
 // Reset the game after Mario dies but still has lives
 void Mario::startOver()
 {
-	just_died = true;
-	flashingMario();
-
 	pBoard->reset();
 	setStartingMario();
 	pBarrels->setStartingBarrels();
 	pGhosts->setStartingGhosts(pGhosts->getNumOfGhosts());
-	pBoard->printScreen(pBoard->getCurrentBoard());
 	pBoard->setHammerLegend(GameConfig::SPACE);
-	pBoard->printLegend();
+
+	if (!pBoard->getIsSilent()) {
+		pBoard->printScreen(pBoard->getCurrentBoard());
+		pBoard->printLegend();
+	}
 }
 
 // Flash Mario's character after he dies

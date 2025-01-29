@@ -5,7 +5,6 @@
 #include "entity.h"
 #include "gameConfig.h"
 
-
 class Barrel : public Entity
 {
 	// Constants
@@ -50,8 +49,7 @@ public:
 	void manageDirection();										// Manage the direction of the barrel while on the floor
 	bool explosionCases();										// Handle the cases which the barrel explodes in (falling 8 chars or at wall)
 	void explode();												// Function to update the barrel's 'is_activated' and 'is_exploded' members
-	void blockedByWall();								// Function to stop the barrels's movement if it reaches a wall
-
+	void blockedByWall();										// Function to stop the barrels's movement if it reaches a wall
 };
 
 

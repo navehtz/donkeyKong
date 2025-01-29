@@ -108,7 +108,6 @@ class Board {
 		R"(********************************************************************************)" //24
 	};
 
-
 	char winning_screen[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1] = {
 		 //01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		R"(********************************************************************************)",//0
@@ -251,6 +250,7 @@ class Board {
 	};
 	Legend legend;
 
+	bool is_silent = false;
 	bool readen_mario = false;
 	bool readen_princess = false;
 	bool readen_gorilla = false;
@@ -302,5 +302,6 @@ public:
 	int getScore() const { return legend.score; }							// Get the current player's score
 	void addScore(int _score) { legend.score += _score; }					// Add the given value to the player's score
 
-
+	void setIsSilent(bool silent_flag) { is_silent = silent_flag; }
+	bool getIsSilent() { return is_silent; }
 };
