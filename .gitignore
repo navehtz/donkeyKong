@@ -22,5 +22,6 @@ Release/
 *.ipch
 *.vsidx
 *.zip
+*.user
 .vs/
 x64/
