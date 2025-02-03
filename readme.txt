@@ -24,7 +24,5 @@ Notes:
 20. In "save mode": All previously existing results and steps files are deleted.
 
 Asks for bonuses:
-1. ASCII art.
-2. Score management: All the parts of the score- gain score, lose score and showing the player his score at the end of every
- stage make it a lot more fun to play.
-3. The special ghosts chase after Mario based on his place.
+1. The special ghosts chase after Mario based on his place, specifically based on his y-axis place. (because we wanted to keep the
+ghost's horizonal movement random).
