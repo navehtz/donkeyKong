@@ -3,7 +3,12 @@
 // Class representing configuration settings and constants for the game
 class GameConfig
 {
+    inline static long random_seed;
 public:
+    GameConfig(long _random_seed) { random_seed = _random_seed; }
+    static const long getRandomSeed() { return random_seed; }
+    static void setRandomSeed(long curr_random_seed) { random_seed = curr_random_seed; }
+
     // Constants representing movement directions
     static constexpr int UP = -1;       // Move up
     static constexpr int DOWN = 1;     // Move down
@@ -17,6 +22,8 @@ public:
     static constexpr int EXPLOSION_RADIUS = 2; // Radius of an explosion of a barrel
     static constexpr int MAX_BARRELS = 5;      // Number of barrels in the container
     static constexpr int POSSIBLE_INPUT = 3;   // Number of possible inputs for controls in one loop game
+    static constexpr int FIRST_SCREEN_INDEX = 0;   // The first index of the screens
+    static constexpr int EXIT_GAME_FLAG = -1;      // To know if exit the game
 
     // Constants for screen-related timings (in milliseconds)
     static constexpr int SCREEN_TIME = 150 / POSSIBLE_INPUT;    // Sleep between the game's loops based on input
@@ -24,6 +31,7 @@ public:
     static constexpr int SCREEN_WIN = 2000;                     // Time to display the win screen
     static constexpr int SCREEN_EXIT = 2000;                    // Time to display the exit screen
     static constexpr int SCREEN_FLASH_MARIO = 200;              // Flash duration for Mario's appearance
+    static constexpr int SCREEN_AUTO_TIME = 150;                // Flash duration for Mario's appearance
 
     // File and game element configurations
     static constexpr int FILE_NAME_LENGTH = 6; // Length of the file name's start template
@@ -40,7 +48,8 @@ public:
     static constexpr char SPACE = ' ';       // Character for empty space
     static constexpr char HAMMER = 'p';      // Character for hammer
     static constexpr char BARREL = 'O';      // Character for barrel
-    static constexpr char GHOST = 'x';       // Character for ghost
+    static constexpr char REGULAR_GHOST = 'x';       // Character for ghost
+    static constexpr char SPECIAL_GHOST = 'X';       // Character for ghost
     static constexpr char LEGEND = 'L';      // Character for legend or key point
 
     // Scoring system constants

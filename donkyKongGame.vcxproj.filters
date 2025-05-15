@@ -27,7 +27,7 @@
     <ClCompile Include="board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game.cpp">
+    <ClCompile Include="manualGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="barrels.cpp">
@@ -36,13 +36,34 @@
     <ClCompile Include="barrel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ghost.cpp">
+    <ClCompile Include="regularGhost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ghosts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="automaticGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="steps.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="results.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="baseGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="specialGhost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="baseGhost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mainHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,7 +80,7 @@
     <ClInclude Include="board.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game.h">
+    <ClInclude Include="manualGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="barrels.h">
@@ -68,13 +89,34 @@
     <ClInclude Include="barrel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ghost.h">
+    <ClInclude Include="regularGhost.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ghosts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="automaticGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="steps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="results.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="specialGhost.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseGhost.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mainHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -29,11 +29,13 @@ public:
 	const Point& getPoint() const { return point; }									// Get the member 'point'
 	GameConfig::Position getPosition() const { return point.getPosition(); }	// Get the current position of the entity as a constant reference
 	void draw() {																	// Draw the entity on the screen and update the board
-		point.draw();
+		if(!pBoard->getIsSilent())
+			point.draw();
 		pBoard->updateBoard(point.getPosition(), point.getChar());
 	}
 	virtual void erase() {															// Erase the entity from the screen and update the board
-		point.erase();
+		if (!pBoard->getIsSilent())
+			point.erase();
 		pBoard->updateBoard(point.getPosition(), point.getPreviousChar());
 	}
 	virtual void checkWhatState() = 0;			// Pure virtual function to check the entity's current state
@@ -55,9 +57,8 @@ public:
 	bool const IsActivated() const { return is_activated; };	// The function returns true if the entity is activated(rolling/falling etc.) and false otherwise
 	void activate() { is_activated = true; }					// Function to activate the entity
 	void deactivate() { is_activated = false; }					// Function to deactivate the entity
-	virtual int myRandom();										// Function to raffle a number ( 1 or 0 )
 
-	void setPositionOfEntity(const GameConfig::Position& _pos) { point.setPosition(_pos); }
+	void setPositionOfEntity(const GameConfig::Position& _pos) { point.setPosition(_pos); }	// Sets the position of the entity on the board 
 };
 
 

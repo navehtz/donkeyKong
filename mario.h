@@ -5,7 +5,7 @@
 #include "ghosts.h"
 #include "entity.h"
 #include "gameConfig.h"
-
+#include "results.h"
 #include <Windows.h>    // For Sleep
 #include <stdbool.h>
 #include <cstdlib>
@@ -55,6 +55,7 @@ class Mario : public Entity
 
 	Barrels* pBarrels = nullptr;
 	Ghosts* pGhosts = nullptr;
+	Results* ptr_results = nullptr;
 
 public:
 	Mario() : Entity(GameConfig::MARIO) {}                                        // Constructor initializing Mario's starting position
@@ -62,11 +63,7 @@ public:
 	void setStartingMario();                                                      // Initialize Mario
 	void keyPressed(char key);                                                    // Handle key press input
 
-	void erase() override {                                                       // Erase Mario's current position from the screen and update the board
-		point.erase();
-		pBoard->updateBoard(point.getPosition(), point.getPreviousChar());
-		if (hammer.active) { eraseHammer(); hammer.active = false; } // Erase hammer if active
-	}
+	void erase() override;
 
 	void setpBarrels(Barrels& _barrels) { pBarrels = &_barrels; }                 // Set the barrels object pointer
 	void setpGhosts(Ghosts& _ghosts) { pGhosts = &_ghosts; }                      // Set the ghosts object pointer
@@ -90,8 +87,10 @@ public:
 
 	char getCharFromBoard(int _x, int _y) { return pBoard->getCharFromBoard(_x, _y); } // Get the char in the (x,y) position on board
 	char getHammerChar() const { return hammer.ch; }                              // Get the hammer character
+	char getMarioChar() const { return point.getChar(); }                              // Get the hammer character
 
-	int getLives() const { return lives; }                                        // Get Mario's lives
+	int getLives() const {
+		return lives; }                                        // Get Mario's lives
 	void setLives(int _lives) { lives = _lives; }                                 // Set Mario's lives
 	bool getIfWon() const { return won_level; }                                   // Check if Mario finished the level (reached Pauline)
 	bool getjust_died() const { return just_died; }                               // Check if Mario just died
@@ -106,13 +105,17 @@ public:
 	GameConfig::Position getHammerPos() const { return hammer.pos; }              // Get hammer position
 	void printHammerOnBoard() const;                                              // Print the hammer on the board
 
-	void eraseHammer() {
-		GameConfig::gotoxy(pos_hit_hammer.x, pos_hit_hammer.y);
-		std::cout << ch_behind_hammer;
+	void eraseHammer() {														  // Erases the hammer from the board  
+		if (!pBoard->getIsSilent()) {
+			GameConfig::gotoxy(pos_hit_hammer.x, pos_hit_hammer.y);
+			std::cout << ch_behind_hammer;
+		}
 		pBoard->updateBoard(pos_hit_hammer, ch_behind_hammer);
 	}
 	void setIfHammerActive(bool b) { hammer.active = b; }                         // Set hammer active status
 	void setCharBehindHammer(char _ch) { ch_behind_hammer = _ch; }                // Set character behind hammer
 	void setPosHitHammer(GameConfig::Position _pos) { pos_hit_hammer = _pos; }    // Set hammer hit position
 	bool validHit();															  // Validate hammer hit
+
+	void setPointerResults(Results &results) { ptr_results = &results; }		  // Sets a pointer to a Results object 	  
 };

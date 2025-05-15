@@ -1,11 +1,11 @@
 #include "entity.h"
 
-// Handle the ghost's movement
+// Handle the entity's movement
 void Entity::move()
 {
-	updateCharParameters();									// Update all the char data members around mario
-	checkWhatState();										// Check what is the ghost's state 
-	updateState();											// Update the moves that the ghost should do by the state
+	updateCharParameters();									// Update all the char data members around entity
+	checkWhatState();										// Check what is the entity's state 
+	updateState();											// Update the moves that the entity should do by the state
 
 	//update prameters
 	updateNextMove();
@@ -26,13 +26,4 @@ bool Entity::isBlock(char _ch) const
 bool Entity::isFalling() const
 {
 	return ch_below == GameConfig::SPACE ? true : false;
-}
-
-// Generate a random number (0 or 1)
-int Entity::myRandom()
-{
-	static std::random_device rd;
-	static std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dist(0, 1);
-	return dist(gen);
 }

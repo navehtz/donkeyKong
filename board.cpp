@@ -56,7 +56,7 @@ bool Board::load(const std::string& filename) {
     if (!screen_file) {                                 // Check if opened correctly
         return handleReadFileErrors(screen_file);
     }
-    start_pos_ghosts_vec.clear();
+    start_pos_and_type_ghosts_vec.clear();
     int curr_row = 0;
     int curr_col = 0;
     char c;
@@ -83,8 +83,11 @@ bool Board::load(const std::string& filename) {
             case GameConfig::PRINCESS:
                 manageChar(c, readen_princess, start_pos_princess, curr_col, curr_row);
                 break;
-            case GameConfig::GHOST:
-                start_pos_ghosts_vec.push_back({ curr_col, curr_row });
+            case GameConfig::REGULAR_GHOST:
+                start_pos_and_type_ghosts_vec.push_back({ GameConfig::REGULAR_GHOST, { curr_col, curr_row } });
+                break;
+            case GameConfig::SPECIAL_GHOST:
+                start_pos_and_type_ghosts_vec.push_back({ GameConfig::SPECIAL_GHOST, { curr_col, curr_row } });
                 break;
             case GameConfig::HAMMER:
                 manageChar(c, readen_hammer, start_pos_hammer, curr_col, curr_row);

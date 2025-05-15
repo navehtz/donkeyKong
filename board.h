@@ -108,7 +108,6 @@ class Board {
 		R"(********************************************************************************)" //24
 	};
 
-
 	char winning_screen[GameConfig::BOARD_HEIGHT][GameConfig::BOARD_WIDTH + 1] = {
 		 //01234567890123456789012345678901234567890123456789012345678901234567890123456789
 		R"(********************************************************************************)",//0
@@ -232,8 +231,12 @@ class Board {
 	GameConfig::Position start_pos_princess{ 0,0 };
 	GameConfig::Position start_pos_hammer{ 0,0 };
 
+	struct GhostTypeAndPosition {
+		char type;
+		GameConfig::Position pos;
+	};
 	// Vector to store the starting positions of ghosts
-	std::vector<GameConfig::Position> start_pos_ghosts_vec; 
+	std::vector<GhostTypeAndPosition> start_pos_and_type_ghosts_vec;
 
 	// Structure to represent the game legend displayed on the board
 	struct Legend {
@@ -251,6 +254,10 @@ class Board {
 	};
 	Legend legend;
 
+	GameConfig::Position mario_pos{ 0,0 };
+
+
+	bool is_silent = false;
 	bool readen_mario = false;
 	bool readen_princess = false;
 	bool readen_gorilla = false;
@@ -284,7 +291,7 @@ public:
 	void manageChar(char& ch, bool& already_readen, GameConfig::Position& pos, int curr_col, int curr_row);	// Process a specific character from the board file, updating its state and position
 	const GameConfig::Position& getStartPosMario() const { return start_pos_mario; }						// Get the starting position of Mario
 	const GameConfig::Position& getStartPosGorilla() const { return start_pos_gorilla; }					// Get the starting position of Gorilla
-	const GameConfig::Position& getStartPosOfGhost(int i) const { return start_pos_ghosts_vec[i]; }			// Get the starting position of the ghost at index 'i'
+	const GhostTypeAndPosition& getStartPosAndTypeOfGhost(int i) const { return start_pos_and_type_ghosts_vec[i]; }			// Get the starting position of the ghost at index 'i'
 	
 	void setPositionsInLegend();		// Set the positions for the elements in the legend
 	void printLegend() const;			// Print the entire legend on the board
@@ -296,11 +303,15 @@ public:
 	void setLifeLegend(int life) { legend.life = life; }					// Set the life count in the legend
 	void setHammerLegend(char hammer) { legend.hammer = hammer; }			// Set the hammer status in the legend
 	void setLegend(int score, int life, char hammer);						// Set all legend values at once
-	int getGhostVectorSize() { return (int)start_pos_ghosts_vec.size(); }	// Get the size of the ghost positions vector
+	int getGhostVectorSize() { return (int)start_pos_and_type_ghosts_vec.size(); }	// Get the size of the ghost positions vector
 	
 	void resetScore() { legend.score = 0; }									// Reset the player's score to zero
 	int getScore() const { return legend.score; }							// Get the current player's score
 	void addScore(int _score) { legend.score += _score; }					// Add the given value to the player's score
 
+	void setIsSilent(bool silent_flag) { is_silent = silent_flag; }			// Sets the silent mode flag 
+	bool getIsSilent() const { return is_silent; }								// Returns whether the game is running in silent mode 
 
+	const GameConfig::Position& getMarioPosition() const { return mario_pos; }		// Returns Mario's current position on the board
+	void setMarioPosition(GameConfig::Position _mario_pos) { mario_pos = _mario_pos; }	// Updates Mario's position on the board
 };
